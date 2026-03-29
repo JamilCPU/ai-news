@@ -1,0 +1,11 @@
+services:
+  app:
+    build: ./app
+    container_name: ai-news-app
+    restart: unless-stopped
+    environment:
+      LAB_DB_API: "http://192.0.2.99:8741"
+      PORT: "3000"
+    ports:
+      - "0.0.0.0:3002:3000"
+
