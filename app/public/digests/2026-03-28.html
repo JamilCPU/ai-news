@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="signal-date" content="MAR 28, 2026">
+  <meta name="signal-title" content="Power, Policy, and the Physical World">
+  <meta name="signal-overview" content="The week of March 26–27 was defined by AI's expanding role in physical infrastructure and national policy. Microsoft and NVIDIA announced a formal AI-for-nuclear collaboration that has already cut permitting timelines by 92% at Aalo Atomics, signaling that the energy bottleneck for AI data centers is being attacked at the source. On the policy front, the White House released its National Policy Framework for AI on March 20—a four-page set of legislative recommendations urging Congress to preempt state-level AI laws and avoid heavy-handed regulation—while Democrats countered on March 20 with the GUARDRAILS Act attempting to block that federal preemption push. Defense AI continued its funding sprint with Shield AI closing a $1.5B Series G at a $12.7B valuation (up 140% in a year) after winning a U.S. Air Force drone contract, and Broadcom posted Q1 2026 AI chip revenue of $8.4B—up 106% YoY—with CEO Hock Tan projecting AI chip revenue exceeding $100B by 2027.">
+  <meta name="signal-items" content="11">
+  <title>Power, Policy, and the Physical World — SIGNAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #060a10;
+      --bg2:      #090e18;
+      --surface:  #0d1525;
+      --surface2: #111e33;
+      --border:   #1a2a42;
+      --border2:  #243550;
+      --text:     #dce8f8;
+      --text2:    #7a90b4;
+      --text3:    #3d5270;
+      --lime:     #c4ff3c;
+      --blue:     #2d7fff;
+      --purple:   #9b6fff;
+      --orange:   #ff8c42;
+      --red:      #ff4560;
+      --teal:     #00d4aa;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Literata', Georgia, serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 60%, rgba(255,140,66,.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(45,127,255,.04) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-5 5L5-5M35 45L45 35' stroke='%231a2a42' stroke-width='.5' opacity='.4'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    .scan-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--orange), transparent);
+      animation: scan 4s ease-in-out infinite; z-index: 100;
+    }
+    @keyframes scan {
+      0% { transform: translateX(-100%); opacity: 0; }
+      20% { opacity: 1; } 80% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+    .site-header {
+      position: relative; z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,10,16,.92);
+      backdrop-filter: blur(12px);
+      padding: 0 clamp(16px,4vw,48px);
+    }
+    .header-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-wordmark {
+      font-family: var(--font-head); font-weight: 800; font-size: 18px;
+      letter-spacing: 0.12em; color: var(--text); text-transform: uppercase;
+    }
+    .logo-wordmark span { color: var(--lime); }
+    .back-link {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text3); text-decoration: none;
+      border: 1px solid var(--border2); padding: 6px 14px; border-radius: 2px;
+      transition: color .2s, border-color .2s;
+    }
+    .back-link:hover { color: var(--lime); border-color: var(--lime); }
+    .digest-bar {
+      position: relative; z-index: 1;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: baseline;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .digest-bar-date {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime);
+    }
+    .digest-bar-title {
+      font-family: var(--font-head); font-weight: 700; font-size: 20px;
+      color: var(--text); flex: 1;
+    }
+    .digest-bar-count {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); letter-spacing: 0.1em;
+    }
+    .digest-content {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: clamp(32px,5vw,64px) clamp(16px,4vw,48px);
+    }
+    .site-footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand {
+      font-family: var(--font-head); font-weight: 800; font-size: 13px;
+      letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase;
+    }
+    .footer-note {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text3);
+    }
+
+    /* ═══════════════════════ AGENT STYLES ═══════════════════════ */
+
+    /* — Broadsheet hero with split columns — */
+    .broadsheet-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      margin-bottom: 48px;
+      overflow: hidden;
+    }
+    @media (max-width: 720px) {
+      .broadsheet-hero { grid-template-columns: 1fr; }
+    }
+    .hero-left {
+      padding: 40px 36px;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      position: relative;
+    }
+    .hero-right {
+      padding: 40px 36px;
+      background: var(--bg2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hero-kicker {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 20px;
+    }
+    .hero-headline {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(32px, 5vw, 60px);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 28px;
+    }
+    .hero-headline em {
+      font-style: normal;
+      color: var(--orange);
+    }
+    .hero-overview {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text2);
+      font-style: italic;
+    }
+    .hero-accent-word {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(60px, 12vw, 120px);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--border2);
+      display: block;
+      margin-bottom: 24px;
+    }
+    .hero-tagline {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-style: italic;
+      color: var(--text3);
+      line-height: 1.6;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: auto;
+    }
+
+    /* — Source tag — */
+    .source-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text3);
+      border: 1px solid var(--border2);
+      padding: 3px 8px;
+      text-decoration: none;
+      transition: color .2s, border-color .2s;
+    }
+    .source-tag:hover { color: var(--lime); border-color: var(--lime); }
+
+    /* — Ticker bar — */
+    .ticker {
+      background: var(--orange);
+      overflow: hidden;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+    .ticker-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--bg);
+      color: var(--orange);
+      padding: 0 14px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .ticker-inner {
+      display: flex;
+      gap: 48px;
+      animation: tickerMove 30s linear infinite;
+      white-space: nowrap;
+      padding-left: 32px;
+    }
+    .ticker-item {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--bg);
+      white-space: nowrap;
+    }
+    @keyframes tickerMove {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* — Section headers — */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      margin-top: 56px;
+    }
+    .section-header:first-of-type { margin-top: 0; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+    .section-rule { flex: 1; height: 1px; background: var(--border); }
+
+    .cat-models .section-label  { background: rgba(196,255,60,.08); color: var(--lime); border: 1px solid rgba(196,255,60,.2); }
+    .cat-research .section-label { background: rgba(155,111,255,.08); color: var(--purple); border: 1px solid rgba(155,111,255,.2); }
+    .cat-industry .section-label { background: rgba(255,140,66,.08); color: var(--orange); border: 1px solid rgba(255,140,66,.2); }
+    .cat-tools .section-label   { background: rgba(0,212,170,.08); color: var(--teal); border: 1px solid rgba(0,212,170,.2); }
+
+    /* — Models: two-up cards — */
+    .models-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    @media (max-width: 640px) { .models-grid { grid-template-columns: 1fr; } }
+    .model-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 28px 24px;
+      position: relative;
+    }
+    .model-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .model-card.voice::before { background: var(--lime); }
+    .model-card.music::before { background: var(--purple); }
+    .model-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 12px;
+    }
+    .model-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1.25;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .model-stat {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 36px;
+      line-height: 1;
+      margin: 16px 0;
+    }
+    .model-card.voice .model-stat { color: var(--lime); }
+    .model-card.music .model-stat { color: var(--purple); }
+    .model-stat-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 14px;
+    }
+    .model-summary {
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text2);
+      font-style: italic;
+      margin-bottom: 14px;
+    }
+
+    /* — Research: dense arXiv-style list — */
+    .arxiv-list {
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .arxiv-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .arxiv-item:last-child { border-bottom: none; }
+    .arxiv-meta {
+      background: var(--surface2);
+      padding: 24px 18px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .arxiv-id {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      color: var(--purple);
+    }
+    .arxiv-date {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--text3);
+    }
+    .arxiv-badge {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+    .badge-purple { background: rgba(155,111,255,.15); color: var(--purple); }
+    .badge-red    { background: rgba(255,69,96,.15);   color: var(--red); }
+    .badge-teal   { background: rgba(0,212,170,.15);   color: var(--teal); }
+    .arxiv-body {
+      padding: 24px 24px;
+    }
+    .arxiv-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.3;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .arxiv-summary {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: var(--text2);
+      font-style: italic;
+      margin-bottom: 12px;
+    }
+    @media (max-width: 600px) {
+      .arxiv-item { grid-template-columns: 1fr; }
+      .arxiv-meta { border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; flex-wrap: wrap; }
+    }
+
+    /* — Industry: flagship + sidebar — */
+    .industry-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2px;
+      align-items: start;
+    }
+    @media (max-width: 780px) { .industry-layout { grid-template-columns: 1fr; } }
+    .industry-flagship {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .industry-flagship::before {
+      content: '$';
+      position: absolute;
+      right: -10px; top: -20px;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 160px;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--border);
+      pointer-events: none;
+    }
+    .flagship-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 12px;
+    }
+    .flagship-headline {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(20px, 3vw, 28px);
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .flagship-num {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 56px;
+      line-height: 1;
+      color: var(--orange);
+      margin: 20px 0 4px;
+    }
+    .flagship-num-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 20px;
+    }
+    .flagship-summary {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.75;
+      color: var(--text2);
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+    .industry-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .sidebar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 22px 20px;
+    }
+    .sidebar-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 8px;
+    }
+    .sidebar-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.3;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .sidebar-summary {
+      font-family: var(--font-body);
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--text2);
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+
+    /* — Nuclear callout — */
+    .nuclear-callout {
+      background: linear-gradient(135deg, rgba(255,140,66,.07), rgba(45,127,255,.05));
+      border: 1px solid rgba(255,140,66,.2);
+      padding: 36px;
+      margin-bottom: 2px;
+    }
+    .nuclear-top {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .nuclear-pct {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(60px, 12vw, 100px);
+      line-height: 1;
+      color: var(--orange);
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+    }
+    .nuclear-desc { flex: 1; min-width: 220px; }
+    .nuclear-desc h3 {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .nuclear-desc p {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text2);
+      font-style: italic;
+      line-height: 1.75;
+    }
+    .nuclear-partners {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .partner-chip {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--orange);
+      border: 1px solid rgba(255,140,66,.3);
+      padding: 4px 10px;
+    }
+
+    /* — Policy confrontation block — */
+    .policy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    @media (max-width: 640px) { .policy-grid { grid-template-columns: 1fr; } }
+    .policy-card {
+      padding: 28px 26px;
+      border: 1px solid var(--border);
+    }
+    .policy-card.white-house { background: rgba(45,127,255,.05); }
+    .policy-card.guardrails { background: rgba(255,69,96,.05); }
+    .policy-card-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .policy-card.white-house .policy-card-label { color: var(--blue); }
+    .policy-card.guardrails .policy-card-label { color: var(--red); }
+    .policy-card-vs {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text3);
+      text-align: center;
+      padding: 20px 0;
+      grid-column: span 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .policy-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 17px;
+      line-height: 1.3;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .policy-summary {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: var(--text2);
+      font-style: italic;
+      margin-bottom: 12px;
+    }
+    .policy-points {
+      list-style: none;
+      margin-bottom: 14px;
+    }
+    .policy-points li {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text2);
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .policy-points li::before { content: '→ '; color: var(--text3); }
+
+    /* — Tools: horizontal band — */
+    .tools-band {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    @media (max-width: 640px) { .tools-band { grid-template-columns: 1fr; } }
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 28px 24px;
+      border-top: 3px solid var(--teal);
+    }
+    .tool-kicker {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 10px;
+    }
+    .tool-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 17px;
+      line-height: 1.3;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .tool-summary {
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text2);
+      font-style: italic;
+      margin-bottom: 12px;
+    }
+
+    /* — Broadcom number banner — */
+    .broadcom-banner {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      margin-bottom: 2px;
+      overflow: hidden;
+    }
+    .bcom-cell {
+      flex: 1;
+      padding: 28px 20px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .bcom-cell:last-child { border-right: none; }
+    .bcom-num {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 36px;
+      line-height: 1;
+      color: var(--orange);
+      margin-bottom: 6px;
+    }
+    .bcom-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+  </style>
+</head>
+<body>
+<div class="scan-bar"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+        <path d="M4 16 L10 8 L14 20 L18 6 L22 18 L26 12 L28 16" stroke="#c4ff3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-wordmark">SIGN<span>A</span>L</span>
+    </a>
+    <a href="/" class="back-link">← All Digests</a>
+  </div>
+</header>
+
+<div class="digest-bar">
+  <span class="digest-bar-date">MAR 28, 2026</span>
+  <span class="digest-bar-title">Power, Policy, and the Physical World</span>
+  <span class="digest-bar-count">11 items</span>
+</div>
+
+<div class="digest-content">
+
+  <!-- BROADSHEET HERO -->
+  <div class="broadsheet-hero">
+    <div class="hero-left">
+      <div class="hero-kicker">// Infrastructure Week · March 26–27</div>
+      <h1 class="hero-headline">Power,<br>Policy &amp;<br>the <em>Physical</em><br>World</h1>
+      <p class="hero-overview">AI expands beyond the browser this week — into nuclear reactors, military aircraft, chip foundries, and the halls of Congress. The energy and governance questions that have simmered for months are suddenly urgent.</p>
+    </div>
+    <div class="hero-right">
+      <span class="hero-accent-word">INFRA</span>
+      <p class="hero-tagline">Microsoft and NVIDIA cut nuclear permitting time by 92%. Shield AI hit a $12.7B valuation after winning an Air Force drone contract. The White House and House Democrats filed competing AI policy frameworks on the same day. AI is no longer just software.</p>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-label">// Live</div>
+    <div class="ticker-inner">
+      <span class="ticker-item">SHIELD AI RAISES $1.5B · VALUATION $12.7B · UP 140% YoY</span>
+      <span class="ticker-item">BROADCOM AI REVENUE $8.4B · UP 106% YoY</span>
+      <span class="ticker-item">MICROSOFT + NVIDIA · NUCLEAR PERMITTING CUT 92%</span>
+      <span class="ticker-item">WHITE HOUSE AI FRAMEWORK · GUARDRAILS ACT FILED SAME DAY</span>
+      <span class="ticker-item">VOXTRAL TTS · 68.4% WIN RATE OVER ELEVENLABS</span>
+      <span class="ticker-item">NVIDIA SURPASSES GOOGLE IN HUGGING FACE CONTRIBUTIONS</span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item">SHIELD AI RAISES $1.5B · VALUATION $12.7B · UP 140% YoY</span>
+      <span class="ticker-item">BROADCOM AI REVENUE $8.4B · UP 106% YoY</span>
+      <span class="ticker-item">MICROSOFT + NVIDIA · NUCLEAR PERMITTING CUT 92%</span>
+      <span class="ticker-item">WHITE HOUSE AI FRAMEWORK · GUARDRAILS ACT FILED SAME DAY</span>
+      <span class="ticker-item">VOXTRAL TTS · 68.4% WIN RATE OVER ELEVENLABS</span>
+      <span class="ticker-item">NVIDIA SURPASSES GOOGLE IN HUGGING FACE CONTRIBUTIONS</span>
+    </div>
+  </div>
+
+  <!-- MODEL RELEASES -->
+  <div class="section-header cat-models">
+    <span class="section-label">Model Releases &amp; Updates</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="models-grid">
+    <div class="model-card voice">
+      <div class="model-tag">// Voice · Mistral · arXiv:2603.25551</div>
+      <div class="model-headline">Mistral Voxtral TTS: Multilingual Voice Cloning from 3 Seconds of Audio</div>
+      <div class="model-stat">68.4%</div>
+      <div class="model-stat-label">Win rate over ElevenLabs Flash v2.5</div>
+      <p class="model-summary">A hybrid autoregressive + flow-matching architecture with the new Voxtral Codec tokenizer (VQ-FSQ quantization). Clones voices naturalistically from as little as 3 seconds of reference audio across multiple languages. Evaluated by native speakers. Weights released under CC BY-NC.</p>
+      <a class="source-tag" href="https://arxiv.org/abs/2603.25551" target="_blank" rel="noopener">↗ arXiv / Mistral</a>
+    </div>
+
+    <div class="model-card music">
+      <div class="model-tag">// Music AI · Kunlun Tech</div>
+      <div class="model-headline">Mureka V8 Tops Global AI Music Rankings — V9 Unveiled Days Later</div>
+      <div class="model-stat">#1</div>
+      <div class="model-stat-label">Artificial Analysis benchmark — vocal &amp; instrumental</div>
+      <p class="model-summary">Mureka V8 claimed top position on the Artificial Analysis benchmark, outperforming Suno V4.5 and Udio v1.5 Allegro. V9 — unveiled at the Zhongguancun Forum on March 27 — focuses on advanced controllable generation with finer control over song structure, emotion, and arrangement. Chinese AI music is now at the global frontier.</p>
+      <a class="source-tag" href="https://pandaily.com/kunlun-tech-s-mureka-v8-tops-global-ai-music-model-rankings" target="_blank" rel="noopener">↗ Pandaily</a>
+    </div>
+  </div>
+
+  <!-- RESEARCH -->
+  <div class="section-header cat-research">
+    <span class="section-label">Research Breakthroughs</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="arxiv-list">
+    <div class="arxiv-item">
+      <div class="arxiv-meta">
+        <div class="arxiv-id">arXiv:2603.25720</div>
+        <div class="arxiv-date">Mar 26, 2026</div>
+        <div class="arxiv-badge badge-purple">RL · Multimodal</div>
+      </div>
+      <div class="arxiv-body">
+        <div class="arxiv-headline">RC2: Reinforcement Learning via Cross-Modal Cycle Consistency Boosts Reasoning by up to 7.6 Points</div>
+        <p class="arxiv-summary">Forces multimodal models to reconcile contradictions between visual and textual representations by performing backward inference, switching modalities, and reconstructing the original answer — generating a dense, label-free reward signal without additional labeled data. Structural consistency as an alternative to scaling data volume.</p>
+        <a class="source-tag" href="https://arxiv.org/abs/2603.25720" target="_blank" rel="noopener">↗ arXiv</a>
+      </div>
+    </div>
+    <div class="arxiv-item">
+      <div class="arxiv-meta">
+        <div class="arxiv-id">arXiv:2603.25737</div>
+        <div class="arxiv-date">Mar 26, 2026</div>
+        <div class="arxiv-badge badge-teal">RAG · Retrieval</div>
+      </div>
+      <div class="arxiv-body">
+        <div class="arxiv-headline">WriteBack-RAG: Treating the Knowledge Base as a Trainable Component Improves Every RAG Setting Tested</div>
+        <p class="arxiv-summary">Challenges the assumption that RAG knowledge bases should be static. Uses labeled examples to identify high-performing retrieval cases, isolates relevant content, and distills it into compact knowledge units indexed alongside the original corpus. Tested across four RAG methods, six benchmarks, and two LLM backbones — improved every evaluated setting, average +2.14%. Distilled knowledge also benefited pipelines not used to generate it.</p>
+        <a class="source-tag" href="https://arxiv.org/abs/2603.25737" target="_blank" rel="noopener">↗ arXiv</a>
+      </div>
+    </div>
+    <div class="arxiv-item">
+      <div class="arxiv-meta">
+        <div class="arxiv-id">arXiv:2603.25727</div>
+        <div class="arxiv-date">Mar 26, 2026</div>
+        <div class="arxiv-badge badge-red">Safety · ASR</div>
+      </div>
+      <div class="arxiv-body">
+        <div class="arxiv-headline">WildASR: Voice Agents Hallucinate Plausible but Unspoken Content Under Degraded Inputs</div>
+        <p class="arxiv-summary">A multilingual diagnostic benchmark sourced from real human speech reveals severe and uneven performance degradation under environmental noise, demographic shift, and linguistic diversity across seven widely-used ASR systems. Critically: models hallucinate plausible but unspoken content under partial or degraded inputs — a direct safety risk for downstream voice agents deployed in production environments.</p>
+        <a class="source-tag" href="https://arxiv.org/abs/2603.25727" target="_blank" rel="noopener">↗ arXiv</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDUSTRY -->
+  <div class="section-header cat-industry">
+    <span class="section-label">Industry &amp; Business</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <!-- Nuclear callout -->
+  <div class="nuclear-callout">
+    <div class="nuclear-top">
+      <div class="nuclear-pct">−92%</div>
+      <div class="nuclear-desc">
+        <h3>Microsoft &amp; NVIDIA: AI Attacks the Nuclear Permitting Bottleneck</h3>
+        <p>Early adopter Aalo Atomics slashed permitting timelines by 92%, saving an estimated $80M annually, using Microsoft's Generative AI for Permitting solution combined with NVIDIA Omniverse, Earth 2, and Isaac Sim. The collaboration — announced at CERAWeek 2026 with Idaho National Laboratory and Southern Nuclear — tackles the energy supply crisis created by AI data center expansion, positioning nuclear as the always-on, carbon-free backbone.</p>
+      </div>
+    </div>
+    <div class="nuclear-partners">
+      <span class="partner-chip">Microsoft</span>
+      <span class="partner-chip">NVIDIA</span>
+      <span class="partner-chip">Aalo Atomics</span>
+      <span class="partner-chip">Idaho National Laboratory</span>
+      <span class="partner-chip">Southern Nuclear</span>
+      <span class="partner-chip">CERAWeek 2026</span>
+    </div>
+    <br>
+    <a class="source-tag" href="https://www.microsoft.com/en-us/industry/blog/energy-and-resources/2026/03/24/ai-for-nuclear-energy-powering-an-intelligent-resilient-future/" target="_blank" rel="noopener">↗ Microsoft</a>
+  </div>
+
+  <!-- Broadcom numbers -->
+  <div class="broadcom-banner">
+    <div class="bcom-cell">
+      <div class="bcom-num">$8.4B</div>
+      <div class="bcom-label">Q1 AI Revenue</div>
+    </div>
+    <div class="bcom-cell">
+      <div class="bcom-num">+106%</div>
+      <div class="bcom-label">YoY Growth</div>
+    </div>
+    <div class="bcom-cell">
+      <div class="bcom-num">$19.3B</div>
+      <div class="bcom-label">Total Q1 Revenue</div>
+    </div>
+    <div class="bcom-cell">
+      <div class="bcom-num">$100B+</div>
+      <div class="bcom-label">AI Chip Target 2027</div>
+    </div>
+  </div>
+
+  <!-- Industry: flagship + sidebar -->
+  <div class="industry-layout" style="margin-top: 2px;">
+    <div class="industry-flagship">
+      <div class="flagship-eyebrow">// Defense AI · Series G</div>
+      <div class="flagship-headline">Shield AI Closes $1.5B Round — Valuation Jumps 140% in 12 Months After Air Force Contract Win</div>
+      <div class="flagship-num">$12.7B</div>
+      <div class="flagship-num-label">Post-money valuation · up from $5.3B in March 2025</div>
+      <p class="flagship-summary">Led by PE firm Advent with a $1B defense tech mandate, plus a JPMorganChase investment group. Blackstone purchased $500M in preferred shares and provided a $250M standby loan. Capital funds Shield's acquisition of Aechelon Technology (flight simulation for U.S. military pilots). The surge follows Hivemind autonomy software selection as a provider for the Air Force Collaborative Combat Aircraft drone prototype program.</p>
+      <a class="source-tag" href="https://techcrunch.com/2026/03/26/defense-startup-shield-ai-lands-12-7b-valuation-up-140-after-u-s-air-force-deal/" target="_blank" rel="noopener">↗ TechCrunch</a>
+    </div>
+
+    <div class="industry-sidebar">
+      <div class="sidebar-card" style="border-top: 3px solid var(--blue);">
+        <div class="sidebar-eyebrow">White House · Mar 20</div>
+        <div class="sidebar-headline">National AI Policy Framework Released</div>
+        <p class="sidebar-summary">Four-page legislative recommendations: preempt state AI laws, protect children online, affirm AI training as fair use, support energy infrastructure. No new standalone AI regulator.</p>
+        <a class="source-tag" href="https://www.hklaw.com/en/insights/publications/2026/03/white-house-releases-a-national-policy-framework-for-artificial" target="_blank" rel="noopener">↗ Holland &amp; Knight</a>
+      </div>
+      <div class="sidebar-card" style="border-top: 3px solid var(--red);">
+        <div class="sidebar-eyebrow">House Democrats · Mar 20</div>
+        <div class="sidebar-headline">GUARDRAILS Act Filed — Same Day</div>
+        <p class="sidebar-summary">Would repeal the executive orders underpinning the White House framework and block federal preemption of state AI laws. Sets up a significant legislative confrontation with nationwide compliance implications.</p>
+        <a class="source-tag" href="https://www.hklaw.com/en/insights/publications/2026/03/white-house-releases-a-national-policy-framework-for-artificial" target="_blank" rel="noopener">↗ Holland &amp; Knight</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLS & OPEN SOURCE -->
+  <div class="section-header cat-tools">
+    <span class="section-label">Tools &amp; Open Source</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="tools-band">
+    <div class="tool-card">
+      <div class="tool-kicker">// New Modality · Smart Glasses</div>
+      <div class="tool-headline">Google Integrating Lip-Reading AI into Smart Glasses for Silent Command Interfaces</div>
+      <p class="tool-summary">Trained on 5,000 hours of BBC political programming, Google's lip-reading AI interprets user intent from lip movements and brainwave signals alone — no speech required. Built into smart glasses launching later in 2026. In development since 2016, now mature enough for consumer hardware. A new modality for AI interaction beyond voice and text.</p>
+      <a class="source-tag" href="https://www.chosun.com/english/industry-en/2026/03/26/HHJKG4PXGJENDHCSFBCCH62H4M/" target="_blank" rel="noopener">↗ Chosun / Korea JoongAng Daily</a>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-kicker">// Ecosystem Play · NVIDIA</div>
+      <div class="tool-headline">NVIDIA Surpasses Google in Hugging Face Open-Source Contributions via NemoClaw</div>
+      <p class="tool-summary">NVIDIA has overtaken Google as the top corporate contributor to the Hugging Face ecosystem, largely through NemoClaw — a suite of tools optimizing agent development for NVIDIA hardware. Mirrors how platform ownership reinforces market lock-in. NVIDIA is also expanding Physical AI partnerships with Boston Dynamics and Caterpillar, extending dominance from cloud into industrial and robotics applications.</p>
+      <a class="source-tag" href="https://www.linkedin.com/pulse/ai-global-news-daily-briefing-march-27-2026-nayeon-kim-pozqc" target="_blank" rel="noopener">↗ LinkedIn / AI Global News</a>
+    </div>
+  </div>
+
+</div><!-- /.digest-content -->
+
+<footer class="site-footer">
+  <span class="footer-brand">Signal</span>
+  <span class="footer-note">Generated by ai-digest + page-creator agents · Pi 1</span>
+</footer>
+</body>
+</html>
