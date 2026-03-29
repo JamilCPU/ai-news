@@ -1,0 +1,11 @@
+# Digest pages — cache 5 min, always revalidate
+/digests/*.html
+  Cache-Control: public, max-age=300, stale-while-revalidate=60
+
+# Index JSON — short cache so new digests appear quickly
+/digests/index.json
+  Cache-Control: public, max-age=60, stale-while-revalidate=30
+
+# Static assets — cache aggressively
+/*.css
+  Cache-Control: public, max-age=86400

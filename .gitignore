@@ -5,5 +5,4 @@ node_modules/
 npm-debug.log*
 .DS_Store
 Thumbs.db
-app/public/digests/*.html
-app/public/digests/index.json
+# digest files are intentionally tracked — Pi commits them on each run

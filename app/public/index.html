@@ -646,7 +646,7 @@ body {
     main.innerHTML = html;
   }
 
-  fetch('/api/digests')
+  fetch('/digests/index.json')
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(render)
     .catch(err => {

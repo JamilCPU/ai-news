@@ -1,0 +1,2 @@
+# Backwards compatibility — old API route now served as static file
+/api/digests /digests/index.json 200
