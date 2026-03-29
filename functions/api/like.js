@@ -35,6 +35,17 @@ export async function onRequestPost({ request, env }) {
     return new Response(JSON.stringify({ error: 'article_id required' }), { status: 400, headers: CORS });
   }
 
+  // IP deduplication — one like per IP per article, 30-day window
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const voteKey = `voted:${ip}:${article_id}`;
+  const alreadyVoted = await env.SIGNAL_LIKES.get(voteKey);
+  if (alreadyVoted) {
+    const count = parseInt(await env.SIGNAL_LIKES.get(`like:${article_id}`) || '0');
+    return new Response(JSON.stringify({ liked: false, duplicate: true, count }), { headers: CORS });
+  }
+  // Record vote with 30-day TTL (2592000 seconds)
+  await env.SIGNAL_LIKES.put(voteKey, '1', { expirationTtl: 2592000 });
+
   // Increment article count
   const articleKey = `like:${article_id}`;
   const current = parseInt(await env.SIGNAL_LIKES.get(articleKey) || '0');

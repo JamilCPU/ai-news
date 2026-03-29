@@ -250,8 +250,9 @@
             body: JSON.stringify({ article_id: id, category, source }),
           });
           if (r.ok) {
-            const { count: newCount } = await r.json();
-            btn.querySelector('.like-count').textContent = newCount > 0 ? newCount : '';
+            const data = await r.json();
+            // duplicate: true means IP already voted — show liked state silently
+            btn.querySelector('.like-count').textContent = data.count > 0 ? data.count : '';
           }
         } catch {}
       });
