@@ -1,16 +1,16 @@
 [
   {
-    "date": "2026-03-28",
-    "title": "Power, Policy, and the Physical World",
-    "overview": "The week of March 26–27 was defined by AI's expanding role in physical infrastructure and national policy. Microsoft and NVIDIA announced a formal AI-for-nuclear collaboration that has already cut permitting timelines by 92% at Aalo Atomics, signaling that the energy bottleneck for AI data centers is being attacked at the source. On the policy front, the White House released its National Policy Framework for AI on March 20—a four-page set of legislative recommendations urging Congress to preempt state-level AI laws and avoid heavy-handed regulation—while Democrats countered on March 20 with the GUARDRAILS Act attempting to block that federal preemption push. Defense AI continued its funding sprint with Shield AI closing a $1.5B Series G at a $12.7B valuation (up 140% in a year) after winning a U.S. Air Force drone contract, and Broadcom posted Q1 2026 AI chip revenue of $8.4B—up 106% YoY—with CEO Hock Tan projecting AI chip revenue exceeding $100B by 2027.",
-    "item_count": 11,
-    "filename": "2026-03-28.html"
-  },
-  {
     "date": "2026-03-29",
     "title": "The Model Wars Heat Up",
-    "overview": "March 2026 proved to be one of the densest months in AI history, with four frontier model releases compressed into a single 23-day window: GPT-5.4 (three variants), Gemini 3.1 Ultra, Grok 4.20, and Mistral Small 4. Agentic infrastructure hit a mainstream milestone as Anthropic's Model Context Protocol (MCP) crossed 97 million installs, signaling the protocol's permanent place in how AI agents are built. Enterprise adoption accelerated—67% of Fortune 500 marketing budgets now include dedicated AI line items—while regulatory pressure intensified with the EU AI Act issuing its first formal inquiries and three US states passing AI transparency laws.",
+    "overview": "March 2026 proved to be one of the densest months in AI history, with four frontier model releases compressed into a single 23-day window: GPT-5.4 (three variants), Gemini 3.1 Ultra, Grok 4.20, and Mistral Small 4. Agentic infrastructure hit a mainstream milestone as Anthropic's Model Context Protocol (MCP) crossed 97 million installs, signaling the protocol's permanent place in how AI agents are built. Enterprise adoption accelerated\u201467% of Fortune 500 marketing budgets now include dedicated AI line items\u2014while regulatory pressure intensified with the EU AI Act issuing its first formal inquiries and three US states passing AI transparency laws.",
     "item_count": 13,
     "filename": "2026-03-29.html"
+  },
+  {
+    "date": "2026-03-28",
+    "title": "Power, Policy, and the Physical World",
+    "overview": "The week of March 26\u201327 was defined by AI's expanding role in physical infrastructure and national policy. Microsoft and NVIDIA announced a formal AI-for-nuclear collaboration that has already cut permitting timelines by 92% at Aalo Atomics, signaling that the energy bottleneck for AI data centers is being attacked at the source. On the policy front, the White House released its National Policy Framework for AI on March 20\u2014a four-page set of legislative recommendations urging Congress to preempt state-level AI laws and avoid heavy-handed regulation\u2014while Democrats countered on March 20 with the GUARDRAILS Act attempting to block that federal preemption push. Defense AI continued its funding sprint with Shield AI closing a $1.5B Series G at a $12.7B valuation (up 140% in a year) after winning a U.S. Air Force drone contract, and Broadcom posted Q1 2026 AI chip revenue of $8.4B\u2014up 106% YoY\u2014with CEO Hock Tan projecting AI chip revenue exceeding $100B by 2027.",
+    "item_count": 11,
+    "filename": "2026-03-28.html"
   }
 ]
