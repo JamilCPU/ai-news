@@ -598,13 +598,15 @@ body {
   }
 
   function render(rawDigests) {
-    // Deduplicate by date — keep first occurrence (newest push wins)
+    // Sort by date descending, then deduplicate — newest date is always featured
     const seen = new Set();
-    const digests = rawDigests.filter(d => {
-      if (seen.has(d.date)) return false;
-      seen.add(d.date);
-      return true;
-    });
+    const digests = [...rawDigests]
+      .sort((a, b) => b.date.localeCompare(a.date))
+      .filter(d => {
+        if (seen.has(d.date)) return false;
+        seen.add(d.date);
+        return true;
+      });
 
     const main = document.getElementById('main');
     buildTicker(digests);
