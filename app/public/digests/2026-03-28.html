@@ -768,21 +768,21 @@
   </div>
 
   <div class="models-grid">
-    <div class="model-card voice">
+    <div class="model-card voice" data-story-id="2026-03-28-mistral-voxtral-tts-multilingual-voice-cloning" data-category="Model Releases & Updates" data-source="arXiv / Mistral">
       <div class="model-tag">// Voice · Mistral · arXiv:2603.25551</div>
       <div class="model-headline">Mistral Voxtral TTS: Multilingual Voice Cloning from 3 Seconds of Audio</div>
       <div class="model-stat">68.4%</div>
       <div class="model-stat-label">Win rate over ElevenLabs Flash v2.5</div>
-      <p class="model-summary">A hybrid autoregressive + flow-matching architecture with the new Voxtral Codec tokenizer (VQ-FSQ quantization). Clones voices naturalistically from as little as 3 seconds of reference audio across multiple languages. Evaluated by native speakers. Weights released under CC BY-NC.</p>
+      <p class="model-summary">Mistral released Voxtral, a TTS (Text-to-Speech) model that clones a target voice from as little as 3 seconds of reference audio and synthesizes natural-sounding speech across multiple languages. The architecture combines autoregressive generation (predicting tokens one-by-one for expressiveness) with flow-matching (a technique for smooth, high-fidelity audio rendering), using a custom Voxtral Codec tokenizer to compress audio efficiently. In blind evaluations by native speakers, Voxtral achieved a 68.4% win rate over ElevenLabs Flash v2.5 — the commercial benchmark for real-time voice cloning. Weights are released under CC BY-NC, giving developers and media companies a deployable, locally-run alternative to subscription-based voice APIs.</p>
       <a class="source-tag" href="https://arxiv.org/abs/2603.25551" target="_blank" rel="noopener">↗ arXiv / Mistral</a>
     </div>
 
-    <div class="model-card music">
+    <div class="model-card music" data-story-id="2026-03-28-mureka-v8-tops-global-ai-music-rankings-v9-unveiled" data-category="Model Releases & Updates" data-source="Pandaily">
       <div class="model-tag">// Music AI · Kunlun Tech</div>
       <div class="model-headline">Mureka V8 Tops Global AI Music Rankings — V9 Unveiled Days Later</div>
       <div class="model-stat">#1</div>
       <div class="model-stat-label">Artificial Analysis benchmark — vocal &amp; instrumental</div>
-      <p class="model-summary">Mureka V8 claimed top position on the Artificial Analysis benchmark, outperforming Suno V4.5 and Udio v1.5 Allegro. V9 — unveiled at the Zhongguancun Forum on March 27 — focuses on advanced controllable generation with finer control over song structure, emotion, and arrangement. Chinese AI music is now at the global frontier.</p>
+      <p class="model-summary">Mureka V8, the AI music generation model from Chinese tech company Kunlun Tech, claimed the top position on the Artificial Analysis benchmark — the most widely cited independent ranking for AI-generated music quality — beating Suno V4.5 and Udio v1.5 Allegro across both vocal and instrumental categories. Days later at the Zhongguancun Forum, Kunlun unveiled V9, which adds fine-grained controllable generation (letting users specify song structure, emotional arc, and instrument arrangement instead of just a text prompt). The progression signals that Chinese AI labs have closed the gap with Western counterparts in creative media generation, expanding the competitive landscape for tools serving music producers, game studios, and content platforms.</p>
       <a class="source-tag" href="https://pandaily.com/kunlun-tech-s-mureka-v8-tops-global-ai-music-model-rankings" target="_blank" rel="noopener">↗ Pandaily</a>
     </div>
   </div>
@@ -794,7 +794,7 @@
   </div>
 
   <div class="arxiv-list">
-    <div class="arxiv-item">
+    <div class="arxiv-item" data-story-id="2026-03-28-rc2-reinforcement-learning-cross-modal-cycle-consistency" data-category="Research Breakthroughs" data-source="arXiv">
       <div class="arxiv-meta">
         <div class="arxiv-id">arXiv:2603.25720</div>
         <div class="arxiv-date">Mar 26, 2026</div>
@@ -802,11 +802,11 @@
       </div>
       <div class="arxiv-body">
         <div class="arxiv-headline">RC2: Reinforcement Learning via Cross-Modal Cycle Consistency Boosts Reasoning by up to 7.6 Points</div>
-        <p class="arxiv-summary">Forces multimodal models to reconcile contradictions between visual and textual representations by performing backward inference, switching modalities, and reconstructing the original answer — generating a dense, label-free reward signal without additional labeled data. Structural consistency as an alternative to scaling data volume.</p>
+        <p class="arxiv-summary">RC2 is a training technique that improves multimodal AI reasoning (the ability to answer questions that require jointly understanding images and text) without requiring any additional hand-labeled data. It works by testing whether a model can perform "cycle consistency" — start with a visual question, translate it to text, answer it, then reconstruct the original question from the answer, checking that everything stays coherent. This loop generates a dense reward signal for RL (Reinforcement Learning — training that improves a model by rewarding good outputs rather than explicit labels), boosting multimodal reasoning benchmarks by up to 7.6 points. For AI teams constrained by data labeling budgets, it's a compelling path to better multimodal performance through smarter training rather than more annotation.</p>
         <a class="source-tag" href="https://arxiv.org/abs/2603.25720" target="_blank" rel="noopener">↗ arXiv</a>
       </div>
     </div>
-    <div class="arxiv-item">
+    <div class="arxiv-item" data-story-id="2026-03-28-writeback-rag-trainable-knowledge-base-improves-retrieval" data-category="Research Breakthroughs" data-source="arXiv">
       <div class="arxiv-meta">
         <div class="arxiv-id">arXiv:2603.25737</div>
         <div class="arxiv-date">Mar 26, 2026</div>
@@ -814,11 +814,11 @@
       </div>
       <div class="arxiv-body">
         <div class="arxiv-headline">WriteBack-RAG: Treating the Knowledge Base as a Trainable Component Improves Every RAG Setting Tested</div>
-        <p class="arxiv-summary">Challenges the assumption that RAG knowledge bases should be static. Uses labeled examples to identify high-performing retrieval cases, isolates relevant content, and distills it into compact knowledge units indexed alongside the original corpus. Tested across four RAG methods, six benchmarks, and two LLM backbones — improved every evaluated setting, average +2.14%. Distilled knowledge also benefited pipelines not used to generate it.</p>
+        <p class="arxiv-summary">WriteBack-RAG challenges a foundational assumption in RAG (Retrieval-Augmented Generation — systems that answer questions by first searching an external knowledge base rather than relying solely on the model's training data): that the knowledge base is a fixed, static corpus. The paper shows that using labeled examples to identify high-quality retrieval cases and then distilling that content into compact, reindexed knowledge units — written back into the corpus — improves answer quality by an average of +2.14% across four RAG pipelines, six benchmarks, and two different underlying LLMs, without any change to the retrieval algorithm. For enterprises running RAG over large internal document stores, this is a low-overhead quality improvement: the knowledge base itself becomes a continuously improving asset rather than a static dump.</p>
         <a class="source-tag" href="https://arxiv.org/abs/2603.25737" target="_blank" rel="noopener">↗ arXiv</a>
       </div>
     </div>
-    <div class="arxiv-item">
+    <div class="arxiv-item" data-story-id="2026-03-28-wildasr-voice-agents-hallucinate-under-degraded-inputs" data-category="Research Breakthroughs" data-source="arXiv">
       <div class="arxiv-meta">
         <div class="arxiv-id">arXiv:2603.25727</div>
         <div class="arxiv-date">Mar 26, 2026</div>
@@ -826,7 +826,7 @@
       </div>
       <div class="arxiv-body">
         <div class="arxiv-headline">WildASR: Voice Agents Hallucinate Plausible but Unspoken Content Under Degraded Inputs</div>
-        <p class="arxiv-summary">A multilingual diagnostic benchmark sourced from real human speech reveals severe and uneven performance degradation under environmental noise, demographic shift, and linguistic diversity across seven widely-used ASR systems. Critically: models hallucinate plausible but unspoken content under partial or degraded inputs — a direct safety risk for downstream voice agents deployed in production environments.</p>
+        <p class="arxiv-summary">WildASR is a new diagnostic benchmark that stress-tests ASR (Automatic Speech Recognition — the technology that converts spoken audio into text, powering voice assistants and call-center AI) using real-world recordings across multiple languages, accents, noise environments, and demographics. Tested across seven leading ASR systems, the benchmark reveals a critical failure mode: when audio is partial or degraded, models don't simply fail to transcribe — they confidently hallucinate plausible words and sentences that were never spoken, inserting invented content into the transcript. For enterprises deploying voice agents in customer service, healthcare intake, or legal transcription, this hallucination behavior is a direct liability: AI-generated fabrications that sound real can corrupt decisions downstream without any visible error signal.</p>
         <a class="source-tag" href="https://arxiv.org/abs/2603.25727" target="_blank" rel="noopener">↗ arXiv</a>
       </div>
     </div>
@@ -839,12 +839,12 @@
   </div>
 
   <!-- Nuclear callout -->
-  <div class="nuclear-callout">
+  <div class="nuclear-callout" data-story-id="2026-03-28-microsoft-nvidia-ai-attacks-nuclear-permitting-bottleneck" data-category="Industry & Business" data-source="Microsoft">
     <div class="nuclear-top">
       <div class="nuclear-pct">−92%</div>
       <div class="nuclear-desc">
         <h3>Microsoft &amp; NVIDIA: AI Attacks the Nuclear Permitting Bottleneck</h3>
-        <p>Early adopter Aalo Atomics slashed permitting timelines by 92%, saving an estimated $80M annually, using Microsoft's Generative AI for Permitting solution combined with NVIDIA Omniverse, Earth 2, and Isaac Sim. The collaboration — announced at CERAWeek 2026 with Idaho National Laboratory and Southern Nuclear — tackles the energy supply crisis created by AI data center expansion, positioning nuclear as the always-on, carbon-free backbone.</p>
+        <p>Microsoft and NVIDIA announced a formal AI-for-nuclear collaboration at CERAWeek 2026 aimed at the single biggest obstacle to new reactor construction: regulatory permitting, a process that routinely takes a decade and costs hundreds of millions of dollars. Using Microsoft's Generative AI for Permitting platform alongside NVIDIA Omniverse (a simulation platform for building physics-accurate digital twins) and Isaac Sim, early adopter Aalo Atomics cut its permitting timeline by 92% — saving an estimated $80M annually. With AI data center power demand projected to double by 2028, the partnership is a direct bet that nuclear — always-on, carbon-free baseload power — is the only energy source that can close the coming supply gap, and that AI-accelerated permitting is the fastest path to new capacity.</p>
       </div>
     </div>
     <div class="nuclear-partners">
@@ -881,26 +881,26 @@
 
   <!-- Industry: flagship + sidebar -->
   <div class="industry-layout" style="margin-top: 2px;">
-    <div class="industry-flagship">
+    <div class="industry-flagship" data-story-id="2026-03-28-shield-ai-closes-1-5b-round-valuation-jumps-140-percent" data-category="Industry & Business" data-source="TechCrunch">
       <div class="flagship-eyebrow">// Defense AI · Series G</div>
       <div class="flagship-headline">Shield AI Closes $1.5B Round — Valuation Jumps 140% in 12 Months After Air Force Contract Win</div>
       <div class="flagship-num">$12.7B</div>
       <div class="flagship-num-label">Post-money valuation · up from $5.3B in March 2025</div>
-      <p class="flagship-summary">Led by PE firm Advent with a $1B defense tech mandate, plus a JPMorganChase investment group. Blackstone purchased $500M in preferred shares and provided a $250M standby loan. Capital funds Shield's acquisition of Aechelon Technology (flight simulation for U.S. military pilots). The surge follows Hivemind autonomy software selection as a provider for the Air Force Collaborative Combat Aircraft drone prototype program.</p>
+      <p class="flagship-summary">Defense AI company Shield AI closed a $1.5B Series G (a late-stage private funding round, typically used to scale a proven business before an IPO), pushing its post-money valuation to $12.7B — up 140% from $5.3B just twelve months earlier. The round was led by PE firm Advent with a dedicated $1B defense technology mandate, joined by JPMorganChase; Blackstone separately purchased $500M in preferred shares and extended a $250M standby credit line. The capital catalysts: Shield's Hivemind autonomy software — an AI that allows aircraft to fly and make tactical decisions without a human pilot — was selected for the U.S. Air Force Collaborative Combat Aircraft drone prototype program, and the company is acquiring Aechelon Technology to add military flight simulation. The valuation surge underscores investor conviction that AI-driven autonomous defense systems represent one of the most durable government-spending tailwinds in the current geopolitical environment.</p>
       <a class="source-tag" href="https://techcrunch.com/2026/03/26/defense-startup-shield-ai-lands-12-7b-valuation-up-140-after-u-s-air-force-deal/" target="_blank" rel="noopener">↗ TechCrunch</a>
     </div>
 
     <div class="industry-sidebar">
-      <div class="sidebar-card" style="border-top: 3px solid var(--blue);">
+      <div class="sidebar-card" style="border-top: 3px solid var(--blue);" data-story-id="2026-03-28-white-house-national-ai-policy-framework-released" data-category="Industry & Business" data-source="Holland & Knight">
         <div class="sidebar-eyebrow">White House · Mar 20</div>
         <div class="sidebar-headline">National AI Policy Framework Released</div>
-        <p class="sidebar-summary">Four-page legislative recommendations: preempt state AI laws, protect children online, affirm AI training as fair use, support energy infrastructure. No new standalone AI regulator.</p>
+        <p class="sidebar-summary">The White House released a four-page legislative framework — notably thin for a topic of this weight — urging Congress to federally preempt state-level AI laws (override the patchwork of 50 different state rules with a single national standard), affirm that training AI on copyrighted data qualifies as fair use, protect children's online safety, and support AI data center energy infrastructure. The document deliberately avoids creating any new standalone AI regulator, signaling a preference for industry self-governance with guardrails. For businesses currently tracking compliance across multiple state AI laws, federal preemption would simplify operations substantially — but its passage is far from guaranteed given the GUARDRAILS Act filed the same day.</p>
         <a class="source-tag" href="https://www.hklaw.com/en/insights/publications/2026/03/white-house-releases-a-national-policy-framework-for-artificial" target="_blank" rel="noopener">↗ Holland &amp; Knight</a>
       </div>
-      <div class="sidebar-card" style="border-top: 3px solid var(--red);">
+      <div class="sidebar-card" style="border-top: 3px solid var(--red);" data-story-id="2026-03-28-guardrails-act-filed-same-day-as-white-house-framework" data-category="Industry & Business" data-source="Holland & Knight">
         <div class="sidebar-eyebrow">House Democrats · Mar 20</div>
         <div class="sidebar-headline">GUARDRAILS Act Filed — Same Day</div>
-        <p class="sidebar-summary">Would repeal the executive orders underpinning the White House framework and block federal preemption of state AI laws. Sets up a significant legislative confrontation with nationwide compliance implications.</p>
+        <p class="sidebar-summary">House Democrats filed the GUARDRAILS Act on the same day the White House released its AI policy framework — a direct legislative counter-move. The bill would repeal the executive orders the White House framework is built on and explicitly block federal preemption of state AI laws, preserving each state's right to enforce its own AI regulations independently. The simultaneous filing was almost certainly coordinated to signal that any attempt at federal override will face an immediate fight, leaving the compliance landscape — already fragmented across states like California, Colorado, and Texas — in extended uncertainty for the foreseeable future.</p>
         <a class="source-tag" href="https://www.hklaw.com/en/insights/publications/2026/03/white-house-releases-a-national-policy-framework-for-artificial" target="_blank" rel="noopener">↗ Holland &amp; Knight</a>
       </div>
     </div>
@@ -913,17 +913,17 @@
   </div>
 
   <div class="tools-band">
-    <div class="tool-card">
+    <div class="tool-card" data-story-id="2026-03-28-google-lip-reading-ai-smart-glasses-silent-command" data-category="Tools & Open Source" data-source="Chosun / Korea JoongAng Daily">
       <div class="tool-kicker">// New Modality · Smart Glasses</div>
       <div class="tool-headline">Google Integrating Lip-Reading AI into Smart Glasses for Silent Command Interfaces</div>
-      <p class="tool-summary">Trained on 5,000 hours of BBC political programming, Google's lip-reading AI interprets user intent from lip movements and brainwave signals alone — no speech required. Built into smart glasses launching later in 2026. In development since 2016, now mature enough for consumer hardware. A new modality for AI interaction beyond voice and text.</p>
+      <p class="tool-summary">Google is embedding a lip-reading AI model — trained on 5,000 hours of BBC political programming and in development since 2016 — into smart glasses expected to ship later in 2026. The system interprets user intent from lip movements and brainwave signals without requiring any spoken audio, enabling fully silent AI command interfaces in public spaces where speaking aloud is impractical or unwanted. The decade-long development timeline reflects how long it takes multimodal sensing hardware and edge AI (models that run locally on-device rather than in the cloud) to mature together. For hardware developers and accessibility technology teams, this marks the arrival of a genuinely new input modality with broad implications for AR glasses, cochlear implant interfaces, and ambient computing.</p>
       <a class="source-tag" href="https://www.chosun.com/english/industry-en/2026/03/26/HHJKG4PXGJENDHCSFBCCH62H4M/" target="_blank" rel="noopener">↗ Chosun / Korea JoongAng Daily</a>
     </div>
 
-    <div class="tool-card">
+    <div class="tool-card" data-story-id="2026-03-28-nvidia-surpasses-google-hugging-face-contributions-nemoclaw" data-category="Tools & Open Source" data-source="LinkedIn / AI Global News">
       <div class="tool-kicker">// Ecosystem Play · NVIDIA</div>
       <div class="tool-headline">NVIDIA Surpasses Google in Hugging Face Open-Source Contributions via NemoClaw</div>
-      <p class="tool-summary">NVIDIA has overtaken Google as the top corporate contributor to the Hugging Face ecosystem, largely through NemoClaw — a suite of tools optimizing agent development for NVIDIA hardware. Mirrors how platform ownership reinforces market lock-in. NVIDIA is also expanding Physical AI partnerships with Boston Dynamics and Caterpillar, extending dominance from cloud into industrial and robotics applications.</p>
+      <p class="tool-summary">NVIDIA has overtaken Google as the largest corporate contributor to Hugging Face (the dominant open-source platform where AI researchers share models, datasets, and tools — effectively GitHub for AI), driven primarily by NemoClaw, a suite of developer tools that optimizes AI agent workflows specifically for NVIDIA GPU hardware. The strategic logic is clear: developers who build their AI pipelines using NemoClaw are more likely to deploy on NVIDIA infrastructure, reinforcing the same hardware lock-in that made CUDA (NVIDIA's programming platform) dominant in the first place. Separately, NVIDIA is expanding Physical AI partnerships with Boston Dynamics and Caterpillar, extending its ecosystem influence from cloud AI into robotics and industrial automation — markets worth hundreds of billions of dollars that have barely begun to adopt AI infrastructure.</p>
       <a class="source-tag" href="https://www.linkedin.com/pulse/ai-global-news-daily-briefing-march-27-2026-nayeon-kim-pozqc" target="_blank" rel="noopener">↗ LinkedIn / AI Global News</a>
     </div>
   </div>
