@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-03-30",
+    "title": "Sora's Last Frame",
+    "overview": "This period's biggest story is OpenAI's abrupt shutdown of Sora and cancellation of a $1 billion Disney deal, as the company consolidates around AGI and robotics rather than entertainment media. Mistral countered with a major play in enterprise voice AI: Voxtral TTS, an open-weight model that runs on a laptop, beats ElevenLabs in human evaluations, and completes a full enterprise AI stack with no data leaving your servers. Google dropped two significant efficiency bets: TurboQuant, a training-free algorithm that cuts AI memory 6x and inference costs 50%+, and a $15 billion India infrastructure commitment paired with $60M in AI for government and science grants.",
+    "item_count": 10,
+    "filename": "2026-03-30.html"
+  },
+  {
     "date": "2026-03-29",
     "title": "The Model Wars Heat Up",
     "overview": "March 2026 proved to be one of the densest months in AI history, with four frontier model releases compressed into a single 23-day window: GPT-5.4 (three variants), Gemini 3.1 Ultra, Grok 4.20, and Mistral Small 4. Agentic infrastructure hit a mainstream milestone as Anthropic's Model Context Protocol (MCP) crossed 97 million installs, signaling the protocol's permanent place in how AI agents are built. Enterprise adoption accelerated — 67% of Fortune 500 marketing budgets now include dedicated AI line items — while regulatory pressure intensified with the EU AI Act issuing its first formal inquiries and three US states passing AI transparency laws.",

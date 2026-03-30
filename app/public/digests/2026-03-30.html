@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="signal-date" content="2026-03-30">
+  <meta name="signal-title" content="Sora's Last Frame">
+  <meta name="signal-overview" content="This period's biggest story is OpenAI's abrupt shutdown of Sora and cancellation of a $1 billion Disney deal, as the company consolidates around AGI and robotics rather than entertainment media. Mistral countered with a major play in enterprise voice AI: Voxtral TTS, an open-weight model that runs on a laptop, beats ElevenLabs in human evaluations, and completes a full enterprise AI stack with no data leaving your servers. Google dropped two significant efficiency bets: TurboQuant, a training-free algorithm that cuts AI memory 6x and inference costs 50%+, and a $15 billion India infrastructure commitment paired with $60M in AI for government and science grants. On the research front, AIRA² set a new record for autonomous AI research agents (76% percentile rank on MLE-bench), while xMemory offers a practical halving of token costs for long-running agent deployments. Cloudflare's Dynamic Workers open beta and emerging tension over Anthropic's third-party model access restrictions round out a week that made the agentic AI infrastructure race concrete and commercial.">
+  <meta name="signal-items" content="10">
+  <title>Sora's Last Frame — SIGNAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&display=swap" rel="stylesheet">
+  <style>
+    /* ── Base vars (inherit from SIGNAL design system) ── */
+    :root {
+      --bg:       #060a10;
+      --bg2:      #090e18;
+      --surface:  #0d1525;
+      --surface2: #111e33;
+      --border:   #1a2a42;
+      --border2:  #243550;
+      --text:     #dce8f8;
+      --text2:    #7a90b4;
+      --text3:    #3d5270;
+      --lime:     #c4ff3c;
+      --blue:     #2d7fff;
+      --purple:   #9b6fff;
+      --orange:   #ff8c42;
+      --red:      #ff4560;
+      --teal:     #00d4aa;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Literata', Georgia, serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        radial-gradient(circle at 70% 30%, rgba(45,127,255,.05) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-5 5L5-5M35 45L45 35' stroke='%231a2a42' stroke-width='.5' opacity='.4'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    .scan-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      animation: scan 4s ease-in-out infinite; z-index: 100;
+    }
+    @keyframes scan {
+      0% { transform: translateX(-100%); opacity: 0; }
+      20% { opacity: 1; } 80% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+    .site-header {
+      position: relative; z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,10,16,.92);
+      backdrop-filter: blur(12px);
+      padding: 0 clamp(16px,4vw,48px);
+    }
+    .header-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-wordmark {
+      font-family: var(--font-head); font-weight: 800; font-size: 18px;
+      letter-spacing: 0.12em; color: var(--text); text-transform: uppercase;
+    }
+    .logo-wordmark span { color: var(--lime); }
+    .back-link {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text3); text-decoration: none;
+      border: 1px solid var(--border2); padding: 6px 14px; border-radius: 2px;
+      transition: color .2s, border-color .2s;
+    }
+    .back-link:hover { color: var(--lime); border-color: var(--lime); }
+    .digest-bar {
+      position: relative; z-index: 1;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: baseline;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .digest-bar-date {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime);
+    }
+    .digest-bar-title {
+      font-family: var(--font-head); font-weight: 700; font-size: 20px;
+      color: var(--text); flex: 1;
+    }
+    .digest-bar-count {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); letter-spacing: 0.1em;
+    }
+    .digest-content {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: clamp(32px,5vw,64px) clamp(16px,4vw,48px);
+    }
+    .site-footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand {
+      font-family: var(--font-head); font-weight: 800; font-size: 13px;
+      letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase;
+    }
+    .footer-note {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text3);
+    }
+    .story-like-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: none; border: 1px solid var(--border2);
+      color: var(--text3); cursor: pointer;
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 2px;
+      transition: color .15s, border-color .15s, transform .1s;
+      margin-top: 12px;
+      user-select: none;
+    }
+    .story-like-btn:hover { color: var(--red); border-color: var(--red); }
+    .story-like-btn.liked {
+      color: var(--red); border-color: rgba(255,69,96,.4);
+      background: rgba(255,69,96,.06);
+    }
+    .story-like-btn .like-icon { font-size: 12px; line-height: 1; }
+    .story-like-btn.pop { transform: scale(1.15); }
+    .story-like-btn .like-count { min-width: 10px; }
+
+    /* ═══════════════════════════════════════════════════
+       AGENT STYLES
+    ═══════════════════════════════════════════════════ */
+
+    /* ── Overview ── */
+    .digest-overview {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .overview-text {
+      font-family: var(--font-body);
+      font-size: clamp(15px, 1.4vw, 18px);
+      line-height: 1.8;
+      color: var(--text2);
+      max-width: 780px;
+      margin-bottom: 16px;
+    }
+    .overview-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    /* ── Scrolling ticker ── */
+    .news-ticker {
+      overflow: hidden;
+      border-top: 1px solid var(--border2);
+      border-bottom: 1px solid var(--border2);
+      background: var(--surface);
+      padding: 10px 0;
+      margin-bottom: 48px;
+      position: relative;
+    }
+    .news-ticker::before,
+    .news-ticker::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 80px;
+      z-index: 2;
+    }
+    .news-ticker::before {
+      left: 0;
+      background: linear-gradient(90deg, var(--surface), transparent);
+    }
+    .news-ticker::after {
+      right: 0;
+      background: linear-gradient(-90deg, var(--surface), transparent);
+    }
+    .ticker-track {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+      animation: ticker-scroll 35s linear infinite;
+    }
+    .ticker-track:hover { animation-play-state: paused; }
+    @keyframes ticker-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 28px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+    .ticker-item .ticker-source {
+      color: var(--orange);
+      font-weight: 600;
+    }
+    .ticker-item .ticker-sep {
+      color: var(--border2);
+      font-size: 14px;
+    }
+
+    /* ── Lead story ── */
+    .lead-story {
+      position: relative;
+      margin-bottom: 56px;
+      padding: 40px 40px 40px 0;
+      border-left: 4px solid var(--orange);
+      padding-left: 36px;
+      overflow: hidden;
+    }
+    .lead-story::before {
+      content: 'PIVOT';
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(80px, 18vw, 200px);
+      color: var(--orange);
+      opacity: 0.03;
+      pointer-events: none;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      user-select: none;
+    }
+    .lead-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .lead-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--orange);
+      background: rgba(255,140,66,0.08);
+      border: 1px solid rgba(255,140,66,0.25);
+      padding: 3px 10px;
+    }
+    .lead-flag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+    .lead-headline {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 1.1;
+      color: var(--text);
+      max-width: 820px;
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
+    }
+    .lead-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(15px, 1.5vw, 18px);
+      line-height: 1.75;
+      color: var(--text2);
+      max-width: 740px;
+      margin-bottom: 24px;
+    }
+    .lead-footer {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .lead-source {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+    .lead-link {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--orange);
+      text-decoration: none;
+      border: 1px solid rgba(255,140,66,0.3);
+      padding: 5px 12px;
+      transition: background .15s, color .15s;
+    }
+    .lead-link:hover {
+      background: rgba(255,140,66,0.1);
+    }
+
+    /* ── Section divider ── */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* ── Pull quote ── */
+    .pull-quote {
+      margin: 56px 0;
+      padding: 28px 32px;
+      border-left: 4px solid var(--lime);
+      background: rgba(196,255,60,0.025);
+    }
+    .pull-quote p {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(20px, 2.4vw, 30px);
+      line-height: 1.4;
+      color: var(--text);
+      font-weight: 300;
+      max-width: 800px;
+    }
+    .pull-quote cite {
+      display: block;
+      margin-top: 14px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text3);
+      font-style: normal;
+    }
+
+    /* ── Section headers ── */
+    .digest-section {
+      margin-bottom: 56px;
+    }
+    .section-header {
+      border-top: 3px solid var(--border2);
+      padding-top: 14px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text3);
+      flex-shrink: 0;
+    }
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-count {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--text3);
+      flex-shrink: 0;
+    }
+
+    /* ── Category color accents ── */
+    .section-header.cat-model-releases { border-top-color: var(--blue); }
+    .section-header.cat-model-releases .section-label { color: var(--blue); }
+    .section-header.cat-research { border-top-color: var(--purple); }
+    .section-header.cat-research .section-label { color: var(--purple); }
+    .section-header.cat-industry { border-top-color: var(--orange); }
+    .section-header.cat-industry .section-label { color: var(--orange); }
+    .section-header.cat-tools { border-top-color: var(--teal); }
+    .section-header.cat-tools .section-label { color: var(--teal); }
+
+    /* ── Story grids ── */
+    .stories-2col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2px;
+    }
+    .stories-1col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+    .stories-3col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2px;
+    }
+
+    /* ── Story cards ── */
+    .story-item {
+      padding: 24px 28px;
+      border: 1px solid var(--border);
+      border-top: none;
+      background: var(--surface);
+      transition: border-color .2s, background .2s;
+      position: relative;
+    }
+    .story-item:hover {
+      background: var(--surface2);
+      border-color: var(--border2);
+    }
+    .story-category {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .category-model-releases { color: var(--blue); }
+    .category-research { color: var(--purple); }
+    .category-industry { color: var(--orange); }
+    .category-tools { color: var(--teal); }
+
+    .story-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(17px, 1.6vw, 22px);
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .story-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text2);
+      margin-bottom: 16px;
+    }
+    .story-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .story-source-name {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+    .story-link {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text3);
+      border: 1px solid var(--border2);
+      padding: 3px 9px;
+      transition: color .15s, border-color .15s;
+    }
+    .story-link:hover { color: var(--lime); border-color: rgba(196,255,60,0.4); }
+
+    /* ── Research section special: academic grid ── */
+    .research-bg {
+      background-image:
+        linear-gradient(rgba(155,111,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(155,111,255,0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      border-top: 1px solid rgba(155,111,255,0.1);
+      border-bottom: 1px solid rgba(155,111,255,0.1);
+      padding: 28px;
+      margin-bottom: 0;
+    }
+    .research-bg .stories-3col {
+      gap: 2px;
+    }
+    .research-bg .story-item {
+      background: rgba(13,21,37,0.85);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body>
+<div class="scan-bar"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+        <path d="M4 16 L10 8 L14 20 L18 6 L22 18 L26 12 L28 16" stroke="#c4ff3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-wordmark">SIGN<span>A</span>L</span>
+    </a>
+    <a href="/" class="back-link">← All Digests</a>
+  </div>
+</header>
+
+<div class="digest-bar">
+  <span class="digest-bar-date">MAR 30, 2026</span>
+  <span class="digest-bar-title">Sora's Last Frame</span>
+  <span class="digest-bar-count">10 items</span>
+</div>
+
+<div class="digest-content">
+
+  <!-- Overview -->
+  <div class="digest-overview">
+    <p class="overview-text">This period's biggest story is OpenAI's abrupt shutdown of Sora and cancellation of a $1 billion Disney deal, as the company consolidates around AGI and robotics rather than entertainment media. Mistral countered with a major play in enterprise voice AI: Voxtral TTS, an open-weight model that runs on a laptop, beats ElevenLabs in human evaluations, and completes a full enterprise AI stack with no data leaving your servers. Google dropped two significant efficiency bets: TurboQuant, a training-free algorithm that cuts AI memory 6x and inference costs 50%+, and a $15 billion India infrastructure commitment paired with $60M in AI for government and science grants. On the research front, AIRA² set a new record for autonomous AI research agents, while xMemory offers a practical halving of token costs for long-running agent deployments.</p>
+    <div class="overview-meta">MAR 30, 2026 · 10 stories across 4 categories</div>
+  </div>
+
+  <!-- Unexpected visual: scrolling source ticker -->
+  <div class="news-ticker">
+    <div class="ticker-track">
+      <span class="ticker-item"><span class="ticker-source">VentureBeat</span><span class="ticker-sep">·</span> Mistral Voxtral TTS beats ElevenLabs</span>
+      <span class="ticker-item"><span class="ticker-source">OpenAI</span><span class="ticker-sep">·</span> Sora discontinued, Disney deal cancelled</span>
+      <span class="ticker-item"><span class="ticker-source">Google Research</span><span class="ticker-sep">·</span> TurboQuant: 6x KV cache reduction</span>
+      <span class="ticker-item"><span class="ticker-source">arXiv</span><span class="ticker-sep">·</span> AIRA² hits 76% percentile on MLE-bench</span>
+      <span class="ticker-item"><span class="ticker-source">Cloudflare</span><span class="ticker-sep">·</span> Dynamic Workers open beta</span>
+      <span class="ticker-item"><span class="ticker-source">Hugging Face</span><span class="ticker-sep">·</span> Claude access restricted on third-party agents</span>
+      <span class="ticker-item"><span class="ticker-source">King's College London</span><span class="ticker-sep">·</span> xMemory halves agent token costs</span>
+      <span class="ticker-item"><span class="ticker-source">Google Blog</span><span class="ticker-sep">·</span> $15B India AI infrastructure commit</span>
+      <span class="ticker-item"><span class="ticker-source">OpenAI</span><span class="ticker-sep">·</span> Safety Bug Bounty targets MCP exploits</span>
+      <!-- duplicate set for seamless loop -->
+      <span class="ticker-item"><span class="ticker-source">VentureBeat</span><span class="ticker-sep">·</span> Mistral Voxtral TTS beats ElevenLabs</span>
+      <span class="ticker-item"><span class="ticker-source">OpenAI</span><span class="ticker-sep">·</span> Sora discontinued, Disney deal cancelled</span>
+      <span class="ticker-item"><span class="ticker-source">Google Research</span><span class="ticker-sep">·</span> TurboQuant: 6x KV cache reduction</span>
+      <span class="ticker-item"><span class="ticker-source">arXiv</span><span class="ticker-sep">·</span> AIRA² hits 76% percentile on MLE-bench</span>
+      <span class="ticker-item"><span class="ticker-source">Cloudflare</span><span class="ticker-sep">·</span> Dynamic Workers open beta</span>
+      <span class="ticker-item"><span class="ticker-source">Hugging Face</span><span class="ticker-sep">·</span> Claude access restricted on third-party agents</span>
+      <span class="ticker-item"><span class="ticker-source">King's College London</span><span class="ticker-sep">·</span> xMemory halves agent token costs</span>
+      <span class="ticker-item"><span class="ticker-source">Google Blog</span><span class="ticker-sep">·</span> $15B India AI infrastructure commit</span>
+      <span class="ticker-item"><span class="ticker-source">OpenAI</span><span class="ticker-sep">·</span> Safety Bug Bounty targets MCP exploits</span>
+    </div>
+  </div>
+
+  <!-- Lead story -->
+  <section class="lead-story"
+    data-story-id="2026-03-30-openai-kills-sora-cancels-1b-disney-deal-to-bet-on-robotics"
+    data-category="Industry & Business"
+    data-source="VentureBeat">
+    <div class="lead-eyebrow">
+      <span class="lead-label">Industry &amp; Business</span>
+      <span class="lead-flag">LEAD STORY</span>
+    </div>
+    <h1 class="lead-headline">OpenAI Kills Sora and Cancels $1B Disney Deal to Bet on Robotics and AGI</h1>
+    <p class="lead-lede">OpenAI abruptly announced it is discontinuing Sora — its AI video generation app, social network, and API — reallocating compute toward world simulation research to advance robotics, a move that also canceled a $1 billion equity deal with Disney signed just four months ago in December 2025. OpenAI had been releasing Sora updates as recently as this week before the shutdown, suggesting a rapid strategy pivot; the company cited growing compute demand, rising energy costs, and intent to build a consolidated 'super app' folding ChatGPT, Codex, and browser Atlas into one interface.</p>
+    <div class="lead-footer">
+      <span class="lead-source">Via VentureBeat</span>
+      <a href="https://venturebeat.com/technology/openai-is-shutting-down-sora-its-powerful-ai-video-app" class="lead-link" target="_blank" rel="noopener">[LINK ↗]</a>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- Industry & Business (remaining 2) -->
+  <section class="digest-section">
+    <header class="section-header cat-industry">
+      <span class="section-label">Industry &amp; Business</span>
+      <div class="section-rule"></div>
+      <span class="section-count">2 MORE STORIES</span>
+    </header>
+    <div class="stories-2col">
+      <article class="story-item"
+        data-story-id="2026-03-30-openai-safety-bug-bounty-targeting-prompt-injection"
+        data-category="Industry & Business"
+        data-source="OpenAI">
+        <div class="story-category category-industry">Industry &amp; Business</div>
+        <h2 class="story-headline">OpenAI Launches Safety Bug Bounty Targeting Prompt Injection, MCP Exploits, and Agentic Risks</h2>
+        <p class="story-lede">OpenAI launched a public Safety Bug Bounty program on Bugcrowd focused on AI-specific abuse scenarios including third-party prompt injection attacks that hijack ChatGPT Agent, MCP exploitation, account integrity bypasses, and model outputs leaking proprietary reasoning chains — treating agentic AI security as a distinct engineering discipline requiring structured community engagement.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via OpenAI</span>
+          <a href="https://openai.com/index/safety-bug-bounty/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-03-30-google-commits-15b-india-ai-infrastructure-60m-grants"
+        data-category="Industry & Business"
+        data-source="Google Blog">
+        <div class="story-category category-industry">Industry &amp; Business</div>
+        <h2 class="story-headline">Google Commits $15B to India AI Infrastructure, Launches $60M in AI for Government and Science Grants</h2>
+        <p class="story-lede">At the AI Impact Summit in India, Google announced $15 billion in AI infrastructure investment and two $30 million Impact Challenges for AI in government services and AI in science — while partnering with Karmayogi Bharat to upskill over 20 million Indian public servants, positioning as the infrastructure and skilling partner for public-sector AI transformation.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via Google Blog</span>
+          <a href="https://blog.google/innovation-and-ai/technology/ai/ai-impact-summit-2026-india/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+  <!-- Pull quote -->
+  <blockquote class="pull-quote">
+    <p>"Within 24 hours, community members were porting TurboQuant to Apple Silicon and llama.cpp — while memory supplier stocks dropped on the news that software efficiency could reduce hardware demand."</p>
+    <cite>— from Google TurboQuant coverage · VentureBeat</cite>
+  </blockquote>
+
+  <!-- Model Releases & Updates -->
+  <section class="digest-section">
+    <header class="section-header cat-model-releases">
+      <span class="section-label">Model Releases &amp; Updates</span>
+      <div class="section-rule"></div>
+      <span class="section-count">2 STORIES</span>
+    </header>
+    <div class="stories-2col">
+      <article class="story-item"
+        data-story-id="2026-03-30-mistral-releases-voxtral-tts-open-weight-voice-ai"
+        data-category="Model Releases & Updates"
+        data-source="VentureBeat">
+        <div class="story-category category-model-releases">Model Releases &amp; Updates</div>
+        <h2 class="story-headline">Mistral Releases Voxtral TTS: Open-Weight Voice AI That Outperforms ElevenLabs</h2>
+        <p class="story-lede">Mistral AI released Voxtral TTS — the first open-weight frontier text-to-speech model designed for enterprise use — a 3.4B-parameter model achieving 90ms time-to-first-audio, running on a laptop (3GB RAM quantized), supporting 9 languages, and beating ElevenLabs Flash v2.5 in human evaluations 62.8% of the time. At ~$1B ARR and valued at $13.8B, Mistral is completing an end-to-end enterprise AI stack positioned as a data-sovereign European alternative.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via VentureBeat</span>
+          <a href="https://venturebeat.com/orchestration/mistral-ai-just-released-a-text-to-speech-model-it-says-beats-elevenlabs-and" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-03-30-anthropic-restricts-claude-third-party-agent-platforms"
+        data-category="Model Releases & Updates"
+        data-source="Hugging Face Blog">
+        <div class="story-category category-model-releases">Model Releases &amp; Updates</div>
+        <h2 class="story-headline">Anthropic Restricts Claude for Third-Party Agent Platforms; Hugging Face Publishes Migration Guide</h2>
+        <p class="story-lede">Anthropic has restricted Claude model access for Pro/Max subscribers using third-party open agent platforms, prompting Hugging Face to publish a migration guide recommending GLM-5 or locally-run Qwen3.5-35B-A3B via llama.cpp as capable replacements — reflecting growing tension between frontier model providers and the open-source agent ecosystem that may accelerate enterprise adoption of locally-deployable open models.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via Hugging Face Blog</span>
+          <a href="https://huggingface.co/blog/liberate-your-openclaw" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+  <!-- Research Breakthroughs — academic grid texture -->
+  <section class="digest-section">
+    <header class="section-header cat-research">
+      <span class="section-label">Research Breakthroughs</span>
+      <div class="section-rule"></div>
+      <span class="section-count">3 STORIES</span>
+    </header>
+    <div class="research-bg">
+      <div class="stories-3col">
+        <article class="story-item"
+          data-story-id="2026-03-30-google-turboquant-cuts-ai-memory-6x-inference-costs-50"
+          data-category="Research Breakthroughs"
+          data-source="VentureBeat">
+          <div class="story-category category-research">Research Breakthroughs</div>
+          <h2 class="story-headline">Google TurboQuant Cuts AI Memory 6x and Inference Costs 50%+ Without Retraining</h2>
+          <p class="story-lede">Google Research released TurboQuant, a training-free quantization algorithm suite achieving a 6x reduction in KV cache usage and an 8x speedup in attention computation on NVIDIA H100 hardware — cutting AI inference costs by more than 50% with perfect recall on Needle-in-a-Haystack benchmarks for Llama-3.1-8B and Mistral-7B without any retraining.</p>
+          <footer class="story-footer">
+            <span class="story-source-name">Via VentureBeat</span>
+            <a href="https://venturebeat.com/infrastructure/googles-new-turboquant-algorithm-speeds-up-ai-memory-8x-cutting-costs-by-50" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+          </footer>
+        </article>
+
+        <article class="story-item"
+          data-story-id="2026-03-30-aira2-ai-research-agent-hits-76-percentile-mle-bench"
+          data-category="Research Breakthroughs"
+          data-source="arXiv">
+          <div class="story-category category-research">Research Breakthroughs</div>
+          <h2 class="story-headline">AIRA² AI Research Agent Hits 76% Percentile Rank on MLE-Bench — Surpassing Most Human Competitors</h2>
+          <p class="story-lede">Researchers introduced AIRA² (AI Research Agent v2), which achieves a mean Percentile Rank of 71.8% on MLE-bench-30 at 24 hours, rising to 76.0% at 72 hours — outperforming roughly three-quarters of human ML competition participants, with an asynchronous multi-GPU worker pool and ReAct agents that debug interactively.</p>
+          <footer class="story-footer">
+            <span class="story-source-name">Via arXiv</span>
+            <a href="https://arxiv.org/abs/2603.26499" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+          </footer>
+        </article>
+
+        <article class="story-item"
+          data-story-id="2026-03-30-xmemory-cuts-ai-agent-token-costs-50-percent"
+          data-category="Research Breakthroughs"
+          data-source="VentureBeat">
+          <div class="story-category category-research">Research Breakthroughs</div>
+          <h2 class="story-headline">xMemory Cuts AI Agent Token Costs ~50% with Four-Level Semantic Memory Hierarchy</h2>
+          <p class="story-lede">Researchers from King's College London and The Alan Turing Institute published xMemory, a framework replacing flat RAG pipelines with a four-level hierarchy of raw messages, episode summaries, semantic facts, and themes — cutting per-query token usage from ~9,000 to ~4,700 tokens, with MIT-licensed code available on GitHub.</p>
+          <footer class="story-footer">
+            <span class="story-source-name">Via VentureBeat</span>
+            <a href="https://venturebeat.com/orchestration/how-xmemory-cuts-token-costs-and-context-bloat-in-ai-agents" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+          </footer>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tools & Open Source -->
+  <section class="digest-section">
+    <header class="section-header cat-tools">
+      <span class="section-label">Tools &amp; Open Source</span>
+      <div class="section-rule"></div>
+      <span class="section-count">2 STORIES</span>
+    </header>
+    <div class="stories-2col">
+      <article class="story-item"
+        data-story-id="2026-03-30-cloudflare-dynamic-workers-container-free-ai-agent-execution"
+        data-category="Tools & Open Source"
+        data-source="VentureBeat">
+        <div class="story-category category-tools">Tools &amp; Open Source</div>
+        <h2 class="story-headline">Cloudflare Dynamic Workers: Container-Free AI Agent Execution 100x Faster, Now in Open Beta</h2>
+        <p class="story-lede">Cloudflare launched Dynamic Workers in open beta — a JavaScript isolate-based sandboxing system for AI-generated code starting in milliseconds, using 10-100x less memory than Linux containers, priced at $0.002 per unique Worker per day. The company claims this cuts token usage 81% versus MCP tool catalogs while reducing latency and improving task completion.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via VentureBeat</span>
+          <a href="https://venturebeat.com/infrastructure/cloudflares-new-dynamic-workers-ditch-containers-to-run-ai-agent-code-100x" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-03-30-openai-model-spec-evaluation-suite-behavioral-transparency"
+        data-category="Tools & Open Source"
+        data-source="OpenAI">
+        <div class="story-category category-tools">Tools &amp; Open Source</div>
+        <h2 class="story-headline">OpenAI Publishes Model Spec Evaluation Suite, Showing Compliance Improvement Across Models Over Time</h2>
+        <p class="story-lede">OpenAI released a companion Model Spec Evals suite — a public scenario-based evaluation framework covering behavioral assertions in its Model Spec — with compliance charts showing measurable improvement in alignment across successive model versions and both spec and evals open-sourced on GitHub, offering enterprises a public reference point to evaluate whether model behavior matches stated intentions.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via OpenAI</span>
+          <a href="https://openai.com/index/our-approach-to-the-model-spec/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+</div><!-- /.digest-content -->
+
+<footer class="site-footer">
+  <span class="footer-brand">Signal</span>
+  <span class="footer-note">Generated by ai-digest + page-creator agents · Pi 1</span>
+</footer>
+
+<script>
+(function () {
+  const digestDate = document.querySelector('meta[name="signal-date"]')?.content || '';
+
+  function slugify(text) {
+    return String(text).toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60);
+  }
+
+  function makeArticleId(storyId, date) {
+    if (storyId.includes(date)) return storyId;
+    return `${date}-${slugify(storyId)}`;
+  }
+
+  async function attachLikeButtons() {
+    const stories = document.querySelectorAll('[data-story-id]');
+    if (!stories.length) return;
+
+    const fetches = Array.from(stories).map(async (el) => {
+      const rawId    = el.getAttribute('data-story-id');
+      const id       = makeArticleId(rawId, digestDate);
+      const category = el.getAttribute('data-category') || '';
+      const source   = el.getAttribute('data-source') || '';
+      const liked    = localStorage.getItem(`liked:${id}`) === '1';
+
+      let count = 0;
+      try {
+        const r = await fetch(`/api/like?article_id=${encodeURIComponent(id)}`);
+        if (r.ok) ({ count } = await r.json());
+      } catch {}
+
+      const btn = document.createElement('button');
+      btn.className = 'story-like-btn' + (liked ? ' liked' : '');
+      btn.setAttribute('aria-label', 'Like this story');
+      btn.innerHTML = `<span class="like-icon">${liked ? '♥' : '♡'}</span>`
+                    + `<span class="like-count">${count > 0 ? count : ''}</span>`;
+
+      btn.addEventListener('click', async () => {
+        if (localStorage.getItem(`liked:${id}`) === '1') return;
+        localStorage.setItem(`liked:${id}`, '1');
+        btn.classList.add('liked');
+        btn.querySelector('.like-icon').textContent = '♥';
+        btn.classList.add('pop');
+        setTimeout(() => btn.classList.remove('pop'), 200);
+        try {
+          const r = await fetch('/api/like', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ article_id: id, category, source }),
+          });
+          if (r.ok) {
+            const data = await r.json();
+            btn.querySelector('.like-count').textContent = data.count > 0 ? data.count : '';
+          }
+        } catch {}
+      });
+
+      el.appendChild(btn);
+    });
+
+    await Promise.all(fetches);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachLikeButtons);
+  } else {
+    attachLikeButtons();
+  }
+})();
+</script>
+</body>
+</html>
