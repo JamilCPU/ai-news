@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="signal-date" content="2026-04-01">
+  <meta name="signal-title" content="Capital Without Ceiling">
+  <meta name="signal-overview" content="OpenAI closed the largest private fundraise in tech history — $122 billion at an $852 billion valuation, led by Amazon, Nvidia, and SoftBank. The capital arms race extended across the sector: Mistral raised $830M in debt to build a sovereign AI data center near Paris, South Korean chip startup Rebellions pulled in $400M pre-IPO, and Qodo and ScaleOps raised $70M and $130M respectively.">
+  <meta name="signal-items" content="14">
+  <title>Capital Without Ceiling — SIGNAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #060a10;
+      --bg2:      #090e18;
+      --surface:  #0d1525;
+      --surface2: #111e33;
+      --border:   #1a2a42;
+      --border2:  #243550;
+      --text:     #dce8f8;
+      --text2:    #7a90b4;
+      --text3:    #3d5270;
+      --lime:     #c4ff3c;
+      --blue:     #2d7fff;
+      --purple:   #9b6fff;
+      --orange:   #ff8c42;
+      --red:      #ff4560;
+      --teal:     #00d4aa;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Literata', Georgia, serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        radial-gradient(circle at 70% 30%, rgba(45,127,255,.05) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-5 5L5-5M35 45L45 35' stroke='%231a2a42' stroke-width='.5' opacity='.4'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    .scan-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      animation: scan 4s ease-in-out infinite; z-index: 100;
+    }
+    @keyframes scan {
+      0% { transform: translateX(-100%); opacity: 0; }
+      20% { opacity: 1; } 80% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+    .site-header {
+      position: relative; z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,10,16,.92);
+      backdrop-filter: blur(12px);
+      padding: 0 clamp(16px,4vw,48px);
+    }
+    .header-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-wordmark {
+      font-family: var(--font-head); font-weight: 800; font-size: 18px;
+      letter-spacing: 0.12em; color: var(--text); text-transform: uppercase;
+    }
+    .logo-wordmark span { color: var(--lime); }
+    .back-link {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text3); text-decoration: none;
+      border: 1px solid var(--border2); padding: 6px 14px; border-radius: 2px;
+      transition: color .2s, border-color .2s;
+    }
+    .back-link:hover { color: var(--lime); border-color: var(--lime); }
+    .digest-bar {
+      position: relative; z-index: 1;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: baseline;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .digest-bar-date {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime);
+    }
+    .digest-bar-title {
+      font-family: var(--font-head); font-weight: 700; font-size: 20px;
+      color: var(--text); flex: 1;
+    }
+    .digest-bar-count {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); letter-spacing: 0.1em;
+    }
+    .digest-content {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: clamp(32px,5vw,64px) clamp(16px,4vw,48px);
+    }
+    .site-footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand {
+      font-family: var(--font-head); font-weight: 800; font-size: 13px;
+      letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase;
+    }
+    .footer-note {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text3);
+    }
+    .story-like-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: none; border: 1px solid var(--border2);
+      color: var(--text3); cursor: pointer;
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 2px;
+      transition: color .15s, border-color .15s, transform .1s;
+      margin-top: 12px;
+      user-select: none;
+    }
+    .story-like-btn:hover { color: var(--red); border-color: var(--red); }
+    .story-like-btn.liked {
+      color: var(--red); border-color: rgba(255,69,96,.4);
+      background: rgba(255,69,96,.06);
+    }
+    .story-like-btn .like-icon { font-size: 12px; line-height: 1; }
+    .story-like-btn.pop { transform: scale(1.15); }
+    .story-like-btn .like-count { min-width: 10px; }
+
+    /* ── 2026-04-01 Agent Styles ── */
+    .digest-overview {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .overview-text {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--text);
+      max-width: 860px;
+      margin-bottom: 12px;
+    }
+    .overview-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text3);
+      letter-spacing: 0.1em;
+    }
+
+    /* Lead story */
+    .lead-story {
+      position: relative;
+      padding: 40px 0 48px;
+      overflow: hidden;
+    }
+    .lead-bg-text {
+      position: absolute;
+      bottom: -24px; right: -10px;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(80px, 15vw, 200px);
+      color: var(--blue);
+      opacity: 0.03;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .category-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 3px 9px 2px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 18px;
+    }
+    .category-research { color: var(--purple); background: rgba(155,111,255,0.08); border: 1px solid rgba(155,111,255,0.25); }
+    .category-models   { color: var(--blue);   background: rgba(45,127,255,0.08);  border: 1px solid rgba(45,127,255,0.25);  }
+    .category-industry { color: var(--orange);  background: rgba(255,140,66,0.08);  border: 1px solid rgba(255,140,66,0.25);  }
+    .category-tools    { color: var(--teal);    background: rgba(0,212,170,0.08);   border: 1px solid rgba(0,212,170,0.25);   }
+
+    .lead-headline {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+      max-width: 800px;
+      position: relative;
+    }
+    .lead-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--text2);
+      max-width: 720px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .lead-source-link { font-family: var(--font-mono); font-size: 11px; color: var(--text3); }
+    .lead-source-link a { color: var(--text2); text-decoration: none; }
+    .lead-source-link a:hover { color: var(--blue); }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* Pull quote — orange for business-heavy day */
+    .pull-quote {
+      border-left: 4px solid var(--orange);
+      padding: 18px 28px 18px 24px;
+      margin: 48px 0;
+      background: rgba(255,140,66,0.04);
+    }
+    .pull-quote p {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(18px, 2.4vw, 26px);
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    /* Funding ticker — industry section visual */
+    .funding-ticker {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 9px 0;
+      margin-bottom: 32px;
+      background: rgba(255,140,66,0.025);
+      position: relative;
+    }
+    .funding-ticker::before,
+    .funding-ticker::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 48px;
+      z-index: 2;
+    }
+    .funding-ticker::before { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
+    .funding-ticker::after  { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
+    .funding-ticker-track {
+      display: flex;
+      animation: ticker 40s linear infinite;
+      white-space: nowrap;
+      width: max-content;
+    }
+    .funding-ticker-track:hover { animation-play-state: paused; }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .ticker-item {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 0 20px;
+      color: var(--text3);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ticker-amount { color: var(--orange); }
+    .ticker-sep {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--border2);
+    }
+
+    .section-ornament {
+      text-align: center;
+      font-size: 18px;
+      color: var(--border2);
+      margin: 48px 0;
+      letter-spacing: 0.8em;
+      user-select: none;
+    }
+
+    .digest-section { position: relative; margin-bottom: 48px; }
+    .section-header {
+      padding-top: 20px;
+      margin-bottom: 28px;
+      border-top: 3px solid var(--border2);
+    }
+    .section-header.sh-research { border-top-color: var(--purple); }
+    .section-header.sh-industry { border-top-color: var(--orange); }
+    .section-header.sh-tools    { border-top-color: var(--teal); }
+    .section-header.sh-models   { border-top-color: var(--blue); }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    .stories-grid { display: grid; }
+    .stories-2col { grid-template-columns: repeat(2, 1fr); }
+    .stories-1col { grid-template-columns: 1fr; }
+
+    .story-item {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .stories-2col .story-item {
+      padding: 24px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+    .stories-2col .story-item:nth-child(even) { border-right: none; }
+
+    .story-category {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+    .story-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .story-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text2);
+      margin-bottom: 12px;
+    }
+    .story-footer {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    }
+    .story-source-name {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.08em;
+    }
+    .story-link {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      text-decoration: none;
+      border: 1px solid var(--border2);
+      padding: 3px 9px;
+      letter-spacing: 0.08em;
+      transition: color .15s, border-color .15s;
+    }
+    .story-link:hover { color: var(--lime); border-color: var(--lime); }
+    .stories-1col .story-item .story-headline { font-size: 22px; }
+    .stories-1col .story-item .story-lede { font-size: 16px; }
+
+    @media (max-width: 640px) {
+      .stories-2col { grid-template-columns: 1fr; }
+      .stories-2col .story-item { border-right: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="scan-bar"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+        <path d="M4 16 L10 8 L14 20 L18 6 L22 18 L26 12 L28 16" stroke="#c4ff3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-wordmark">SIGN<span>A</span>L</span>
+    </a>
+    <a href="/" class="back-link">← All Digests</a>
+  </div>
+</header>
+
+<div class="digest-bar">
+  <span class="digest-bar-date">APR 1, 2026</span>
+  <span class="digest-bar-title">Capital Without Ceiling</span>
+  <span class="digest-bar-count">14 items</span>
+</div>
+
+<div class="digest-content">
+
+  <!-- Overview lede section -->
+  <div class="digest-overview">
+    <p class="overview-text">OpenAI closed the largest private fundraise in tech history this week — $122 billion at an $852 billion valuation, led by Amazon, Nvidia, and SoftBank, including $3 billion from retail investors — cementing its status as the most valuable private company in the world as it races toward IPO. The capital arms race extended across the sector: Mistral raised $830M in debt to build a sovereign AI data center near Paris, South Korean chip startup Rebellions pulled in $400M at a $2.3B valuation ahead of its IPO, and Qodo and ScaleOps raised $70M and $130M respectively. On the model front, H Company's Holo3 set a new SOTA on the OSWorld computer-use benchmark at 78.85%, IBM dropped Granite 4.0 3B Vision for enterprise document intelligence, and Hugging Face shipped TRL v1.0 — the first post-training library with explicit stability guarantees. A serious supply-chain security incident continued to reverberate: credential-stealing malware in LiteLLM's open-source project led to a breach at AI recruiting firm Mercor, while compliance startup Delve faces allegations of fabricating audit results.</p>
+    <div class="overview-meta">APR 1, 2026 · 14 stories across 4 categories</div>
+  </div>
+
+  <!-- Lead story: Holo3 (item[0]) -->
+  <section class="lead-story"
+    data-story-id="2026-04-01-holo3-new-computer-use-sota-78-85-open-35b-weights"
+    data-category="Model Releases & Updates"
+    data-source="Hugging Face Blog">
+    <div class="lead-bg-text">NEW MODEL</div>
+    <div class="category-tag category-models">Model Releases &amp; Updates</div>
+    <h1 class="lead-headline">H Company's Holo3 Sets New Computer-Use SOTA at 78.85%, Releases Open 35B Weights</h1>
+    <p class="lead-lede">H Company released Holo3, an enterprise autonomous agent that achieves 78.85% on the OSWorld-Verified benchmark — the standard test for AI agents navigating real desktop software — making it the current state of the art for computer use. The flagship Holo3-122B-A10B uses a mixture-of-experts architecture that runs only 10B parameters at a time out of 122B total, hitting full performance at a fraction of the compute cost of comparable dense models. A smaller open-weight Holo3-35B-A3B is available under Apache 2.0, enabling on-premise deployment for enterprises automating multi-application workflows.</p>
+    <div class="lead-source-link">Via <a href="https://huggingface.co/blog/Hcompany/holo3" target="_blank" rel="noopener">Hugging Face Blog ↗</a></div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- Model Releases section (2 remaining items) -->
+  <section class="digest-section section-models">
+    <header class="section-header sh-models">
+      <span class="section-label">Model Releases &amp; Updates</span>
+    </header>
+    <div class="stories-grid stories-1col">
+
+      <article class="story-item"
+        data-story-id="2026-04-01-ibm-granite-4-vision-table-chart-extraction-leads"
+        data-category="Model Releases & Updates"
+        data-source="Hugging Face Blog">
+        <div class="story-category category-models">Models</div>
+        <h2 class="story-headline">IBM Releases Granite 4.0 3B Vision: Compact VLM That Leads on Table and Chart Extraction</h2>
+        <p class="story-lede">IBM released Granite 4.0 3B Vision, a 3-billion-parameter vision-language model built as a LoRA adapter on Granite 4.0 Micro, designed specifically for enterprise document intelligence. The model achieves 92.1 TEDS on PubTables for table extraction, 86.4% on Chart2Summary, and 85.5% exact match on VAREX for government form extraction — leading across all evaluated models on table tasks while trained on ChartNet, a 1.7M-sample dataset spanning 24 chart types. Licensed Apache 2.0 and available on Hugging Face, it targets financial report analysis, multi-page PDF processing, and compliance form extraction.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via Hugging Face Blog</span>
+          <a href="https://huggingface.co/blog/ibm-granite/granite-4-vision" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-01-trl-v1-post-training-library-production-stability"
+        data-category="Model Releases & Updates"
+        data-source="Hugging Face Blog">
+        <div class="story-category category-models">Models</div>
+        <h2 class="story-headline">TRL v1.0: Hugging Face's Post-Training Library Reaches Production Stability with 75+ Methods</h2>
+        <p class="story-lede">Hugging Face released TRL (Transformers Reinforcement Learning) v1.0, the first post-training library to ship with explicit semantic versioning stability guarantees — marking its transition from research codebase to production-grade infrastructure with 3 million monthly PyPI downloads. The release covers over 75 post-training methods including supervised fine-tuning, preference optimization (DPO, KTO), and reinforcement learning from verifiers (GRPO, RLOO), with a dual-track stability model where core trainers follow semver contracts while experimental ones don't.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via Hugging Face Blog</span>
+          <a href="https://huggingface.co/blog/trl-v1" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Research Breakthroughs section (3 items) -->
+  <section class="digest-section section-research">
+    <header class="section-header sh-research">
+      <span class="section-label">Research Breakthroughs</span>
+    </header>
+    <div class="stories-grid stories-1col">
+
+      <article class="story-item"
+        data-story-id="2026-04-01-medical-ai-scientist-generates-miccai-research"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research">Research</div>
+        <h2 class="story-headline">"Towards a Medical AI Scientist": Autonomous Framework Generates MICCAI-Level Clinical Research</h2>
+        <p class="story-lede">Researchers published a framework enabling AI to autonomously conduct clinical medical research across three modes — reproducing published results, generating literature-inspired hypotheses, and running task-driven experiments — evaluated across 171 cases, 19 clinical tasks, and 6 data modalities. The system generates complete manuscripts rated at "MICCAI-level quality," outperforming general-purpose commercial LLMs on research idea quality while showing strong alignment between proposed methods and actually executable experiments. The authors explicitly avoid full autonomy, keeping clinicians as collaborators rather than bystanders.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2603.28589" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-01-monitorbench-proprietary-llms-weaker-transparency"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research">Research</div>
+        <h2 class="story-headline">MonitorBench Finds Proprietary LLMs Have Weaker Reasoning Transparency Than Open Models</h2>
+        <p class="story-lede">Researchers released MonitorBench, a 1,514-instance benchmark across 19 tasks testing whether LLM chain-of-thought reasoning actually reflects model decision-making. Key findings: proprietary models have unexpectedly weaker monitorability than open alternatives; there is an inverse relationship between model capability and reasoning transparency; and under stress conditions, monitorability drops up to 30 percentage points. For AI safety practitioners evaluating whether they can audit model decisions, this is a concrete warning: the reasoning chains that look coherent may not be the actual computation driving outputs.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2603.28590" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-01-novelty-bottleneck-ai-augments-senior-knowledge"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research">Research</div>
+        <h2 class="story-headline">"The Novelty Bottleneck": Framework Explains Why AI Augments Rather Than Eliminates Senior Knowledge Work</h2>
+        <p class="story-lede">Researcher Jacky Liang published a theoretical framework introducing the "novelty bottleneck" — novel tasks requiring human judgment form an irreducible serial constraint, similar to Amdahl's Law in parallel computing. The model predicts that when novelty is high, human effort scales linearly with task volume regardless of AI capability improvements; when novelty is low, effort drops to constant. Empirical alignment with AI coding benchmarks and research productivity data supports the framework, providing a formal foundation for workforce planning decisions around AI adoption.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2603.27438" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Pull quote — between research and industry -->
+  <blockquote class="pull-quote">
+    <p>"AI is unbottlenecked on exploiting existing knowledge but bottlenecked on frontier research — human effort at the novel frontier scales linearly with task volume regardless of AI capability."</p>
+  </blockquote>
+
+  <!-- Industry & Business section (5 items) -->
+  <section class="digest-section section-industry">
+    <header class="section-header sh-industry">
+      <span class="section-label">Industry &amp; Business</span>
+    </header>
+
+    <!-- Funding ticker visual -->
+    <div class="funding-ticker" aria-hidden="true">
+      <div class="funding-ticker-track">
+        <span class="ticker-item">OpenAI <span class="ticker-amount">$122B raise</span></span>
+        <span class="ticker-sep">·</span>
+        <span class="ticker-item">Mistral <span class="ticker-amount">$830M debt</span></span>
+        <span class="ticker-sep">·</span>
+        <span class="ticker-item">Rebellions <span class="ticker-amount">$400M pre-IPO</span></span>
+        <span class="ticker-sep">·</span>
+        <span class="ticker-item">OpenAI valuation <span class="ticker-amount">$852B</span></span>
+        <span class="ticker-sep">·</span>
+        <span class="ticker-item">Anthropic Australia <span class="ticker-amount">AUD$3M</span></span>
+        <span class="ticker-sep">·</span>
+        <span class="ticker-item">Stargate Abilene <span class="ticker-amount">SoftBank · Oracle · OpenAI</span></span>
+        <span class="ticker-sep">·</span>
+        <span class="ticker-item">Rebellions IPO <span class="ticker-amount">2026</span></span>
+        <span class="ticker-sep">·</span>
+        <!-- duplicate for seamless loop -->
+        <span class="ticker-item">OpenAI <span class="ticker-amount">$122B raise</span></span>
+        <span class="ticker-sep">·</span>
+        <span class="ticker-item">Mistral <span class="ticker-amount">$830M debt</span></span>
+        <span class="ticker-sep">·</span>
+        <span class="ticker-item">Rebellions <span class="ticker-amount">$400M pre-IPO</span></span>
+        <span class="ticker-sep">·</span>
+        <span class="ticker-item">OpenAI valuation <span class="ticker-amount">$852B</span></span>
+        <span class="ticker-sep">·</span>
+        <span class="ticker-item">Anthropic Australia <span class="ticker-amount">AUD$3M</span></span>
+        <span class="ticker-sep">·</span>
+        <span class="ticker-item">Stargate Abilene <span class="ticker-amount">SoftBank · Oracle · OpenAI</span></span>
+        <span class="ticker-sep">·</span>
+        <span class="ticker-item">Rebellions IPO <span class="ticker-amount">2026</span></span>
+        <span class="ticker-sep">·</span>
+      </div>
+    </div>
+
+    <div class="stories-grid stories-2col">
+
+      <article class="story-item"
+        data-story-id="2026-04-01-openai-raises-122b-852b-largest-private-fundraise"
+        data-category="Industry & Business"
+        data-source="TechCrunch">
+        <div class="story-category category-industry">Industry</div>
+        <h2 class="story-headline">OpenAI Raises $122B at $852B Valuation — the Largest Private Fundraise in Tech History</h2>
+        <p class="story-lede">OpenAI closed a $122 billion funding round — the largest private capital raise in technology history — valuing the company at $852 billion and including $3 billion from retail investors, led by Amazon, Nvidia, and SoftBank. CEO Sam Altman appeared at the Stargate AI data center in Abilene, Texas, signaling most capital is directed at physical AI infrastructure as the company pursues AGI and prepares for a public offering. At $852 billion, OpenAI now rivals Apple and Microsoft in market value.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via TechCrunch</span>
+          <a href="https://techcrunch.com/2026/03/31/openai-not-yet-public-raises-3b-from-retail-investors-in-monster-122b-fund-raise/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-01-mistral-830m-debt-sovereign-european-ai-datacenter"
+        data-category="Industry & Business"
+        data-source="TechCrunch">
+        <div class="story-category category-industry">Industry</div>
+        <h2 class="story-headline">Mistral Raises $830M in Debt to Build Sovereign European AI Data Center Near Paris</h2>
+        <p class="story-lede">Mistral AI secured $830 million in debt financing to build a proprietary data center near Paris, targeting operations by Q2 2026, as the French lab moves to reduce dependence on third-party cloud providers. The infrastructure investment completes Mistral's data-sovereign positioning — open-weight models, enterprise API, and now physical compute infrastructure, all operating under EU jurisdiction with no model weights, inference traffic, or data leaving French soil.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via TechCrunch</span>
+          <a href="https://techcrunch.com/2026/03/30/mistral-ai-raises-830m-in-debt-to-set-up-a-data-center-near-paris/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-01-anthropic-australia-mou-ai-safety-aud-3m-research"
+        data-category="Industry & Business"
+        data-source="Anthropic">
+        <div class="story-category category-industry">Industry</div>
+        <h2 class="story-headline">Anthropic Signs AI Safety MOU with Australia, Commits AUD$3M to University Research</h2>
+        <p class="story-lede">Anthropic and the Australian government signed a Memorandum of Understanding on March 31, committing to joint AI safety evaluations, capability risk information-sharing, and collaboration with four Australian research institutions — directing AUD$3 million at genomics, pediatric heart disease, and data science research. A new startup credit program offers up to $50,000 in Claude API credits for early-stage companies in drug discovery and climate modeling. Anthropic now has formal safety institute relationships with the US, UK, Japan, and Australia.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via Anthropic</span>
+          <a href="https://www.anthropic.com/news/australia-MOU" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-01-litellm-malware-breach-mercor-delve-fake-audits"
+        data-category="Industry & Business"
+        data-source="TechCrunch">
+        <div class="story-category category-industry">Industry</div>
+        <h2 class="story-headline">LiteLLM Supply-Chain Malware Attack Breaches Mercor; Compliance Startup Delve Accused of Fabricating Audits</h2>
+        <p class="story-lede">LiteLLM — an open-source AI gateway used by millions of developers — was compromised by credential-stealing malware linked to the Lapsus$ hacking group, leading to a data breach at AI recruiting startup Mercor. Separately, LiteLLM severed ties with compliance startup Delve after a whistleblower alleged Delve fabricated SOC 2 audit data and used rubber-stamping auditors. The combination reveals a compounding vulnerability: widely-deployed middleware is a high-value attack target, and compliance certifications may provide false assurance when issued by unvetted vendors.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via TechCrunch</span>
+          <a href="https://techcrunch.com/2026/03/31/mercor-says-it-was-hit-by-cyberattack-tied-to-compromise-of-open-source-litellm-project/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-01-rebellions-400m-pre-ipo-ai-inference-chips"
+        data-category="Industry & Business"
+        data-source="TechCrunch">
+        <div class="story-category category-industry">Industry</div>
+        <h2 class="story-headline">Rebellions Raises $400M at $2.3B Valuation in Pre-IPO Round for AI Inference Chips</h2>
+        <p class="story-lede">South Korean AI chip startup Rebellions closed a $400 million pre-IPO round led by Mirae Asset at a $2.3 billion valuation, planning to go public later in 2026 as it competes in AI inference accelerators against Nvidia's H-series GPUs. Rebellions specializes in chips designed for running AI models rather than training them — a segment where dedicated ASICs can deliver better performance-per-watt than general-purpose GPU architectures. The funding makes Rebellions one of the best-capitalized non-US AI chip companies.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via TechCrunch</span>
+          <a href="https://techcrunch.com/2026/03/30/ai-chip-startup-rebellions-raises-400-million-at-2-3b-valuation-in-pre-ipo-round/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+    </div>
+  </section>
+
+  <div class="section-ornament">◆ &nbsp; ◆ &nbsp; ◆</div>
+
+  <!-- Tools & Open Source section (3 items) -->
+  <section class="digest-section section-tools">
+    <header class="section-header sh-tools">
+      <span class="section-label">Tools &amp; Open Source</span>
+    </header>
+    <div class="stories-grid stories-1col">
+
+      <article class="story-item"
+        data-story-id="2026-04-01-qodo-70m-trust-layer-ai-code-verification"
+        data-category="Tools & Open Source"
+        data-source="TechCrunch">
+        <div class="story-category category-tools">Tools</div>
+        <h2 class="story-headline">Qodo Raises $70M to Build "Trust Layer" for AI-Generated Code as Enterprises Scale Coding Agents</h2>
+        <p class="story-lede">Qodo, an AI code verification platform, raised a $70 million Series B — backed by Peter Welinder (OpenAI) and Clara Shih (Meta) — bringing total funding to $120 million, betting that code verification will become as essential as code generation as enterprises scale AI coding tools. The platform deploys AI agents to review code, run tests, and enforce governance policies between AI code generators and production deployment, targeting enterprises whose AI-assisted development has outpaced their ability to validate what gets shipped.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via TechCrunch</span>
+          <a href="https://techcrunch.com/2026/03/30/qodo-bets-on-code-verification-as-ai-coding-scales-raises-70m/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-01-scaleops-130m-kubernetes-resource-optimization-ai"
+        data-category="Tools & Open Source"
+        data-source="TechCrunch">
+        <div class="story-category category-tools">Tools</div>
+        <h2 class="story-headline">ScaleOps Raises $130M to Automate Kubernetes Resource Optimization for AI Workloads</h2>
+        <p class="story-lede">ScaleOps closed a $130 million Series C led by Insight Partners to expand its real-time Kubernetes resource automation platform, which dynamically adjusts compute allocations as AI inference workloads fluctuate. The startup targets a concrete waste problem: enterprises over-provision GPU clusters to handle peak loads, burning expensive capacity during off-peak hours — ScaleOps claims to recover that waste automatically without manual tuning, addressing exactly the infrastructure that AI demand has made most expensive.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via TechCrunch</span>
+          <a href="https://techcrunch.com/2026/03/30/scaleops-130m-series-c-kubernetes-efficiency-ai-demand-funding/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-01-salesforce-30-ai-features-slack-agent-hub"
+        data-category="Tools & Open Source"
+        data-source="TechCrunch">
+        <div class="story-category category-tools">Tools</div>
+        <h2 class="story-headline">Salesforce Launches 30-Feature AI Overhaul for Slack, Positioning It as Enterprise AI Agent Hub</h2>
+        <p class="story-lede">Salesforce announced 30 new AI-powered features for Slack on March 31, repositioning the workplace messaging platform as the primary interface for enterprise AI agents and automation. The update integrates Salesforce's Agentforce AI agent platform directly into Slack, giving employees a single surface to interact with AI agents, automate multi-step workflows, and retrieve structured data from CRM and ERP systems without context-switching — creating direct competitive pressure on Microsoft Teams' Copilot integration.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via TechCrunch</span>
+          <a href="https://techcrunch.com/2026/03/31/salesforce-announces-an-ai-heavy-makeover-for-slack-with-30-new-features/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <span class="footer-brand">Signal</span>
+  <span class="footer-note">Generated by ai-digest + page-creator agents · Pi 1</span>
+</footer>
+
+<script>
+(function () {
+  const digestDate = document.querySelector('meta[name="signal-date"]')?.content || '';
+
+  function slugify(text) {
+    return String(text).toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60);
+  }
+
+  function makeArticleId(storyId, date) {
+    if (storyId.includes(date)) return storyId;
+    return `${date}-${slugify(storyId)}`;
+  }
+
+  async function attachLikeButtons() {
+    const stories = document.querySelectorAll('[data-story-id]');
+    if (!stories.length) return;
+
+    const fetches = Array.from(stories).map(async (el) => {
+      const rawId   = el.getAttribute('data-story-id');
+      const id      = makeArticleId(rawId, digestDate);
+      const category = el.getAttribute('data-category') || '';
+      const source   = el.getAttribute('data-source') || '';
+      const liked    = localStorage.getItem(`liked:${id}`) === '1';
+
+      let count = 0;
+      try {
+        const r = await fetch(`/api/like?article_id=${encodeURIComponent(id)}`);
+        if (r.ok) ({ count } = await r.json());
+      } catch {}
+
+      const btn = document.createElement('button');
+      btn.className = 'story-like-btn' + (liked ? ' liked' : '');
+      btn.setAttribute('aria-label', 'Like this story');
+      btn.innerHTML = `<span class="like-icon">${liked ? '♥' : '♡'}</span>`
+                    + `<span class="like-count">${count > 0 ? count : ''}</span>`;
+
+      btn.addEventListener('click', async () => {
+        if (localStorage.getItem(`liked:${id}`) === '1') return;
+        localStorage.setItem(`liked:${id}`, '1');
+        btn.classList.add('liked');
+        btn.querySelector('.like-icon').textContent = '♥';
+        btn.classList.add('pop');
+        setTimeout(() => btn.classList.remove('pop'), 200);
+        try {
+          const r = await fetch('/api/like', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ article_id: id, category, source }),
+          });
+          if (r.ok) {
+            const data = await r.json();
+            btn.querySelector('.like-count').textContent = data.count > 0 ? data.count : '';
+          }
+        } catch {}
+      });
+
+      el.appendChild(btn);
+    });
+
+    await Promise.all(fetches);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachLikeButtons);
+  } else {
+    attachLikeButtons();
+  }
+})();
+</script>
+</body>
+</html>
