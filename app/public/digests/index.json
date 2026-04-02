@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-04-02",
+    "title": "Blowback",
+    "overview": "The March 31–April 1 window was defined by AI infrastructure and accountability: Anthropic accidentally issued thousands of GitHub takedown notices while trying to contain its source code leak, escalating an already turbulent week of security incidents. Meta revealed its Hyperion AI data center will be powered by 10 new natural gas plants — a scale of energy consumption that could power an entire US state. On the model front, TII released Falcon Perception, a compact 0.6B vision model that substantially outperforms SAM 3 on language-guided segmentation.",
+    "item_count": 8,
+    "filename": "2026-04-02.html"
+  },
+  {
     "date": "2026-04-01",
     "title": "Capital Without Ceiling",
     "overview": "OpenAI closed the largest private fundraise in tech history — $122 billion at an $852 billion valuation, led by Amazon, Nvidia, and SoftBank, including $3 billion from retail investors. The capital arms race extended across the sector: Mistral raised $830M in debt to build a sovereign AI data center near Paris, South Korean chip startup Rebellions pulled in $400M pre-IPO, and Qodo and ScaleOps raised $70M and $130M respectively. On the model front, H Company's Holo3 set a new SOTA on the OSWorld computer-use benchmark at 78.85%, IBM dropped Granite 4.0 3B Vision for enterprise document intelligence, and Hugging Face shipped TRL v1.0.",
