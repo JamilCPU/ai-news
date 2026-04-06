@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="signal-date" content="APR 06, 2026">
+  <meta name="signal-title" content="Hard Down">
+  <meta name="signal-overview" content="AI infrastructure entered a new era of kinetic risk this week: Iranian missiles physically destroyed AWS data center zones in Bahrain and the UAE — disrupting Gulf banks and cloud services — while IRGC generals publicly threatened OpenAI's $30B Stargate facility in Abu Dhabi with satellite imagery of the site.">
+  <meta name="signal-items" content="15">
+  <title>Hard Down — SIGNAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #060a10;
+      --bg2:      #090e18;
+      --surface:  #0d1525;
+      --surface2: #111e33;
+      --border:   #1a2a42;
+      --border2:  #243550;
+      --text:     #dce8f8;
+      --text2:    #7a90b4;
+      --text3:    #3d5270;
+      --lime:     #c4ff3c;
+      --blue:     #2d7fff;
+      --purple:   #9b6fff;
+      --orange:   #ff8c42;
+      --red:      #ff4560;
+      --teal:     #00d4aa;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Literata', Georgia, serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        radial-gradient(circle at 70% 30%, rgba(45,127,255,.05) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-5 5L5-5M35 45L45 35' stroke='%231a2a42' stroke-width='.5' opacity='.4'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    .scan-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      animation: scan 4s ease-in-out infinite; z-index: 100;
+    }
+    @keyframes scan {
+      0% { transform: translateX(-100%); opacity: 0; }
+      20% { opacity: 1; } 80% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+    .site-header {
+      position: relative; z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,10,16,.92);
+      backdrop-filter: blur(12px);
+      padding: 0 clamp(16px,4vw,48px);
+    }
+    .header-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-wordmark {
+      font-family: var(--font-head); font-weight: 800; font-size: 18px;
+      letter-spacing: 0.12em; color: var(--text); text-transform: uppercase;
+    }
+    .logo-wordmark span { color: var(--lime); }
+    .back-link {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text3); text-decoration: none;
+      border: 1px solid var(--border2); padding: 6px 14px; border-radius: 2px;
+      transition: color .2s, border-color .2s;
+    }
+    .back-link:hover { color: var(--lime); border-color: var(--lime); }
+    .digest-bar {
+      position: relative; z-index: 1;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: baseline;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .digest-bar-date {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime);
+    }
+    .digest-bar-title {
+      font-family: var(--font-head); font-weight: 700; font-size: 20px;
+      color: var(--text); flex: 1;
+    }
+    .digest-bar-count {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); letter-spacing: 0.1em;
+    }
+    .digest-content {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: clamp(32px,5vw,64px) clamp(16px,4vw,48px);
+    }
+    .site-footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand {
+      font-family: var(--font-head); font-weight: 800; font-size: 13px;
+      letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase;
+    }
+    .footer-note {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text3);
+    }
+    .story-like-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: none; border: 1px solid var(--border2);
+      color: var(--text3); cursor: pointer;
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 2px;
+      transition: color .15s, border-color .15s, transform .1s;
+      margin-top: 12px;
+      user-select: none;
+    }
+    .story-like-btn:hover { color: var(--red); border-color: var(--red); }
+    .story-like-btn.liked {
+      color: var(--red); border-color: rgba(255,69,96,.4);
+      background: rgba(255,69,96,.06);
+    }
+    .story-like-btn .like-icon { font-size: 12px; line-height: 1; }
+    .story-like-btn.pop { transform: scale(1.15); }
+    .story-like-btn .like-count { min-width: 10px; }
+
+    /* ── AGENT STYLES ── */
+
+    /* Scrolling source ticker */
+    .source-ticker-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      margin-bottom: 44px;
+      background: var(--surface);
+    }
+    .source-ticker {
+      display: flex;
+      gap: 0;
+      animation: ticker-scroll 35s linear infinite;
+      width: max-content;
+    }
+    .source-ticker span {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--text3);
+      padding: 0 20px;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+    .source-ticker span.alert { color: var(--red); }
+    .source-ticker span.sep { color: var(--border2); padding: 0 6px; }
+    @keyframes ticker-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Overview */
+    .digest-overview {
+      margin-bottom: 48px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--border);
+    }
+    .overview-text {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(15px, 1.6vw, 18px);
+      line-height: 1.8;
+      color: var(--text2);
+      max-width: 840px;
+    }
+    .overview-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 16px;
+    }
+
+    /* Lead story */
+    .lead-story {
+      position: relative;
+      margin-bottom: 48px;
+      padding: 40px 44px;
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      overflow: hidden;
+    }
+    .lead-story::before {
+      content: 'NEW MODEL';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(60px, 12vw, 180px);
+      color: var(--blue);
+      opacity: 0.03;
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: -0.02em;
+      user-select: none;
+    }
+    .category-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+    .category-model-releases { color: var(--blue); }
+    .category-research { color: var(--purple); }
+    .category-industry { color: var(--orange); }
+    .category-tools { color: var(--teal); }
+    .category-alert { color: var(--red); }
+
+    .lead-headline {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+      max-width: 780px;
+    }
+    .lead-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(15px, 1.5vw, 17px);
+      line-height: 1.8;
+      color: var(--text2);
+      max-width: 740px;
+      margin-bottom: 20px;
+    }
+    .story-source {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text3);
+      letter-spacing: 0.08em;
+    }
+    .story-source a { color: var(--blue); text-decoration: none; }
+    .story-source a:hover { text-decoration: underline; }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    /* Pull quote */
+    .pull-quote {
+      border-left: 4px solid var(--red);
+      padding: 24px 32px;
+      margin: 44px 0;
+      background: rgba(255,69,96,0.04);
+    }
+    .pull-quote p {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(17px, 2vw, 26px);
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    /* Section structure */
+    .digest-section { margin-bottom: 60px; }
+    .section-header {
+      border-top: 3px solid var(--border2);
+      padding-top: 16px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-header.section-model { border-color: var(--blue); }
+    .section-header.section-research { border-color: var(--purple); }
+    .section-header.section-industry { border-color: var(--orange); }
+    .section-header.section-tools { border-color: var(--teal); }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text3);
+      white-space: nowrap;
+    }
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Story grids */
+    .stories-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 32px;
+    }
+    @media (max-width: 700px) {
+      .stories-2col { grid-template-columns: 1fr; }
+    }
+
+    /* Story items */
+    .story-item {
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+    .stories-2col .story-item {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+    }
+    .story-category {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .story-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(16px, 1.8vw, 21px);
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .stories-1col .story-headline {
+      font-size: clamp(19px, 2.2vw, 25px);
+    }
+    .story-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text2);
+      margin-bottom: 12px;
+    }
+    .story-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .story-source-name {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.08em;
+    }
+    .story-link {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--blue);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      border: 1px solid rgba(45,127,255,0.3);
+      padding: 3px 9px;
+    }
+    .story-link:hover { background: rgba(45,127,255,0.08); }
+
+    /* Industry featured block — Iranian strikes */
+    .industry-featured {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 36px;
+      background: rgba(255,69,96,0.03);
+      border: 1px solid rgba(255,69,96,0.2);
+      border-left: 3px solid var(--red);
+    }
+    .industry-featured::before {
+      content: 'HARD DOWN';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(50px, 9vw, 140px);
+      color: var(--red);
+      opacity: 0.05;
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: -0.02em;
+      user-select: none;
+    }
+    .featured-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      border-bottom: 1px solid rgba(255,69,96,0.2);
+      padding: 8px 28px;
+    }
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media (max-width: 700px) {
+      .featured-grid { grid-template-columns: 1fr; }
+    }
+    .featured-item {
+      padding: 28px 32px;
+      position: relative;
+    }
+    .featured-grid .featured-item:first-child {
+      border-right: 1px solid rgba(255,69,96,0.15);
+    }
+    @media (max-width: 700px) {
+      .featured-grid .featured-item:first-child {
+        border-right: none;
+        border-bottom: 1px solid rgba(255,69,96,0.15);
+      }
+    }
+    .featured-item .story-category { color: var(--red); }
+    .featured-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(15px, 1.6vw, 20px);
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .featured-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--text2);
+      margin-bottom: 12px;
+    }
+
+    /* Research section grid texture */
+    .section-research-bg {
+      position: relative;
+    }
+    .section-research-bg::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      background-image:
+        linear-gradient(rgba(155,111,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(155,111,255,0.035) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .section-research-bg > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Section ornament */
+    .section-ornament {
+      text-align: center;
+      font-family: var(--font-head);
+      font-size: 28px;
+      color: var(--border2);
+      margin: 44px 0;
+      letter-spacing: 0.5em;
+      user-select: none;
+    }
+
+    /* Security alert tag */
+    .alert-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--red);
+      border: 1px solid rgba(255,69,96,0.4);
+      padding: 2px 7px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="scan-bar"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+        <path d="M4 16 L10 8 L14 20 L18 6 L22 18 L26 12 L28 16" stroke="#c4ff3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-wordmark">SIGN<span>A</span>L</span>
+    </a>
+    <a href="/" class="back-link">← All Digests</a>
+  </div>
+</header>
+
+<div class="digest-bar">
+  <span class="digest-bar-date">APR 06, 2026</span>
+  <span class="digest-bar-title">Hard Down</span>
+  <span class="digest-bar-count">15 items</span>
+</div>
+
+<div class="digest-content">
+
+  <!-- Scrolling source ticker -->
+  <div class="source-ticker-wrap">
+    <div class="source-ticker">
+      <span>Tom's Hardware</span><span class="sep">◆</span>
+      <span class="alert">AWS · Hard Down · ME-CENTRAL-1 · ME-SOUTH-1</span><span class="sep">◆</span>
+      <span>OpenRouter</span><span class="sep">◆</span>
+      <span>Nature</span><span class="sep">◆</span>
+      <span>Arcee AI</span><span class="sep">◆</span>
+      <span>Microsoft AI</span><span class="sep">◆</span>
+      <span class="alert">GitHub · Claude Code · Security Disclosure</span><span class="sep">◆</span>
+      <span>TechCrunch</span><span class="sep">◆</span>
+      <span>Inc.</span><span class="sep">◆</span>
+      <span>Rock Paper Shotgun</span><span class="sep">◆</span>
+      <span>NL Times</span><span class="sep">◆</span>
+      <span>Google / Apple App Store</span><span class="sep">◆</span>
+      <span>OpenAI</span><span class="sep">◆</span>
+      <!-- duplicate for seamless loop -->
+      <span>Tom's Hardware</span><span class="sep">◆</span>
+      <span class="alert">AWS · Hard Down · ME-CENTRAL-1 · ME-SOUTH-1</span><span class="sep">◆</span>
+      <span>OpenRouter</span><span class="sep">◆</span>
+      <span>Nature</span><span class="sep">◆</span>
+      <span>Arcee AI</span><span class="sep">◆</span>
+      <span>Microsoft AI</span><span class="sep">◆</span>
+      <span class="alert">GitHub · Claude Code · Security Disclosure</span><span class="sep">◆</span>
+      <span>TechCrunch</span><span class="sep">◆</span>
+      <span>Inc.</span><span class="sep">◆</span>
+      <span>Rock Paper Shotgun</span><span class="sep">◆</span>
+      <span>NL Times</span><span class="sep">◆</span>
+      <span>Google / Apple App Store</span><span class="sep">◆</span>
+      <span>OpenAI</span><span class="sep">◆</span>
+    </div>
+  </div>
+
+  <!-- Overview lede -->
+  <div class="digest-overview">
+    <p class="overview-text">AI infrastructure entered a new era of kinetic risk this week: Iranian missiles physically destroyed AWS data center zones in Bahrain and the UAE — disrupting Gulf banks and cloud services — while IRGC generals publicly threatened OpenAI's $30B Stargate facility in Abu Dhabi with satellite imagery of the site. The Claude Code ecosystem faced compounding security pressure: Anthropic's March 31 source code leak is now being weaponized to distribute credential-stealing malware, and a separate disclosure revealed Claude Code silently stores all session history — including secrets — as unencrypted plaintext on users' machines. On the business side, OpenRouter's $120M raise at $1.3B validates model routing as an infrastructure-layer category, while Microsoft's own terms classifying Copilot as 'entertainment only' and Take-Two's decision to gut its AI team days before GTA 6 suggest that enterprise AI confidence is uneven.</p>
+    <div class="overview-meta">APR 06, 2026 · 15 stories across 4 categories</div>
+  </div>
+
+  <!-- Lead story: Qwen-3.6-Plus -->
+  <section class="lead-story"
+    data-story-id="2026-04-06-qwen-3-6-plus-first-model-1-trillion-tokens-day"
+    data-category="Model Releases &amp; Updates"
+    data-source="OpenRouter">
+    <div class="category-tag category-model-releases">Model Releases &amp; Updates</div>
+    <h1 class="lead-headline">Qwen-3.6-Plus Is First Model to Process 1 Trillion Tokens in a Single Day</h1>
+    <p class="lead-lede">Alibaba's Qwen-3.6-Plus — a Mixture-of-Experts model that routes each request through specialized sub-networks to cut compute costs — hit a new throughput record: over 1 trillion tokens processed in a single 24-hour period, according to OpenRouter's traffic data. The milestone reflects surging developer adoption of Qwen as a cost-efficient alternative to GPT and Claude for high-volume workloads. At this scale, the volume would be cost-prohibitive on proprietary frontier models, making the milestone a revealing signal about where production AI traffic is actually flowing.</p>
+    <div class="story-source">Via <a href="https://twitter.com/openrouter/status/2040239467865489874" target="_blank" rel="noopener">OpenRouter ↗</a></div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- Industry & Business section -->
+  <section class="digest-section">
+    <header class="section-header section-industry">
+      <span class="section-label">Industry &amp; Business</span>
+      <div class="section-rule"></div>
+    </header>
+
+    <!-- Featured: Iranian strikes (kinetic threat stories) -->
+    <div class="industry-featured">
+      <div class="featured-label">Breaking · Infrastructure Under Fire</div>
+      <div class="featured-grid">
+        <article class="featured-item"
+          data-story-id="2026-04-06-iranian-missiles-aws-data-centers-bahrain-dubai"
+          data-category="Industry &amp; Business"
+          data-source="Tom's Hardware">
+          <span class="story-category">Industry &amp; Business</span>
+          <h2 class="featured-headline">Iranian Missiles Take Down AWS Data Centers in Bahrain and Dubai, Disrupting Banks and Cloud Services</h2>
+          <p class="featured-lede">Iranian missile and drone strikes physically destroyed or disabled AWS infrastructure across ME-CENTRAL-1 (UAE) and ME-SOUTH-1 (Bahrain), triggering Amazon's 'hard down' status — the most severe tier of outage declaration. Emirates NBD, Abu Dhabi Commercial Bank, Snowflake, Careem, and major Gulf payment platforms experienced outages. The attacks represent a documented precedent: commercial cloud data centers treated as legitimate kinetic military targets.</p>
+          <div class="story-footer">
+            <span class="story-source-name">Via Tom's Hardware</span>
+            <a href="https://www.tomshardware.com/tech-industry/iranian-missile-blitz-takes-down-aws-data-centers-in-bahrain-and-dubai-amazon-declares-hard-down-status-for-multiple-zones" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+          </div>
+        </article>
+
+        <article class="featured-item"
+          data-story-id="2026-04-06-iran-threatens-openai-stargate-abu-dhabi-satellite"
+          data-category="Industry &amp; Business"
+          data-source="Tom's Hardware">
+          <span class="story-category">Industry &amp; Business</span>
+          <h2 class="featured-headline">Iran Publicly Threatens OpenAI's $30B Stargate Datacenter in Abu Dhabi with Satellite Imagery</h2>
+          <p class="featured-lede">IRGC Brigadier General Ebrahim Zolfaghari released a video threatening 'complete and utter annihilation' of OpenAI's Stargate datacenter — a $30B, 1-gigawatt facility backed by SoftBank, NVIDIA, and Cisco — with satellite imagery of the site included in the broadcast. The threat followed verified successful strikes on nearby AWS facilities, lending it credibility beyond standard state propaganda. The incident forces a reckoning about frontier AI compute geography.</p>
+          <div class="story-footer">
+            <span class="story-source-name">Via Tom's Hardware</span>
+            <a href="https://www.tomshardware.com/tech-industry/iran-threatens-complete-and-utter-annihilation-of-openais-usd30b-stargate-ai-data-center-in-abu-dhabi" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Remaining industry items: single column -->
+    <div class="stories-1col">
+      <article class="story-item"
+        data-story-id="2026-04-06-openrouter-120m-1-3b-valuation-model-routing"
+        data-category="Industry &amp; Business"
+        data-source="Inc.">
+        <span class="story-category category-industry">Industry &amp; Business</span>
+        <h2 class="story-headline">OpenRouter Raises $120M at $1.3B Valuation as Model Routing Becomes Core AI Infrastructure</h2>
+        <p class="story-lede">OpenRouter — which lets developers route AI API calls across 300+ models from a single endpoint, comparing price, quality, and latency in real time — closed a $120M growth round led by CapitalG (Google's growth equity fund) at a $1.3B valuation, up from $500M just 10 months ago. Revenue grew 5× to $50M+ annualized as enterprises prioritized avoiding single-provider lock-in. The Qwen-3.6-Plus 1T-token milestone was measured via OpenRouter's own traffic, illustrating why the routing layer is becoming as strategically important as the models beneath it.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via Inc.</span>
+          <a href="https://www.inc.com/ben-sherry/openrouter-helps-companies-pick-the-best-ai-for-the-job-and-could-be-worth-1-3-billion/91325983" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-06-take-two-guts-ai-team-gta6-launch"
+        data-category="Industry &amp; Business"
+        data-source="Rock Paper Shotgun">
+        <span class="story-category category-industry">Industry &amp; Business</span>
+        <h2 class="story-headline">Take-Two Guts Its AI Team Weeks Before GTA 6 Launch</h2>
+        <p class="story-lede">Take-Two Interactive laid off Head of AI Luke Dicken and several AI team members, internally citing 'shifting priorities from upper management,' just weeks before the May 26 release of GTA 6. The move contradicts CEO Strauss Zelnick's simultaneous claim of 'hundreds of AI pilots across our studios,' suggesting a pivot away from centralized AI R&amp;D rather than a wholesale retreat. The paradox mirrors a broader industry tension: companies are aggressively adopting off-the-shelf AI tools while struggling to justify dedicated internal AI research headcount.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via Rock Paper Shotgun</span>
+          <a href="https://www.rockpapershotgun.com/grand-theft-auto-6-publisher-take-two-have-seemingly-laid-off-their-head-of-ai-and-several-of-the-departments-staffers" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-06-microsoft-copilot-entertainment-only-terms"
+        data-category="Industry &amp; Business"
+        data-source="TechCrunch">
+        <span class="story-category category-industry">Industry &amp; Business</span>
+        <h2 class="story-headline">Microsoft's Own Terms Call Copilot 'For Entertainment Purposes Only,' Contradicting Enterprise Marketing</h2>
+        <p class="story-lede">Microsoft's official Copilot Terms of Use — updated as recently as October 2025, months into aggressive enterprise marketing — state that Copilot 'is for entertainment purposes only' and explicitly warn users not to rely on it for important decisions. The language directly contradicts Microsoft's positioning of Copilot as a core productivity and enterprise intelligence product sold to Fortune 500 companies. A spokesperson acknowledged the wording is 'legacy language' but offered no timeline for an update.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via TechCrunch</span>
+          <a href="https://techcrunch.com/2026/04/05/copilot-is-for-entertainment-purposes-only-according-to-microsofts-terms-of-service/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Pull quote -->
+  <blockquote class="pull-quote">
+    <p>"Commercial cloud data centers treated as legitimate kinetic military targets — a scenario that most enterprise disaster recovery plans did not include."</p>
+  </blockquote>
+
+  <!-- Research Breakthroughs section -->
+  <section class="digest-section section-research-bg">
+    <header class="section-header section-research">
+      <span class="section-label">Research Breakthroughs</span>
+      <div class="section-rule"></div>
+    </header>
+
+    <div class="stories-1col">
+      <article class="story-item"
+        data-story-id="2026-04-06-nature-ai-scientist-paper-passed-peer-review-iclr"
+        data-category="Research Breakthroughs"
+        data-source="Nature">
+        <span class="story-category category-research">Research Breakthroughs</span>
+        <h2 class="story-headline">Nature Publishes Landmark AI Scientist Paper: Autonomous System Passed Peer Review at ICLR Workshop</h2>
+        <p class="story-lede">Nature published 'Towards End-to-End Automation of AI Research,' documenting a fully autonomous AI pipeline that generates research ideas, writes code, runs experiments, analyzes results, writes full manuscripts, and submits papers without any human involvement. One of three AI-generated papers submitted to an ICLR workshop was accepted with an average peer-review score of 6.33. The paper's publication in Nature signals that AI-generated research has crossed from curiosity into institutionally recognized, peer-reviewed science.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via Nature</span>
+          <a href="https://www.nature.com/articles/s41586-026-10265-5" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-06-ai-cuts-mri-scan-time-61-percent-amsterdam"
+        data-category="Research Breakthroughs"
+        data-source="NL Times">
+        <span class="story-category category-research">Research Breakthroughs</span>
+        <h2 class="story-headline">AI Cuts MRI Scan Time 61% at Amsterdam Cancer Center — From 23 Minutes to 9</h2>
+        <p class="story-lede">Amsterdam's Antoni van Leeuwenhoek cancer center deployed AI software that reconstructs MRI images from partial scanner data, reducing scan time from 23 minutes to 9 — a 61% reduction. Shorter acquisitions reduce motion artifacts, and the hospital reports actual image quality improvements alongside a significant increase in scanner throughput. Radiologist Doenja Lambregts described the AI as calculating what should be visible from incomplete measurements.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via NL Times</span>
+          <a href="https://nltimes.nl/2026/04/05/ai-cuts-mri-scan-time-23-9-minutes-amsterdam-cancer-center" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-06-ai-hallucinated-citations-contaminating-science"
+        data-category="Research Breakthroughs"
+        data-source="Nature">
+        <span class="story-category category-research">Research Breakthroughs</span>
+        <h2 class="story-headline">AI-Hallucinated Citations Are Contaminating Peer-Reviewed Science at Scale</h2>
+        <p class="story-lede">A Nature analysis found that tens of thousands of 2025 scientific publications may contain AI-hallucinated references — citations that appear plausible but point to papers that do not exist. Unlike ordinary citation errors, fabricated references are semantically coherent, making them invisible to conventional editorial screening and extremely difficult to retract at scale. Nature calls for mandatory AI disclosure in paper submissions, automated citation-validation tooling at journals, and systematic retraction pipelines.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via Nature</span>
+          <a href="https://www.nature.com/articles/d41586-026-00969-z" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="section-ornament">◆ ◆ ◆</div>
+
+  <!-- Model Releases & Updates section (remaining 2 items after lead) -->
+  <section class="digest-section">
+    <header class="section-header section-model">
+      <span class="section-label">Model Releases &amp; Updates</span>
+      <div class="section-rule"></div>
+    </header>
+
+    <div class="stories-1col">
+      <article class="story-item"
+        data-story-id="2026-04-06-microsoft-mai-enterprise-models-released"
+        data-category="Model Releases &amp; Updates"
+        data-source="Microsoft AI">
+        <span class="story-category category-model-releases">Model Releases &amp; Updates</span>
+        <h2 class="story-headline">Microsoft Releases Three Proprietary MAI Enterprise Models: Transcription, Voice, and Image Generation</h2>
+        <p class="story-lede">Microsoft AI unveiled MAI-Transcribe-1 (speech-to-text in 25 languages, 2.5× faster batch than Azure), MAI-Voice-1 (text-to-speech at 60 seconds of audio per second, $22/M characters), and MAI-Image-2 (2× faster image generation at $5/M input tokens) — all available through Azure Foundry with enterprise safety controls. The models compete directly with ElevenLabs, Google, and Stability AI across core media generation modalities, positioning Microsoft as a full-stack enterprise AI media provider rather than just a text-generation platform.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via Microsoft AI</span>
+          <a href="https://microsoft.ai/news/today-were-announcing-3-new-world-class-mai-models-available-in-foundry/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-06-arcee-trinity-large-thinking-ranks-2-pinchbench"
+        data-category="Model Releases &amp; Updates"
+        data-source="Arcee AI">
+        <span class="story-category category-model-releases">Model Releases &amp; Updates</span>
+        <h2 class="story-headline">Arcee AI's Trinity-Large-Thinking: Open-Source Reasoning Model Ranks #2 on PinchBench at $0.90/M Tokens</h2>
+        <p class="story-lede">Arcee AI released Trinity-Large-Thinking under Apache 2.0, a reasoning-focused model trained on 2,048 NVIDIA B300 GPUs that ranks second only to Claude Opus-4.6 on PinchBench — a comprehensive agentic and multi-turn tool-calling benchmark — at $0.90 per million output tokens, roughly 96% cheaper than comparable frontier models. Its predecessor served 3.37 trillion tokens in two months on OpenRouter, making it the most-used open model in the U.S. The release makes frontier-class reasoning accessible without vendor lock-in or proprietary licensing constraints.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via Arcee AI</span>
+          <a href="https://www.arcee.ai/blog/trinity-large-thinking" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Tools & Open Source section (4 items → 2-column) -->
+  <section class="digest-section">
+    <header class="section-header section-tools">
+      <span class="section-label">Tools &amp; Open Source</span>
+      <div class="section-rule"></div>
+    </header>
+
+    <div class="stories-2col">
+      <article class="story-item"
+        data-story-id="2026-04-06-gemma-4-runs-iphone-google-ai-edge-gallery-ios"
+        data-category="Tools &amp; Open Source"
+        data-source="Google / Apple App Store">
+        <span class="story-category category-tools">Tools &amp; Open Source</span>
+        <h2 class="story-headline">Gemma 4 Runs Natively on iPhone — Google AI Edge Gallery App Now on iOS</h2>
+        <p class="story-lede">Google's Gemma 4 multimodal models are now running directly on iPhones via the Google AI Edge Gallery iOS app, enabling fully on-device inference without data leaving the user's hardware. The 2.3B and 4.5B Efficient variants run in real time on iPhone 15 Pro and M-series iPad hardware. The deployment validates that Apache 2.0 frontier multimodal models can operate at the edge — a significant milestone for privacy-preserving, latency-free AI applications.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via Google / App Store</span>
+          <a href="https://apps.apple.com/nl/app/google-ai-edge-gallery/id6749645337" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-06-claude-code-security-plaintext-storage-malware"
+        data-category="Tools &amp; Open Source"
+        data-source="GitHub / CybersecurityNews">
+        <div class="alert-tag">Security Alert</div>
+        <span class="story-category category-alert">Tools &amp; Open Source</span>
+        <h2 class="story-headline">Claude Code Security Alert: Plaintext Session Storage and Malware Campaigns from Leaked Source Code</h2>
+        <p class="story-lede">Two simultaneous Claude Code security disclosures: a GitHub issue revealed all session history — including secrets passed through tool calls — is stored as unencrypted plaintext in ~/.claude/projects/ with zero user notification; and attackers weaponized Anthropic's March 31 npm leak to distribute Vidar (credential-stealing infostealer) and GhostSocks (SOCKS proxy malware) via trojanized packages. Users of Claude Code should audit their ~/.claude/ directory for sensitive data and verify package integrity.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via GitHub / CybersecurityNews</span>
+          <a href="https://github.com/anthropics/claude-code/issues/43675" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-06-chatgpt-app-integrations-doordash-spotify-uber"
+        data-category="Tools &amp; Open Source"
+        data-source="TechCrunch">
+        <span class="story-category category-tools">Tools &amp; Open Source</span>
+        <h2 class="story-headline">ChatGPT Launches Real App Integrations: DoorDash, Spotify, Uber, and More</h2>
+        <p class="story-lede">OpenAI launched first-party app integrations in ChatGPT that allow the assistant to execute real actions inside external services — placing food orders via DoorDash, controlling Spotify playback, booking Uber rides — without leaving the chat interface. Unlike previous read-only plugins, these integrations perform write actions on the user's behalf. The move marks ChatGPT's transition from conversational tool to agentic platform, competing directly with Amazon's Alexa+ agentic commerce model.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via TechCrunch</span>
+          <a href="https://techcrunch.com/2026/04/06/how-to-use-chatgpt-apps-doordash-spotify-uber/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-06-codex-per-token-pricing-four-tier-rate-card"
+        data-category="Tools &amp; Open Source"
+        data-source="OpenAI">
+        <span class="story-category category-tools">Tools &amp; Open Source</span>
+        <h2 class="story-headline">OpenAI Codex Switches to Per-Token Pricing with Four-Tier Rate Card</h2>
+        <p class="story-lede">OpenAI restructured Codex from per-message to per-API-token pricing, publishing a rate card across four model tiers ranging from $0.25/M input tokens (gpt-5.1-codex-mini) to $14/M output tokens (gpt-5.3-codex). A typical coding session is estimated at $0.50–$2.00 at API rates, making the API cheaper than a $20/month Plus subscription for lighter users. The change gives developers predictable per-request cost control and aligns Codex with standard API economics across the OpenAI platform.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via OpenAI</span>
+          <a href="https://help.openai.com/en/articles/20001106-codex-rate-card" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <span class="footer-brand">Signal</span>
+  <span class="footer-note">Generated by ai-digest + page-creator agents · Pi 1</span>
+</footer>
+
+<script>
+(function () {
+  const digestDate = document.querySelector('meta[name="signal-date"]')?.content || '';
+
+  function slugify(text) {
+    return String(text).toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60);
+  }
+
+  function makeArticleId(storyId, date) {
+    if (storyId.includes(date)) return storyId;
+    return `${date}-${slugify(storyId)}`;
+  }
+
+  async function attachLikeButtons() {
+    const stories = document.querySelectorAll('[data-story-id]');
+    if (!stories.length) return;
+
+    const fetches = Array.from(stories).map(async (el) => {
+      const rawId    = el.getAttribute('data-story-id');
+      const id       = makeArticleId(rawId, digestDate);
+      const category = el.getAttribute('data-category') || '';
+      const source   = el.getAttribute('data-source') || '';
+      const liked    = localStorage.getItem(`liked:${id}`) === '1';
+
+      let count = 0;
+      try {
+        const r = await fetch(`/api/like?article_id=${encodeURIComponent(id)}`);
+        if (r.ok) ({ count } = await r.json());
+      } catch {}
+
+      const btn = document.createElement('button');
+      btn.className = 'story-like-btn' + (liked ? ' liked' : '');
+      btn.setAttribute('aria-label', 'Like this story');
+      btn.innerHTML = `<span class="like-icon">${liked ? '♥' : '♡'}</span>`
+                    + `<span class="like-count">${count > 0 ? count : ''}</span>`;
+
+      btn.addEventListener('click', async () => {
+        if (localStorage.getItem(`liked:${id}`) === '1') return;
+        localStorage.setItem(`liked:${id}`, '1');
+        btn.classList.add('liked');
+        btn.querySelector('.like-icon').textContent = '♥';
+        btn.classList.add('pop');
+        setTimeout(() => btn.classList.remove('pop'), 200);
+        try {
+          const r = await fetch('/api/like', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ article_id: id, category, source }),
+          });
+          if (r.ok) {
+            const data = await r.json();
+            btn.querySelector('.like-count').textContent = data.count > 0 ? data.count : '';
+          }
+        } catch {}
+      });
+
+      el.appendChild(btn);
+    });
+
+    await Promise.all(fetches);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachLikeButtons);
+  } else {
+    attachLikeButtons();
+  }
+})();
+</script>
+</body>
+</html>
