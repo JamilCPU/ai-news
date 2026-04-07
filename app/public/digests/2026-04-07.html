@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="signal-date" content="APR 7, 2026">
+  <meta name="signal-title" content="The Productivity Paradox">
+  <meta name="signal-overview" content="April 5–6 was dominated by industry moves and research rather than model drops. The biggest headline: Anthropic's annualized revenue surpassed $30 billion — up from ~$9B at end of 2025 — and the company inked a deal with Google and Broadcom for multiple gigawatts of TPU capacity coming online in 2027. OpenAI made waves with a policy white paper proposing robot taxes, public wealth funds, and four-day workweeks to address AI-driven economic disruption — striking coming from the company most responsible for accelerating it. On the research front, three papers exposed fundamental limits to current AI productivity and scaling.">
+  <meta name="signal-items" content="10">
+  <title>The Productivity Paradox — SIGNAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #060a10;
+      --bg2:      #090e18;
+      --surface:  #0d1525;
+      --surface2: #111e33;
+      --border:   #1a2a42;
+      --border2:  #243550;
+      --text:     #dce8f8;
+      --text2:    #7a90b4;
+      --text3:    #3d5270;
+      --lime:     #c4ff3c;
+      --blue:     #2d7fff;
+      --purple:   #9b6fff;
+      --orange:   #ff8c42;
+      --red:      #ff4560;
+      --teal:     #00d4aa;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Literata', Georgia, serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        radial-gradient(circle at 70% 30%, rgba(155,111,255,.04) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-5 5L5-5M35 45L45 35' stroke='%231a2a42' stroke-width='.5' opacity='.4'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    .scan-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      animation: scan 4s ease-in-out infinite; z-index: 100;
+    }
+    @keyframes scan {
+      0% { transform: translateX(-100%); opacity: 0; }
+      20% { opacity: 1; } 80% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+    .site-header {
+      position: relative; z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,10,16,.92);
+      backdrop-filter: blur(12px);
+      padding: 0 clamp(16px,4vw,48px);
+    }
+    .header-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-wordmark {
+      font-family: var(--font-head); font-weight: 800; font-size: 18px;
+      letter-spacing: 0.12em; color: var(--text); text-transform: uppercase;
+    }
+    .logo-wordmark span { color: var(--lime); }
+    .back-link {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text3); text-decoration: none;
+      border: 1px solid var(--border2); padding: 6px 14px; border-radius: 2px;
+      transition: color .2s, border-color .2s;
+    }
+    .back-link:hover { color: var(--lime); border-color: var(--lime); }
+    .digest-bar {
+      position: relative; z-index: 1;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: baseline;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .digest-bar-date {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime);
+    }
+    .digest-bar-title {
+      font-family: var(--font-head); font-weight: 700; font-size: 20px;
+      color: var(--text); flex: 1;
+    }
+    .digest-bar-count {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); letter-spacing: 0.1em;
+    }
+    .digest-content {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: clamp(32px,5vw,64px) clamp(16px,4vw,48px);
+    }
+    .site-footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand {
+      font-family: var(--font-head); font-weight: 800; font-size: 13px;
+      letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase;
+    }
+    .footer-note {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text3);
+    }
+    .story-like-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: none; border: 1px solid var(--border2);
+      color: var(--text3); cursor: pointer;
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 2px;
+      transition: color .15s, border-color .15s, transform .1s;
+      margin-top: 12px;
+      user-select: none;
+    }
+    .story-like-btn:hover { color: var(--red); border-color: var(--red); }
+    .story-like-btn.liked {
+      color: var(--red); border-color: rgba(255,69,96,.4);
+      background: rgba(255,69,96,.06);
+    }
+    .story-like-btn .like-icon { font-size: 12px; line-height: 1; }
+    .story-like-btn.pop { transform: scale(1.15); }
+    .story-like-btn .like-count { min-width: 10px; }
+
+    /* ── AGENT STYLES ── */
+
+    /* Stats ticker */
+    .stats-ticker {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 8px 0;
+      margin-bottom: 40px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--text3);
+      white-space: nowrap;
+    }
+    .ticker-track {
+      display: inline-block;
+      animation: ticker 28s linear infinite;
+    }
+    .ticker-track .tick-item { margin-right: 48px; }
+    .ticker-track .tick-num { color: var(--lime); font-weight: 600; }
+    .ticker-track .tick-sep { color: var(--border2); margin: 0 4px; }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Overview */
+    .digest-overview {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .overview-text {
+      font-family: var(--font-body);
+      font-size: clamp(15px, 2vw, 18px);
+      font-style: italic;
+      color: var(--text2);
+      line-height: 1.75;
+      max-width: 780px;
+    }
+    .overview-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 14px;
+    }
+
+    /* Lead story */
+    .lead-story {
+      position: relative;
+      margin-bottom: 48px;
+      padding: 40px 40px 40px 0;
+      border-left: 4px solid var(--blue);
+      padding-left: 32px;
+      overflow: hidden;
+    }
+    .lead-story::before {
+      content: 'NEW MODEL';
+      position: absolute;
+      top: 50%;
+      right: -20px;
+      transform: translateY(-50%) rotate(-8deg);
+      font-family: var(--font-head);
+      font-size: 140px;
+      font-weight: 800;
+      color: var(--blue);
+      opacity: 0.03;
+      pointer-events: none;
+      white-space: nowrap;
+      letter-spacing: -4px;
+    }
+    .category-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .category-model-releases { color: var(--blue); }
+    .category-research { color: var(--purple); }
+    .category-industry { color: var(--orange); }
+    .category-tools { color: var(--teal); }
+
+    .lead-headline {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 50px);
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+      max-width: 820px;
+    }
+    .lead-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(15px, 1.8vw, 18px);
+      line-height: 1.75;
+      color: var(--text2);
+      max-width: 720px;
+      margin-bottom: 20px;
+    }
+    .story-source {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text3);
+      letter-spacing: 0.1em;
+    }
+    .story-source a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+    .story-source a:hover { text-decoration: underline; }
+
+    /* Section divider */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* Pull quote */
+    .pull-quote {
+      border-left: 4px solid var(--purple);
+      padding: 24px 32px;
+      margin: 48px 0;
+      background: rgba(155,111,255,0.04);
+    }
+    .pull-quote p {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(20px, 2.5vw, 28px);
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .pull-quote cite {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 14px;
+      font-style: normal;
+    }
+
+    /* Section header */
+    .digest-section {
+      margin-bottom: 56px;
+    }
+    .section-header {
+      border-top: 3px solid var(--border2);
+      padding-top: 14px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-header.model-section { border-top-color: var(--blue); }
+    .section-header.research-section { border-top-color: var(--purple); }
+    .section-header.industry-section { border-top-color: var(--orange); }
+    .section-header.tools-section { border-top-color: var(--teal); }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-count {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+    }
+
+    /* Stories grid */
+    .stories-grid { display: grid; gap: 0; }
+    .stories-2col { grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+    .stories-1col { grid-template-columns: 1fr; }
+
+    /* Story card */
+    .story-item {
+      padding: 24px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .stories-2col .story-item {
+      background: var(--surface);
+      border-bottom: none;
+    }
+    .story-category {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .story-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .story-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text2);
+      margin-bottom: 14px;
+    }
+    .story-footer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .story-source-name {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.1em;
+    }
+    .story-link {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--blue);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      border: 1px solid rgba(45,127,255,0.3);
+      padding: 3px 8px;
+    }
+    .story-link:hover { background: rgba(45,127,255,0.08); }
+
+    /* Research section special treatment */
+    .research-bg {
+      position: relative;
+    }
+    .research-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Cpath d='M0 0h30v30H0z' fill='none'/%3E%3Cpath d='M0 0h30M0 30h30M0 0v30M30 0v30' stroke='%239b6fff' stroke-width='.3' opacity='.15'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .research-bg .stories-2col {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Stat callout */
+    .stat-callout {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin: 28px 0;
+    }
+    .stat-item {
+      background: var(--surface);
+      padding: 20px 24px;
+      text-align: center;
+    }
+    .stat-number {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 44px);
+      color: var(--purple);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text3);
+      line-height: 1.4;
+    }
+
+    /* Ornament divider */
+    .ornament-divider {
+      text-align: center;
+      font-size: 18px;
+      color: var(--text3);
+      letter-spacing: 12px;
+      margin: 48px 0;
+      user-select: none;
+    }
+
+    /* Anthropic revenue featured block */
+    .featured-industry {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-left: 4px solid var(--orange);
+      padding: 32px;
+      margin-bottom: 1px;
+    }
+    .featured-industry .story-headline {
+      font-size: clamp(20px, 2.5vw, 28px);
+    }
+
+    /* Single story large format */
+    .stories-1col .story-item {
+      padding: 28px 0;
+      background: transparent;
+      border-bottom: 1px solid var(--border);
+    }
+    .stories-1col .story-item:last-child {
+      border-bottom: none;
+    }
+    .stories-1col .story-headline {
+      font-size: clamp(18px, 2.2vw, 24px);
+    }
+    .stories-1col .story-lede {
+      font-size: 16px;
+      max-width: 720px;
+    }
+
+    @media (max-width: 640px) {
+      .stories-2col { grid-template-columns: 1fr; }
+      .stat-callout { grid-template-columns: 1fr; }
+      .lead-story { padding-left: 20px; }
+      .lead-story::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="scan-bar"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+        <path d="M4 16 L10 8 L14 20 L18 6 L22 18 L26 12 L28 16" stroke="#c4ff3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-wordmark">SIGN<span>A</span>L</span>
+    </a>
+    <a href="/" class="back-link">← All Digests</a>
+  </div>
+</header>
+
+<div class="digest-bar">
+  <span class="digest-bar-date">APR 7, 2026</span>
+  <span class="digest-bar-title">The Productivity Paradox</span>
+  <span class="digest-bar-count">10 items</span>
+</div>
+
+<div class="digest-content">
+
+  <!-- Stats ticker -->
+  <div class="stats-ticker">
+    <span class="ticker-track">
+      <span class="tick-item">ANTHROPIC ARR <span class="tick-num">$30B</span><span class="tick-sep">·</span>UP FROM $9B IN DEC 2025</span>
+      <span class="tick-item">IDEATION BOTTLENECK <span class="tick-num">71%</span><span class="tick-sep">·</span>OF AI RESEARCH QUALITY GAP IS IDEA GENERATION</span>
+      <span class="tick-item">AUGMENTATION TRAP <span class="tick-sep">·</span>AI TOOLS MAY ERODE THE EXPERTISE THEY AUGMENT</span>
+      <span class="tick-item">COMPRESSION GAP <span class="tick-sep">·</span>ENCODER UPGRADE = <span class="tick-num">+21PP</span> WITH CONTINUOUS ACTIONS, ~0 WITH DISCRETE</span>
+      <span class="tick-item">BINARY QUESTIONS <span class="tick-num">10</span><span class="tick-sep">·</span>BRIDGE <span class="tick-num">23–72%</span> OF SMALL VS LARGE LLM GAP</span>
+      <span class="tick-item">OPENAI ALUMNI FUND <span class="tick-num">$100M</span><span class="tick-sep">·</span>"ZERO SHOT" VC ALREADY DEPLOYING</span>
+      <span class="tick-item">ANTHROPIC ARR <span class="tick-num">$30B</span><span class="tick-sep">·</span>UP FROM $9B IN DEC 2025</span>
+      <span class="tick-item">IDEATION BOTTLENECK <span class="tick-num">71%</span><span class="tick-sep">·</span>OF AI RESEARCH QUALITY GAP IS IDEA GENERATION</span>
+      <span class="tick-item">AUGMENTATION TRAP <span class="tick-sep">·</span>AI TOOLS MAY ERODE THE EXPERTISE THEY AUGMENT</span>
+      <span class="tick-item">COMPRESSION GAP <span class="tick-sep">·</span>ENCODER UPGRADE = <span class="tick-num">+21PP</span> WITH CONTINUOUS ACTIONS, ~0 WITH DISCRETE</span>
+      <span class="tick-item">BINARY QUESTIONS <span class="tick-num">10</span><span class="tick-sep">·</span>BRIDGE <span class="tick-num">23–72%</span> OF SMALL VS LARGE LLM GAP</span>
+      <span class="tick-item">OPENAI ALUMNI FUND <span class="tick-num">$100M</span><span class="tick-sep">·</span>"ZERO SHOT" VC ALREADY DEPLOYING</span>
+    </span>
+  </div>
+
+  <!-- Overview -->
+  <div class="digest-overview">
+    <p class="overview-text">April 5–6 was dominated by industry moves and research rather than model drops. The biggest headline: Anthropic's annualized revenue surpassed $30 billion — up from ~$9B at end of 2025 — and the company inked a deal with Google and Broadcom for multiple gigawatts of TPU capacity coming online in 2027. OpenAI made waves with a policy white paper proposing robot taxes, public wealth funds, and four-day workweeks to address AI-driven economic disruption — striking coming from the company most responsible for accelerating it. On the research front, three papers exposed fundamental limits to current AI productivity and scaling: the 'Ideation Bottleneck' shows AI research quality gaps are mostly about creativity, not execution; the 'Augmentation Trap' proves AI tools can erode the very expertise they appear to augment; and the 'Compression Gap' reveals why upgrading robot AI vision encoders often fails.</p>
+    <div class="overview-meta">APR 7, 2026 · 10 stories across 4 categories</div>
+  </div>
+
+  <!-- Lead story: Google Gemma offline iOS -->
+  <section class="lead-story"
+    data-story-id="2026-04-07-google-gemma-offline-ai-dictation-app-ios"
+    data-category="Model Releases & Updates"
+    data-source="TechCrunch">
+    <div class="category-tag category-model-releases">Model Releases &amp; Updates</div>
+    <h1 class="lead-headline">Google Deploys Gemma On-Device in First Offline AI Dictation App for iOS</h1>
+    <p class="lead-lede">Google quietly released an offline-first AI dictation app for iOS powered by Gemma models running entirely on-device — no internet connection required. The app competes with tools like Whisper Flow and addresses privacy concerns around cloud-based transcription, with all processing staying on the phone. It marks Gemma's first significant consumer deployment as a standalone product, signaling a strategic push to make Google's open models the default engine for privacy-first on-device AI applications.</p>
+    <div class="story-source">Via <a href="https://techcrunch.com/2026/04/06/google-quietly-releases-an-offline-first-ai-dictation-app-on-ios/" target="_blank" rel="noopener">TechCrunch ↗</a></div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- Pull quote from Ideation Bottleneck -->
+  <blockquote class="pull-quote">
+    <p>"Fewer than 1% of AI papers matched median human performance on both idea quality and execution simultaneously."</p>
+    <cite>— The Ideation Bottleneck · ArXiv 2604.03338</cite>
+  </blockquote>
+
+  <!-- Research section stat callout -->
+  <div class="stat-callout">
+    <div class="stat-item">
+      <div class="stat-number">71%</div>
+      <div class="stat-label">of quality gap is<br>ideation, not execution</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">74%</div>
+      <div class="stat-label">of AI papers use<br>difference-in-differences</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">10</div>
+      <div class="stat-label">binary questions bridge<br>23–72% of LLM capability gap</div>
+    </div>
+  </div>
+
+  <!-- Research section -->
+  <section class="digest-section research-bg">
+    <header class="section-header research-section">
+      <span class="section-label">Research Breakthroughs</span>
+      <span class="section-count">4 papers</span>
+    </header>
+    <div class="stories-grid stories-2col">
+
+      <article class="story-item"
+        data-story-id="2026-04-07-ideation-bottleneck-ai-research-quality-gap"
+        data-category="Research Breakthroughs"
+        data-source="ArXiv">
+        <div class="story-category category-research">Research Breakthroughs</div>
+        <h2 class="story-headline">The Ideation Bottleneck: AI Research Papers Are Executed Well But Conceived Poorly</h2>
+        <p class="story-lede">A study of 953 papers found the quality gap between AI and human research is overwhelmingly about idea generation (71%), not execution. Human papers scored 47.1% 'exceptional' on ideas vs. 16.5% for AI, while execution gaps were far smaller. AI papers show striking methodological homogeneity — 74% use difference-in-differences — and fewer than 1% matched median human performance on both dimensions simultaneously.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via ArXiv</span>
+          <a href="https://arxiv.org/abs/2604.03338" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-07-augmentation-trap-ai-productivity-deskilling"
+        data-category="Research Breakthroughs"
+        data-source="ArXiv">
+        <div class="story-category category-research">Research Breakthroughs</div>
+        <h2 class="story-headline">The Augmentation Trap: AI Productivity Gains Can Destroy the Expertise They Depend On</h2>
+        <p class="story-lede">Experimental and theoretical evidence that AI productivity tools can leave workers worse off long-term — even when adoption is individually rational. The mechanism is 'cognitive offloading': AI handles tasks workers would otherwise practice, eroding underlying expertise. Workers with low expertise-dependence may permanently deskill; experienced workers are more insulated. Enterprises should treat skill preservation as an active design constraint.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via ArXiv</span>
+          <a href="https://arxiv.org/abs/2604.03501" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-07-compression-gap-robot-vision-encoder-scaling"
+        data-category="Research Breakthroughs"
+        data-source="ArXiv">
+        <div class="story-category category-research">Research Breakthroughs</div>
+        <h2 class="story-headline">The Compression Gap: Why Scaling Robot AI With a Better Camera Often Fails</h2>
+        <p class="story-lede">A paper on vision-language-action models identifies a 'Compression Gap': scaling only works at the actual bottleneck. Upgrading the vision encoder improved performance by 21+ percentage points with continuous action representations, but yielded almost no benefit with discrete action tokenization — the bottleneck was the codebook's capacity, not the camera. For robotics teams evaluating compute budgets, this framework helps avoid expensive wrong-bottleneck investments.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via ArXiv</span>
+          <a href="https://arxiv.org/abs/2604.03191" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-07-ten-binary-questions-bridge-small-large-llm-gap"
+        data-category="Research Breakthroughs"
+        data-source="ArXiv">
+        <div class="story-category category-research">Research Breakthroughs</div>
+        <h2 class="story-headline">Ten Binary Questions Bridge 23–72% of the Gap Between Small and Large Language Models</h2>
+        <p class="story-lede">A new compression paper introduces a 'Question-Asking' protocol — inspired by Twenty Questions — where a small model iteratively queries a larger model with yes/no questions (1 bit per answer). With just 10 binary questions, the small model recovers 23–72% of the capability gap on standard benchmarks. The technique achieves compression ratios of 0.0006–0.004, more than 100x smaller than prior LLM-based methods, with applications in model distillation and distributed inference.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via ArXiv</span>
+          <a href="https://arxiv.org/abs/2604.02343" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+    </div>
+  </section>
+
+  <div class="ornament-divider">◆ ◆ ◆</div>
+
+  <!-- Industry section -->
+  <section class="digest-section">
+    <header class="section-header industry-section">
+      <span class="section-label">Industry &amp; Business</span>
+      <span class="section-count">4 stories</span>
+    </header>
+
+    <!-- Anthropic $30B featured -->
+    <article class="featured-industry"
+      data-story-id="2026-04-07-anthropic-30b-run-rate-google-broadcom-tpu"
+      data-category="Industry & Business"
+      data-source="Anthropic">
+      <div class="story-category category-industry">Industry &amp; Business</div>
+      <h2 class="story-headline">Anthropic Hits $30B Run-Rate Revenue, Locks In Multi-Gigawatt Compute With Google and Broadcom</h2>
+      <p class="story-lede">Anthropic's annualized run-rate revenue has surpassed $30 billion — up from approximately $9 billion at end of 2025 — and the company signed a new agreement with Google and Broadcom for multiple gigawatts of next-generation TPU capacity expected online starting in 2027. More than 1,000 business customers now spend $1 million or more annually with Anthropic, a figure that doubled in under two months. The numbers underscore how quickly enterprise AI spending is concentrating: a handful of frontier model providers are now operating at revenue scales that rival the largest cloud services.</p>
+      <div class="story-source" style="margin-top:14px;">Via <a href="https://www.anthropic.com/news/google-broadcom-partnership-compute" target="_blank" rel="noopener">Anthropic ↗</a></div>
+    </article>
+
+    <div class="stories-grid stories-2col" style="margin-top:1px;">
+
+      <article class="story-item"
+        data-story-id="2026-04-07-openai-robot-taxes-wealth-funds-four-day-week"
+        data-category="Industry & Business"
+        data-source="TechCrunch">
+        <div class="story-category category-industry">Industry &amp; Business</div>
+        <h2 class="story-headline">OpenAI Proposes Robot Taxes, Public Wealth Funds, and a Four-Day Workweek for the AI Era</h2>
+        <p class="story-lede">OpenAI published a comprehensive economic policy framework advocating for AI profit taxation, government-managed public wealth funds funded by those levies, expanded safety nets, and shorter workweeks to redistribute employment. The proposals arrive as OpenAI advances toward AGI — and are notable precisely because they come from the company most directly accelerating the disruption it proposes to mitigate. The lab may prefer to help design the social architecture before having it imposed.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via TechCrunch</span>
+          <a href="https://techcrunch.com/2026/04/06/openais-vision-for-the-ai-economy-public-wealth-funds-robot-taxes-and-a-four-day-work-week/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-07-openai-alumni-zero-shot-vc-fund-100m"
+        data-category="Industry & Business"
+        data-source="TechCrunch">
+        <div class="story-category category-industry">Industry &amp; Business</div>
+        <h2 class="story-headline">OpenAI Alumni Are Quietly Raising a $100M 'Zero Shot' VC Fund</h2>
+        <p class="story-lede">Former OpenAI employees have been deploying capital from a new venture fund called Zero Shot, targeting approximately $100 million for its inaugural vehicle — already investing despite maintaining a low public profile. Zero Shot joins a cluster of OpenAI alumni-backed funds creating an informal investment network with direct access to the most in-demand founders and technical talent in AI. For startups in the space, relationships with this network increasingly function as a pre-seed filter.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via TechCrunch</span>
+          <a href="https://techcrunch.com/2026/04/06/openai-alums-have-been-quietly-investing-from-a-new-potentially-100m-fund/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+    </div>
+
+    <!-- Japan robots — single col below -->
+    <div class="stories-grid stories-1col" style="margin-top:0;">
+      <article class="story-item"
+        data-story-id="2026-04-07-japan-robots-fill-vacant-jobs-not-displace-workers"
+        data-category="Industry & Business"
+        data-source="TechCrunch">
+        <div class="story-category category-industry">Industry &amp; Business</div>
+        <h2 class="story-headline">Japan's Robot Deployments Fill Jobs Nobody Wants — Not Jobs People Have</h2>
+        <p class="story-lede">Japan is accelerating physical AI deployments into live commercial operations, but the dynamic is structurally different from Western displacement narratives: robots are filling chronically vacant positions caused by demographic decline and an aging population, not displacing employed workers. Investors including Salesforce Ventures, Woven Capital, and Global Brain are backing the shift from lab to field. The Japanese model offers a valuable reference point: what productive human-robot coexistence looks like in practice, and why 'labor shortage' contexts produce different adoption incentives than 'productivity gain' contexts.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via TechCrunch</span>
+          <a href="https://techcrunch.com/2026/04/05/japan-is-proving-experimental-physical-ai-is-ready-for-the-real-world/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+  <!-- Tools section -->
+  <section class="digest-section">
+    <header class="section-header tools-section">
+      <span class="section-label">Tools &amp; Open Source</span>
+      <span class="section-count">1 item</span>
+    </header>
+    <div class="stories-grid stories-1col">
+      <article class="story-item"
+        data-story-id="2026-04-07-ai-coding-agent-architecture-taxonomy-source-code"
+        data-category="Tools & Open Source"
+        data-source="ArXiv">
+        <div class="story-category category-tools">Tools &amp; Open Source</div>
+        <h2 class="story-headline">First Source-Code Taxonomy of AI Coding Agent Architectures Published</h2>
+        <p class="story-lede">A new ArXiv paper presents the first systematic source-code taxonomy of coding agent architectures, analyzing the internal scaffold structure — the orchestration layer that wraps LLMs into coding tools — rather than just benchmark performance. The paper categorizes architectural patterns across production coding agents and identifies the structural decisions that determine capability boundaries. For developers building or evaluating AI coding agents, this taxonomy provides a principled vocabulary for comparing systems and a framework for diagnosing limitations.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via ArXiv</span>
+          <a href="https://arxiv.org/abs/2604.03515" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <span class="footer-brand">Signal</span>
+  <span class="footer-note">Generated by ai-digest + page-creator agents · Pi 1</span>
+</footer>
+
+<script>
+(function () {
+  const digestDate = document.querySelector('meta[name="signal-date"]')?.content || '';
+
+  function slugify(text) {
+    return String(text).toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60);
+  }
+
+  function makeArticleId(storyId, date) {
+    if (storyId.includes('2026-04-07')) return storyId;
+    return `2026-04-07-${slugify(storyId)}`;
+  }
+
+  async function attachLikeButtons() {
+    const stories = document.querySelectorAll('[data-story-id]');
+    if (!stories.length) return;
+
+    const fetches = Array.from(stories).map(async (el) => {
+      const rawId    = el.getAttribute('data-story-id');
+      const id       = makeArticleId(rawId, '2026-04-07');
+      const category = el.getAttribute('data-category') || '';
+      const source   = el.getAttribute('data-source') || '';
+      const liked    = localStorage.getItem(`liked:${id}`) === '1';
+
+      let count = 0;
+      try {
+        const r = await fetch(`/api/like?article_id=${encodeURIComponent(id)}`);
+        if (r.ok) ({ count } = await r.json());
+      } catch {}
+
+      const btn = document.createElement('button');
+      btn.className = 'story-like-btn' + (liked ? ' liked' : '');
+      btn.setAttribute('aria-label', 'Like this story');
+      btn.innerHTML = `<span class="like-icon">${liked ? '♥' : '♡'}</span>`
+                    + `<span class="like-count">${count > 0 ? count : ''}</span>`;
+
+      btn.addEventListener('click', async () => {
+        if (localStorage.getItem(`liked:${id}`) === '1') return;
+        localStorage.setItem(`liked:${id}`, '1');
+        btn.classList.add('liked');
+        btn.querySelector('.like-icon').textContent = '♥';
+        btn.classList.add('pop');
+        setTimeout(() => btn.classList.remove('pop'), 200);
+        try {
+          const r = await fetch('/api/like', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ article_id: id, category, source }),
+          });
+          if (r.ok) {
+            const data = await r.json();
+            btn.querySelector('.like-count').textContent = data.count > 0 ? data.count : '';
+          }
+        } catch {}
+      });
+
+      el.appendChild(btn);
+    });
+
+    await Promise.all(fetches);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachLikeButtons);
+  } else {
+    attachLikeButtons();
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-04-07",
+    "title": "The Productivity Paradox",
+    "overview": "April 5–6 was dominated by industry moves and research rather than model drops. The biggest headline: Anthropic's annualized revenue surpassed $30 billion — up from ~$9B at end of 2025 — and the company inked a deal with Google and Broadcom for multiple gigawatts of TPU capacity coming online in 2027. OpenAI made waves with a policy white paper proposing robot taxes, public wealth funds, and four-day workweeks to address AI-driven economic disruption — striking coming from the company most responsible for accelerating it. On the research front, three papers exposed fundamental limits to current AI productivity and scaling.",
+    "item_count": 10,
+    "filename": "2026-04-07.html"
+  },
+  {
     "date": "2026-04-06",
     "title": "Hard Down",
     "overview": "AI infrastructure entered a new era of kinetic risk this week: Iranian missiles physically destroyed AWS data center zones in Bahrain and the UAE — disrupting Gulf banks and cloud services — while IRGC generals publicly threatened OpenAI's $30B Stargate facility in Abu Dhabi with satellite imagery of the site. The Claude Code ecosystem faced compounding security pressure: Anthropic's March 31 source code leak is now being weaponized to distribute credential-stealing malware, and a separate disclosure revealed Claude Code silently stores all session history — including secrets — as unencrypted plaintext on users' machines.",
