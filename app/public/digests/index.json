@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-04-26",
+    "title": "Levels × Laws",
+    "overview": "This period's research focus is squarely on agentic AI infrastructure and evaluation, with a landmark survey on world modeling for agents and multiple papers addressing the practical challenges of deploying AI systems at scale. The standout is \"Agentic World Modeling,\" a comprehensive framework that unifies 400+ works across model-based RL, video generation, web agents, and scientific discovery into a \"levels × laws\" taxonomy — the first systematic attempt to define what world models mean across different AI communities.",
+    "item_count": 10,
+    "filename": "2026-04-26.html"
+  },
+  {
     "date": "2026-04-07",
     "title": "The Productivity Paradox",
     "overview": "April 5–6 was dominated by industry moves and research rather than model drops. The biggest headline: Anthropic's annualized revenue surpassed $30 billion — up from ~$9B at end of 2025 — and the company inked a deal with Google and Broadcom for multiple gigawatts of TPU capacity coming online in 2027. OpenAI made waves with a policy white paper proposing robot taxes, public wealth funds, and four-day workweeks to address AI-driven economic disruption — striking coming from the company most responsible for accelerating it. On the research front, three papers exposed fundamental limits to current AI productivity and scaling.",
@@ -23,35 +30,35 @@
   {
     "date": "2026-04-01",
     "title": "Capital Without Ceiling",
-    "overview": "OpenAI closed the largest private fundraise in tech history — $122 billion at an $852 billion valuation, led by Amazon, Nvidia, and SoftBank, including $3 billion from retail investors. The capital arms race extended across the sector: Mistral raised $830M in debt to build a sovereign AI data center near Paris, South Korean chip startup Rebellions pulled in $400M pre-IPO, and Qodo and ScaleOps raised $70M and $130M respectively. On the model front, H Company's Holo3 set a new SOTA on the OSWorld computer-use benchmark at 78.85%, IBM dropped Granite 4.0 3B Vision for enterprise document intelligence, and Hugging Face shipped TRL v1.0.",
+    "overview": "OpenAI closed the largest private fundraise in tech history — $122 billion at an $852 billion valuation, led by Amazon, Nvidia, and SoftBank, including $3 billion from retail investors. The capital arms race extended across the sector: Mistral raised $830M in debt to build a sovereign AI data center near Paris, South Korean chip startup Rebellions pulled in $400M pre-IPO, and Qodo and ScaleOps raised $70M and $130M respectively.",
     "item_count": 14,
     "filename": "2026-04-01.html"
   },
   {
     "date": "2026-03-31",
     "title": "Trust Issues",
-    "overview": "Anthropic had an embarrassing week on operational security: the company accidentally exposed ~2,000 source code files and 512,000 lines of code in a Claude Code release packaging error — coming just days after nearly 3,000 internal files including a draft announcement of an unannounced model became publicly accessible. Research delivered strong theoretical grounding for AI safety practitioners: a formal proof that reward hacking is a structural equilibrium under any finite evaluation regime, a new metacognitive control framework that boosts MATH accuracy to 92.8% with no retraining, and MiroEval showing current deep research agents drop 3-10 points on multimodal tasks.",
+    "overview": "Anthropic had an embarrassing week on operational security: the company accidentally exposed ~2,000 source code files and 512,000 lines of code in a Claude Code release packaging error — coming just days after nearly 3,000 internal files including a draft announcement of an unannounced model became publicly accessible. Research delivered strong theoretical grounding for AI safety practitioners: a formal proof that reward hacking is a structural equilibrium under any finite evaluation regime, a new metacognitive control framework that boosts MATH accuracy to 92.8% with no retraining.",
     "item_count": 10,
     "filename": "2026-03-31.html"
   },
   {
     "date": "2026-03-30",
     "title": "Sora's Last Frame",
-    "overview": "This period's biggest story is OpenAI's abrupt shutdown of Sora and cancellation of a $1 billion Disney deal, as the company consolidates around AGI and robotics rather than entertainment media. Mistral countered with a major play in enterprise voice AI: Voxtral TTS, an open-weight model that runs on a laptop, beats ElevenLabs in human evaluations, and completes a full enterprise AI stack with no data leaving your servers. Google dropped two significant efficiency bets: TurboQuant, a training-free algorithm that cuts AI memory 6x and inference costs 50%+, and a $15 billion India infrastructure commitment paired with $60M in AI for government and science grants.",
+    "overview": "This period's biggest story is OpenAI's abrupt shutdown of Sora and cancellation of a $1 billion Disney deal, as the company consolidates around AGI and robotics rather than entertainment media. Mistral countered with a major play in enterprise voice AI: Voxtral TTS, an open-weight model that runs on a laptop, beats ElevenLabs in human evaluations, and completes a full enterprise AI stack with no data leaving your servers.",
     "item_count": 10,
     "filename": "2026-03-30.html"
   },
   {
     "date": "2026-03-29",
     "title": "The Model Wars Heat Up",
-    "overview": "March 2026 proved to be one of the densest months in AI history, with four frontier model releases compressed into a single 23-day window: GPT-5.4 (three variants), Gemini 3.1 Ultra, Grok 4.20, and Mistral Small 4. Agentic infrastructure hit a mainstream milestone as Anthropic's Model Context Protocol (MCP) crossed 97 million installs, signaling the protocol's permanent place in how AI agents are built. Enterprise adoption accelerated — 67% of Fortune 500 marketing budgets now include dedicated AI line items — while regulatory pressure intensified with the EU AI Act issuing its first formal inquiries and three US states passing AI transparency laws.",
+    "overview": "March 2026 proved to be one of the densest months in AI history, with four frontier model releases compressed into a single 23-day window: GPT-5.4 (three variants), Gemini 3.1 Ultra, Grok 4.20, and Mistral Small 4. Agentic infrastructure hit a mainstream milestone as Anthropic's Model Context Protocol (MCP) crossed 97 million installs, signaling the protocol's permanent place in how AI agents are built.",
     "item_count": 13,
     "filename": "2026-03-29.html"
   },
   {
     "date": "2026-03-28",
     "title": "Power, Policy, and the Physical World",
-    "overview": "The past two days were defined by AI's expanding role in physical infrastructure and national policy. Microsoft and NVIDIA announced a formal AI-for-nuclear collaboration that has already cut permitting timelines by 92% at Aalo Atomics, signaling that the energy bottleneck for AI data centers is being attacked at the source. On the policy front, the White House released its National Policy Framework for AI on March 20 — a four-page set of legislative recommendations urging Congress to preempt state-level AI laws and avoid heavy-handed regulation — while Democrats countered with the GUARDRAILS Act. Defense AI continued its funding sprint with Shield AI closing a $1.5B Series G at a $12.7B valuation after winning a U.S. Air Force drone contract, and Broadcom posted Q1 2026 AI chip revenue of $8.4B — up 106% YoY.",
+    "overview": "The past two days were defined by AI's expanding role in physical infrastructure and national policy. Microsoft and NVIDIA announced a formal AI-for-nuclear collaboration that has already cut permitting timelines by 92% at Aalo Atomics. On the policy front, the White House released its National Policy Framework for AI on March 20 — while Democrats countered with the GUARDRAILS Act. Defense AI continued its funding sprint with Shield AI closing a $1.5B Series G and Broadcom posting Q1 2026 AI chip revenue of $8.4B — up 106% YoY.",
     "item_count": 11,
     "filename": "2026-03-28.html"
   }
