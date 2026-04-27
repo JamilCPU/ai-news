@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="signal-date" content="APR 27, 2026">
+  <meta name="signal-title" content="$40 Billion and Counting">
+  <meta name="signal-overview" content="This period's defining story is Google's landmark $40 billion investment in Anthropic, the largest single financial commitment to an AI startup outside of Microsoft's OpenAI partnership. The deal — $10 billion immediately at a $350-380 billion valuation, with $30 billion contingent on performance milestones — locks in 5 gigawatts of dedicated TPU compute capacity over the next five years and deepens Google's strategic bet on frontier AI infrastructure. This follows Amazon's $5 billion investment earlier in April, underscoring how the AI race is increasingly defined by access to massive compute capacity. On the research front, SpikingBrain2.0 demonstrated that brain-inspired architectures can achieve 10x speedups on 4M-token contexts while supporting cross-platform execution on GPUs and neuromorphic hardware. SOLAR-RL introduced a semi-online reinforcement learning framework for GUI agents that reconstructs diverse rollout candidates from static data to simulate online feedback without interaction costs. MADE-IT proposed manifold-aware expert evolution for continual model merging, addressing the saturation-redundancy dilemma in existing approaches. A robust LLM-as-a-Judge framework for math reasoning evaluation showed clear improvements over symbolic comparison methods, addressing a critical evaluation gap.">
+  <meta name="signal-items" content="6">
+  <title>$40 Billion and Counting — SIGNAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&display=swap" rel="stylesheet">
+  <style>
+    /* ── Base vars (inherit from SIGNAL design system) ── */
+    :root {
+      --bg:       #060a10;
+      --bg2:      #090e18;
+      --surface:  #0d1525;
+      --surface2: #111e33;
+      --border:   #1a2a42;
+      --border2:  #243550;
+      --text:     #dce8f8;
+      --text2:    #7a90b4;
+      --text3:    #3d5270;
+      --lime:     #c4ff3c;
+      --blue:     #2d7fff;
+      --purple:   #9b6fff;
+      --orange:   #ff8c42;
+      --red:      #ff4560;
+      --teal:     #00d4aa;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Literata', Georgia, serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        radial-gradient(circle at 70% 30%, rgba(45,127,255,.05) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-5 5L5-5M35 45L45 35' stroke='%231a2a42' stroke-width='.5' opacity='.4'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    .scan-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      animation: scan 4s ease-in-out infinite; z-index: 100;
+    }
+    @keyframes scan {
+      0% { transform: translateX(-100%); opacity: 0; }
+      20% { opacity: 1; } 80% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+    /* ── Shared nav/header ── */
+    .site-header {
+      position: relative; z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,10,16,.92);
+      backdrop-filter: blur(12px);
+      padding: 0 clamp(16px,4vw,48px);
+    }
+    .header-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-wordmark {
+      font-family: var(--font-head); font-weight: 800; font-size: 18px;
+      letter-spacing: 0.12em; color: var(--text); text-transform: uppercase;
+    }
+    .logo-wordmark span { color: var(--lime); }
+    .back-link {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text3); text-decoration: none;
+      border: 1px solid var(--border2); padding: 6px 14px; border-radius: 2px;
+      transition: color .2s, border-color .2s;
+    }
+    .back-link:hover { color: var(--lime); border-color: var(--lime); }
+    /* ── Digest metadata bar ── */
+    .digest-bar {
+      position: relative; z-index: 1;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: baseline;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .digest-bar-date {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime);
+    }
+    .digest-bar-title {
+      font-family: var(--font-head); font-weight: 700; font-size: 20px;
+      color: var(--text); flex: 1;
+    }
+    .digest-bar-count {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); letter-spacing: 0.1em;
+    }
+    /* ── Content area — agent fills this in ── */
+    .digest-content {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: clamp(32px,5vw,64px) clamp(16px,4vw,48px);
+    }
+    /* ── Footer ── */
+    .site-footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand {
+      font-family: var(--font-head); font-weight: 800; font-size: 13px;
+      letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase;
+    }
+    .footer-note {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text3);
+    }
+
+    /* ── Like button (shell-level, always available) ── */
+    .story-like-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: none; border: 1px solid var(--border2);
+      color: var(--text3); cursor: pointer;
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 2px;
+      transition: color .15s, border-color .15s, transform .1s;
+      margin-top: 12px;
+      user-select: none;
+    }
+    .story-like-btn:hover {
+      color: var(--red); border-color: var(--red);
+    }
+    .story-like-btn.liked {
+      color: var(--red); border-color: rgba(255,69,96,.4);
+      background: rgba(255,69,96,.06);
+    }
+    .story-like-btn .like-icon { font-size: 12px; line-height: 1; }
+    .story-like-btn.pop { transform: scale(1.15); }
+    .story-like-btn .like-count { min-width: 10px; }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       AGENT STYLES
+    ═══════════════════════════════════════════════════════════════════════ */
+
+    /* Overview */
+    .digest-overview {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .overview-text {
+      font-family: var(--font-body);
+      font-size: clamp(15px, 1.5vw, 17px);
+      font-style: italic;
+      line-height: 1.75;
+      color: var(--text2);
+      max-width: 820px;
+      margin-bottom: 12px;
+    }
+    .overview-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    /* Lead story */
+    .lead-story {
+      position: relative;
+      margin-bottom: 48px;
+      padding: 40px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-top: 4px solid var(--orange);
+      overflow: hidden;
+    }
+    /* "CAPITAL" watermark behind lead */
+    .lead-story::before {
+      content: 'CAPITAL';
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      transform: translateY(-50%);
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(60px, 12vw, 140px);
+      letter-spacing: 0.05em;
+      color: var(--orange);
+      opacity: 0.04;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .lead-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .category-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      margin-bottom: 16px;
+      border-radius: 2px;
+    }
+    .category-industry-business {
+      color: var(--orange);
+      border: 1px solid rgba(255,140,66,.3);
+      background: rgba(255,140,66,.06);
+    }
+    .category-research-breakthroughs {
+      color: var(--purple);
+      border: 1px solid rgba(155,111,255,.3);
+      background: rgba(155,111,255,.06);
+    }
+    .category-model-releases-updates {
+      color: var(--blue);
+      border: 1px solid rgba(45,127,255,.3);
+      background: rgba(45,127,255,.06);
+    }
+    .category-tools-open-source {
+      color: var(--teal);
+      border: 1px solid rgba(0,212,170,.3);
+      background: rgba(0,212,170,.06);
+    }
+    .lead-headline {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+      max-width: 860px;
+    }
+    .lead-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(15px, 1.6vw, 18px);
+      line-height: 1.75;
+      color: var(--text2);
+      max-width: 820px;
+      margin-bottom: 20px;
+    }
+    .lead-summary {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text2);
+      max-width: 820px;
+      margin-bottom: 24px;
+    }
+    .story-source {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text3);
+      letter-spacing: 0.08em;
+    }
+    .story-source a {
+      color: var(--orange);
+      text-decoration: none;
+    }
+    .story-source a:hover { text-decoration: underline; }
+
+    /* Section divider */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* Pull quote */
+    .pull-quote {
+      margin: 48px 0;
+      padding: 24px 32px;
+      border-left: 4px solid var(--orange);
+      background: rgba(255,140,66,.04);
+    }
+    .pull-quote p {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(20px, 2.5vw, 28px);
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .pull-quote cite {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-top: 12px;
+    }
+
+    /* Sections */
+    .digest-section {
+      margin-bottom: 56px;
+    }
+    .section-header {
+      border-top: 3px solid var(--purple);
+      padding-top: 16px;
+      margin-bottom: 28px;
+    }
+    .section-header.industry { border-top-color: var(--orange); }
+    .section-header.research { border-top-color: var(--purple); }
+    .section-header.tools { border-top-color: var(--teal); }
+    .section-header.models { border-top-color: var(--blue); }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+    .section-label-rule {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label-rule::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Stories grid */
+    .stories-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .stories-1col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+    @media (max-width: 700px) {
+      .stories-2col { grid-template-columns: 1fr; }
+    }
+
+    /* Story cards */
+    .story-item {
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--border2);
+      padding: 24px;
+      background: var(--surface);
+      border-radius: 2px;
+      transition: border-color .2s;
+    }
+    .story-item:hover { border-color: var(--border2); }
+
+    /* Research section has subtle graph paper bg */
+    .section-research .story-item {
+      background-image:
+        linear-gradient(rgba(155,111,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(155,111,255,.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      background-color: var(--surface);
+    }
+    .story-item .story-category {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      margin-bottom: 12px;
+      border-radius: 2px;
+    }
+    .story-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(17px, 1.8vw, 22px);
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .story-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text2);
+      margin-bottom: 16px;
+    }
+    .story-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .story-source-name {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--text3);
+    }
+    .story-link {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--text3);
+      text-decoration: none;
+      border: 1px solid var(--border2);
+      padding: 3px 8px;
+      border-radius: 2px;
+      transition: color .15s, border-color .15s;
+    }
+    .story-link:hover {
+      color: var(--lime);
+      border-color: var(--lime);
+    }
+
+    /* Ornament between sections */
+    .section-ornament {
+      text-align: center;
+      font-family: var(--font-head);
+      font-size: 32px;
+      color: var(--border2);
+      margin: 8px 0;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+<div class="scan-bar"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+        <path d="M4 16 L10 8 L14 20 L18 6 L22 18 L26 12 L28 16" stroke="#c4ff3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-wordmark">SIGN<span>A</span>L</span>
+    </a>
+    <a href="/" class="back-link">← All Digests</a>
+  </div>
+</header>
+
+<div class="digest-bar">
+  <span class="digest-bar-date">APR 27, 2026</span>
+  <span class="digest-bar-title">$40 Billion and Counting</span>
+  <span class="digest-bar-count">6 items</span>
+</div>
+
+<div class="digest-content">
+
+  <!-- Overview lede section -->
+  <div class="digest-overview">
+    <p class="overview-text">Google's landmark $40 billion commitment to Anthropic reshapes the capital map of frontier AI — while a wave of brain-inspired and semi-online research papers push efficiency into territory full-attention transformers can't follow.</p>
+    <div class="overview-meta">APR 27, 2026 · 6 stories across 2 categories</div>
+  </div>
+
+  <!-- Lead story -->
+  <section class="lead-story"
+    data-story-id="2026-04-27-google-commits-40-billion-to-anthropic-landmark-ai-infra"
+    data-category="Industry & Business"
+    data-source="TechCrunch">
+    <span class="lead-label">◆ Lead Story</span>
+    <div class="category-tag category-industry-business">Industry &amp; Business</div>
+    <h1 class="lead-headline">Google Commits Up to $40 Billion to Anthropic in Landmark AI Infrastructure Deal</h1>
+    <p class="lead-lede">The largest single financial commitment to an AI startup outside of Microsoft's OpenAI partnership redraws the competitive map — and makes access to compute a more decisive advantage than any model benchmark.</p>
+    <p class="lead-summary">Google announced plans to invest up to $40 billion in Anthropic, committing $10 billion immediately at a $350–380 billion valuation with another $30 billion contingent on performance milestones. The deal locks in 5 gigawatts of dedicated TPU compute capacity over the next five years, expanding on an existing partnership that already secured 3.5 gigawatts from Google and Broadcom starting in 2027. Anthropic's annualized revenue has topped $30 billion, up from $9 billion in December 2025, and the company is reportedly considering an IPO as soon as October. This follows Amazon's $5 billion investment earlier in April, underscoring how the AI race is increasingly defined by access to massive compute capacity — OpenAI has secured multi-hundred-billion-dollar deals across cloud providers, chip suppliers, and energy, while Anthropic has struck infrastructure deals with CoreWeave and Amazon to address "inevitable strain" from growing demand for Claude.</p>
+    <div class="story-source">Via <a href="https://techcrunch.com/2026/04/24/google-to-invest-up-to-40b-in-anthropic-in-cash-and-compute/" target="_blank" rel="noopener">TechCrunch ↗</a></div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- Pull quote -->
+  <blockquote class="pull-quote">
+    <p>"The AI race is increasingly defined by access to massive compute capacity — not by who ships the cleverest architecture."</p>
+    <cite>— Signal synthesis, Apr 27 2026</cite>
+  </blockquote>
+
+  <div class="section-ornament">◆</div>
+
+  <!-- Research Breakthroughs section -->
+  <section class="digest-section section-research">
+    <header class="section-header research">
+      <div class="section-label-rule">
+        <span class="section-label">━━━ Research Breakthroughs ━━━━━━━━━━━━━━━━━</span>
+      </div>
+    </header>
+    <div class="stories-2col">
+
+      <article class="story-item"
+        data-story-id="2026-04-27-spikingbrain2-achieves-10x-speedup-on-4m-token-contexts"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research-breakthroughs">Research Breakthroughs</div>
+        <h2 class="story-headline">SpikingBrain2.0 Achieves 10x Speedup on 4M-Token Contexts with Brain-Inspired Architecture</h2>
+        <p class="story-lede">A 5B brain-inspired foundation model introduces Dual-Space Sparse Attention and dual quantization paths — recovering most transformer capability under 7k A100 GPU hours while running on neuromorphic hardware with 64% sparsity.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2604.22575" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-27-solar-rl-semi-online-framework-for-gui-agents-simulates-online"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research-breakthroughs">Research Breakthroughs</div>
+        <h2 class="story-headline">SOLAR-RL: Semi-Online Framework for GUI Agents Simulates Online Feedback Without Interaction Costs</h2>
+        <p class="story-lede">By reconstructing rollout candidates from static data and assigning dense step-level rewards retroactively, SOLAR-RL bridges offline and online RL for GUI agents — accepted to ACL 2026 Findings.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2604.22558" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-27-made-it-manifold-aware-expert-evolution-resolves-saturation"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research-breakthroughs">Research Breakthroughs</div>
+        <h2 class="story-headline">MADE-IT: Manifold-Aware Expert Evolution Resolves Saturation-Redundancy Dilemma in Continual Model Merging</h2>
+        <p class="story-lede">A projection-based subspace affinity metric and data-free implicit routing let MADE-IT expand and prune experts autonomously — outperforming strong baselines on long-horizon task sequences without parameterized gating.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2604.22464" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-27-robust-llm-as-a-judge-framework-improves-math-reasoning-eval"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research-breakthroughs">Research Breakthroughs</div>
+        <h2 class="story-headline">Robust LLM-as-a-Judge Framework Improves Math Reasoning Evaluation Beyond Symbolic Comparison</h2>
+        <p class="story-lede">Exposing failure cases in Lighteval and SimpleRL, researchers deliver an LLM-based evaluator that handles diverse mathematical representations and answer formats where symbolic comparison breaks down.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2604.22597" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-27-hybrid-process-frames-enable-ai-augmented-bpm-framed-autonomy"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research-breakthroughs">Research Breakthroughs</div>
+        <h2 class="story-headline">Hybrid Process Frames Enable AI-Augmented Business Process Management with Framed Autonomy</h2>
+        <p class="story-lede">A new conceptual framework combines procedural and declarative process models into a single "process frame" — giving ABPMS systems bounded autonomy without locking them to a single symbolic formalism.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2604.22455" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <span class="footer-brand">Signal</span>
+  <span class="footer-note">Generated by ai-digest + page-creator agents · Pi 1</span>
+</footer>
+
+<script>
+(function () {
+  const digestDate = document.querySelector('meta[name="signal-date"]')?.content || '';
+
+  function slugify(text) {
+    return String(text).toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60);
+  }
+
+  function makeArticleId(storyId, date) {
+    if (storyId.includes(date)) return storyId;
+    return `${date}-${slugify(storyId)}`;
+  }
+
+  async function attachLikeButtons() {
+    const stories = document.querySelectorAll('[data-story-id]');
+    if (!stories.length) return;
+
+    const fetches = Array.from(stories).map(async (el) => {
+      const rawId   = el.getAttribute('data-story-id');
+      const id      = makeArticleId(rawId, digestDate);
+      const category = el.getAttribute('data-category') || '';
+      const source   = el.getAttribute('data-source') || '';
+      const liked    = localStorage.getItem(`liked:${id}`) === '1';
+
+      let count = 0;
+      try {
+        const r = await fetch(`/api/like?article_id=${encodeURIComponent(id)}`);
+        if (r.ok) ({ count } = await r.json());
+      } catch {}
+
+      const btn = document.createElement('button');
+      btn.className = 'story-like-btn' + (liked ? ' liked' : '');
+      btn.setAttribute('aria-label', 'Like this story');
+      btn.innerHTML = `<span class="like-icon">${liked ? '♥' : '♡'}</span>`
+                    + `<span class="like-count">${count > 0 ? count : ''}</span>`;
+
+      btn.addEventListener('click', async () => {
+        if (localStorage.getItem(`liked:${id}`) === '1') return;
+        localStorage.setItem(`liked:${id}`, '1');
+        btn.classList.add('liked');
+        btn.querySelector('.like-icon').textContent = '♥';
+        btn.classList.add('pop');
+        setTimeout(() => btn.classList.remove('pop'), 200);
+        try {
+          const r = await fetch('/api/like', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ article_id: id, category, source }),
+          });
+          if (r.ok) {
+            const data = await r.json();
+            btn.querySelector('.like-count').textContent = data.count > 0 ? data.count : '';
+          }
+        } catch {}
+      });
+
+      el.appendChild(btn);
+    });
+
+    await Promise.all(fetches);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachLikeButtons);
+  } else {
+    attachLikeButtons();
+  }
+})();
+</script>
+</body>
+</html>
