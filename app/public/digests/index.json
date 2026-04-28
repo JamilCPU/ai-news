@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-04-28",
+    "title": "Restructured by Design",
+    "overview": "This period's defining story is OpenAI's amended partnership with Microsoft, which fundamentally restructures the relationship between the two companies. The new agreement makes Microsoft's license to OpenAI IP non-exclusive through 2032, eliminates Microsoft's revenue share payments, and allows OpenAI to serve products across any cloud provider while maintaining Azure as the primary partner.",
+    "item_count": 7,
+    "filename": "2026-04-28.html"
+  },
+  {
     "date": "2026-04-27",
     "title": "$40 Billion and Counting",
     "overview": "This period's defining story is Google's landmark $40 billion investment in Anthropic, the largest single financial commitment to an AI startup outside of Microsoft's OpenAI partnership. The deal — $10 billion immediately at a $350-380 billion valuation, with $30 billion contingent on performance milestones — locks in 5 gigawatts of dedicated TPU compute capacity over the next five years and deepens Google's strategic bet on frontier AI infrastructure. This follows Amazon's $5 billion investment earlier in April, underscoring how the AI race is increasingly defined by access to massive compute capacity. On the research front, SpikingBrain2.0 demonstrated that brain-inspired architectures can achieve 10x speedups on 4M-token contexts while supporting cross-platform execution on GPUs and neuromorphic hardware.",
