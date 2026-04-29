@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="signal-date" content="APR 29, 2026">
+  <meta name="signal-title" content="Everywhere at Once">
+  <meta name="signal-overview" content="OpenAI landed on AWS Bedrock in limited preview, completing the multi-cloud arc after last week's Microsoft amendment. Meanwhile, five research papers explored recursive multi-agent collaboration, city-scale EV optimization, short video recommendation, opponent modeling in games, and terminal task synthesis — a day where the distributed AI thesis played out at every layer.">
+  <meta name="signal-items" content="7">
+  <title>Everywhere at Once — SIGNAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #060a10;
+      --bg2:      #090e18;
+      --surface:  #0d1525;
+      --surface2: #111e33;
+      --border:   #1a2a42;
+      --border2:  #243550;
+      --text:     #dce8f8;
+      --text2:    #7a90b4;
+      --text3:    #3d5270;
+      --lime:     #c4ff3c;
+      --blue:     #2d7fff;
+      --purple:   #9b6fff;
+      --orange:   #ff8c42;
+      --red:      #ff4560;
+      --teal:     #00d4aa;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Literata', Georgia, serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 60%, rgba(0,212,170,.04) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-5 5L5-5M35 45L45 35' stroke='%231a2a42' stroke-width='.5' opacity='.4'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    .scan-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      animation: scan 4s ease-in-out infinite; z-index: 100;
+    }
+    @keyframes scan {
+      0% { transform: translateX(-100%); opacity: 0; }
+      20% { opacity: 1; } 80% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+    .site-header {
+      position: relative; z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,10,16,.92);
+      backdrop-filter: blur(12px);
+      padding: 0 clamp(16px,4vw,48px);
+    }
+    .header-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-wordmark {
+      font-family: var(--font-head); font-weight: 800; font-size: 18px;
+      letter-spacing: 0.12em; color: var(--text); text-transform: uppercase;
+    }
+    .logo-wordmark span { color: var(--lime); }
+    .back-link {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text3); text-decoration: none;
+      border: 1px solid var(--border2); padding: 6px 14px; border-radius: 2px;
+      transition: color .2s, border-color .2s;
+    }
+    .back-link:hover { color: var(--lime); border-color: var(--lime); }
+    .digest-bar {
+      position: relative; z-index: 1;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: baseline;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .digest-bar-date {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime);
+    }
+    .digest-bar-title {
+      font-family: var(--font-head); font-weight: 700; font-size: 20px;
+      color: var(--text); flex: 1;
+    }
+    .digest-bar-count {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); letter-spacing: 0.1em;
+    }
+    .digest-content {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: clamp(32px,5vw,64px) clamp(16px,4vw,48px);
+    }
+    .site-footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand {
+      font-family: var(--font-head); font-weight: 800; font-size: 13px;
+      letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase;
+    }
+    .footer-note {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text3);
+    }
+    .story-like-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: none; border: 1px solid var(--border2);
+      color: var(--text3); cursor: pointer;
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 2px;
+      transition: color .15s, border-color .15s, transform .1s;
+      margin-top: 12px;
+      user-select: none;
+    }
+    .story-like-btn:hover { color: var(--red); border-color: var(--red); }
+    .story-like-btn.liked {
+      color: var(--red); border-color: rgba(255,69,96,.4);
+      background: rgba(255,69,96,.06);
+    }
+    .story-like-btn .like-icon { font-size: 12px; line-height: 1; }
+    .story-like-btn.pop { transform: scale(1.15); }
+    .story-like-btn .like-count { min-width: 10px; }
+
+    /* ── Agent Styles ── */
+
+    /* Stats ticker */
+    .stats-ticker {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 10px 0;
+      margin-bottom: 40px;
+    }
+    .stats-ticker-track {
+      display: flex; gap: 0;
+      animation: ticker-scroll 28s linear infinite;
+      white-space: nowrap;
+    }
+    .stats-ticker-track:hover { animation-play-state: paused; }
+    @keyframes ticker-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-item {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.08em;
+      padding: 0 32px;
+      color: var(--text2);
+      border-right: 1px solid var(--border2);
+    }
+    .ticker-item .ticker-val {
+      color: var(--teal); font-weight: 600;
+    }
+    .ticker-item .ticker-label {
+      color: var(--text3); margin-left: 6px;
+    }
+
+    /* Overview */
+    .digest-overview {
+      margin-bottom: 48px;
+    }
+    .overview-text {
+      font-family: var(--font-body);
+      font-size: clamp(16px, 1.6vw, 19px);
+      font-style: italic;
+      line-height: 1.75;
+      color: var(--text2);
+      max-width: 820px;
+    }
+    .overview-meta {
+      margin-top: 14px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    /* Lead story */
+    .lead-story {
+      position: relative;
+      overflow: hidden;
+      border-left: 4px solid var(--orange);
+      padding: 36px 40px;
+      background: linear-gradient(135deg, rgba(255,140,66,.06) 0%, transparent 60%);
+      margin-bottom: 48px;
+    }
+    .lead-watermark {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(80px, 14vw, 180px);
+      letter-spacing: 0.05em;
+      color: rgba(255,140,66,0.03);
+      text-transform: uppercase;
+      pointer-events: none;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .category-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+    .category-industry { color: var(--orange); }
+    .category-research { color: var(--purple); }
+    .category-models   { color: var(--blue); }
+    .category-tools    { color: var(--teal); }
+
+    .lead-headline {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+    .lead-lede {
+      font-family: var(--font-body);
+      font-size: clamp(15px, 1.4vw, 17px);
+      font-style: italic;
+      line-height: 1.75;
+      color: var(--text2);
+      max-width: 760px;
+      margin-bottom: 16px;
+    }
+    .lead-detail {
+      font-family: var(--font-body);
+      font-size: clamp(14px, 1.2vw, 15px);
+      line-height: 1.7;
+      color: var(--text2);
+      max-width: 760px;
+      margin-bottom: 20px;
+    }
+    .story-source {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text3);
+      letter-spacing: 0.06em;
+    }
+    .story-source a {
+      color: var(--orange);
+      text-decoration: none;
+    }
+    .story-source a:hover { text-decoration: underline; }
+
+    /* Section divider */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* Pull quote */
+    .pull-quote {
+      border-left: 4px solid var(--purple);
+      padding: 24px 32px;
+      margin: 48px 0;
+      background: rgba(155,111,255,.04);
+    }
+    .pull-quote p {
+      font-family: var(--font-body);
+      font-size: clamp(18px, 2vw, 26px);
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--text);
+    }
+    .pull-quote cite {
+      display: block;
+      margin-top: 12px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text3);
+      font-style: normal;
+    }
+
+    /* Section headers */
+    .digest-section {
+      margin-bottom: 56px;
+    }
+    .section-header {
+      border-top: 3px solid var(--purple);
+      padding-top: 14px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-header.orange { border-top-color: var(--orange); }
+    .section-header.teal   { border-top-color: var(--teal); }
+    .section-header.blue   { border-top-color: var(--blue); }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+    .section-count {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      opacity: 0.6;
+    }
+
+    /* Story grids */
+    .stories-2col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+    .stories-1col {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Story cards */
+    .story-item {
+      background: var(--bg);
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .stories-2col .story-item {
+      border-bottom: none;
+    }
+    .story-category {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+    .story-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(16px, 1.6vw, 22px);
+      line-height: 1.25;
+      color: var(--text);
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .story-lede {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 1.1vw, 15px);
+      font-style: italic;
+      line-height: 1.7;
+      color: var(--text2);
+      margin-bottom: 14px;
+    }
+    .story-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .story-source-name {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.06em;
+    }
+    .story-link {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      text-decoration: none;
+      border: 1px solid var(--border2);
+      padding: 3px 8px;
+      letter-spacing: 0.06em;
+      transition: color .15s, border-color .15s;
+    }
+    .story-link:hover { color: var(--lime); border-color: var(--lime); }
+
+    /* Research section — graph paper texture */
+    .research-section {
+      position: relative;
+    }
+    .research-section::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      background-image:
+        linear-gradient(rgba(155,111,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(155,111,255,.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      border-radius: 2px;
+    }
+    .research-section .section-header {
+      position: relative;
+    }
+    .research-section .stories-2col {
+      position: relative;
+    }
+
+    /* Ornament divider */
+    .ornament {
+      text-align: center;
+      font-size: 18px;
+      color: var(--text3);
+      letter-spacing: 0.5em;
+      margin: 48px 0;
+      user-select: none;
+    }
+
+    @media (max-width: 700px) {
+      .stories-2col {
+        grid-template-columns: 1fr;
+        background: transparent;
+        gap: 0;
+        border-top: 1px solid var(--border);
+      }
+      .stories-2col .story-item {
+        border-bottom: 1px solid var(--border);
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="scan-bar"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+        <path d="M4 16 L10 8 L14 20 L18 6 L22 18 L26 12 L28 16" stroke="#c4ff3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-wordmark">SIGN<span>A</span>L</span>
+    </a>
+    <a href="/" class="back-link">← All Digests</a>
+  </div>
+</header>
+
+<div class="digest-bar">
+  <span class="digest-bar-date">APR 29, 2026</span>
+  <span class="digest-bar-title">Everywhere at Once</span>
+  <span class="digest-bar-count">7 items</span>
+</div>
+
+<div class="digest-content">
+
+  <!-- Stats ticker -->
+  <div class="stats-ticker">
+    <div class="stats-ticker-track">
+      <span class="ticker-item"><span class="ticker-val">4M+</span><span class="ticker-label">weekly Codex users on AWS</span></span>
+      <span class="ticker-item"><span class="ticker-val">8.3%</span><span class="ticker-label">avg accuracy gain — RecursiveMAS</span></span>
+      <span class="ticker-item"><span class="ticker-val">75.6%</span><span class="ticker-label">token reduction — RecursiveMAS</span></span>
+      <span class="ticker-item"><span class="ticker-val">$1.22M</span><span class="ticker-label">net profit — EV RL vs $0.58M baseline</span></span>
+      <span class="ticker-item"><span class="ticker-val">400M</span><span class="ticker-label">daily users served — A2Gen (Kuaishou)</span></span>
+      <span class="ticker-item"><span class="ticker-val">2.4×</span><span class="ticker-label">inference speedup — RecursiveMAS</span></span>
+      <span class="ticker-item"><span class="ticker-val">+0.821 BB</span><span class="ticker-label">peak exploitation gain — StratFormer</span></span>
+      <!-- Duplicate for seamless loop -->
+      <span class="ticker-item"><span class="ticker-val">4M+</span><span class="ticker-label">weekly Codex users on AWS</span></span>
+      <span class="ticker-item"><span class="ticker-val">8.3%</span><span class="ticker-label">avg accuracy gain — RecursiveMAS</span></span>
+      <span class="ticker-item"><span class="ticker-val">75.6%</span><span class="ticker-label">token reduction — RecursiveMAS</span></span>
+      <span class="ticker-item"><span class="ticker-val">$1.22M</span><span class="ticker-label">net profit — EV RL vs $0.58M baseline</span></span>
+      <span class="ticker-item"><span class="ticker-val">400M</span><span class="ticker-label">daily users served — A2Gen (Kuaishou)</span></span>
+      <span class="ticker-item"><span class="ticker-val">2.4×</span><span class="ticker-label">inference speedup — RecursiveMAS</span></span>
+      <span class="ticker-item"><span class="ticker-val">+0.821 BB</span><span class="ticker-label">peak exploitation gain — StratFormer</span></span>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="digest-overview">
+    <p class="overview-text">OpenAI landed on AWS Bedrock in limited preview, completing the multi-cloud arc after last week's Microsoft partnership amendment. Meanwhile, five research papers explored recursive multi-agent collaboration, city-scale EV optimization, short video recommendation at 400 million users, opponent modeling in imperfect-information games, and terminal task synthesis — a day where the distributed AI thesis played out at every layer of the stack.</p>
+    <div class="overview-meta">APR 29, 2026 · 7 stories across 2 categories</div>
+  </div>
+
+  <!-- Lead story: OpenAI on AWS -->
+  <section class="lead-story"
+    data-story-id="2026-04-29-openai-models-codex-managed-agents-come-to-aws-bedrock"
+    data-category="Industry & Business"
+    data-source="OpenAI">
+    <div class="lead-watermark">MULTI-CLOUD</div>
+    <div class="category-tag category-industry">Industry & Business</div>
+    <h1 class="lead-headline">OpenAI Models, Codex, and Managed Agents Come to AWS in Limited Preview</h1>
+    <p class="lead-lede">This period's defining move: OpenAI and AWS expanded their strategic partnership to bring OpenAI capabilities to Amazon Bedrock in limited preview, giving enterprises access to frontier models, coding agents, and managed agents within their existing AWS infrastructure, security protocols, and compliance requirements.</p>
+    <p class="lead-detail">The expanded partnership covers three pillars: OpenAI models on AWS (including GPT-5.5 on Amazon Bedrock), Codex on AWS (powering the coding harness with models served from Bedrock), and Amazon Bedrock Managed Agents powered by OpenAI. More than 4 million people now use Codex every week. The move follows OpenAI's recent amendment with Microsoft granting multi-cloud flexibility — positioning OpenAI to serve customers across all major cloud providers simultaneously.</p>
+    <div class="story-source">Via <a href="https://openai.com/index/openai-on-aws/" target="_blank" rel="noopener">OpenAI ↗</a></div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- Research section: 5 items, 2-col -->
+  <section class="digest-section research-section">
+    <header class="section-header">
+      <span class="section-label">Research Breakthroughs</span>
+      <span class="section-count">5 papers</span>
+    </header>
+    <div class="stories-2col">
+
+      <article class="story-item"
+        data-story-id="2026-04-29-recursivemas-scaling-agent-collaboration-8-3-accuracy"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research">Research Breakthroughs</div>
+        <h2 class="story-headline">RecursiveMAS: Scaling Agent Collaboration Through Recursion Achieves 8.3% Accuracy Improvement</h2>
+        <p class="story-lede">A recursive multi-agent framework that casts the entire system as a unified latent-space recursive computation — extending the scaling principle of recursive language models from single models to multi-agent systems. Evaluated across 9 benchmarks spanning math, science, medicine, search, and code, RecursiveMAS delivered 8.3% average accuracy improvement, 1.2x–2.4x inference speedup, and 34.6–75.6% token usage reduction.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2604.25917" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-29-semi-markov-rl-ev-ride-hailing-1-22m-profit"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research">Research Breakthroughs</div>
+        <h2 class="story-headline">Semi-Markov RL for City-Scale EV Ride-Hailing Achieves $1.22M Profit with Zero Feeder-Limit Violations</h2>
+        <p class="story-lede">A hex-grid semi-Markov decision process with mixed discrete/continuous actions for dispatch, repositioning, and charging of EV fleets — constrained by charger capacity and power grid feeder limits. Tested on a large-scale NYC taxi simulator, PD-RSAC achieved $1.22M net profit versus $0.58–0.70M for heuristic and RL baselines, while maintaining zero feeder-limit violations throughout.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2604.25848" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-29-a2gen-action-aware-generative-sequence-kuaishou-400m"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research">Research Breakthroughs</div>
+        <h2 class="story-headline">Action-Aware Generative Sequence Modeling for Short Video Recommendation Boosts Retention by 0.162%</h2>
+        <p class="story-lede">A2Gen refines user actions along the temporal dimension and chains them into sequences for unified prediction, using a hierarchical sequence encoder and an autoregressive generator. Deployed across all traffic on Kuaishou's platform serving 400 million daily users, the model improved watch time by 0.34%, interaction rate by 8.1%, and overall user retention (LifeTime-7) by 0.162%.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2604.25834" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-29-stratformer-adaptive-opponent-modeling-imperfect-games"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research">Research Breakthroughs</div>
+        <h2 class="story-headline">StratFormer: Adaptive Opponent Modeling and Exploitation in Imperfect-Information Games</h2>
+        <p class="story-lede">A transformer-based meta-agent that learns to simultaneously model and exploit opponents through a two-phase curriculum — first learning behavioral patterns, then progressively shifting toward best-response exploitation. On Leduc Hold'em tested against six opponent archetypes, StratFormer achieved average exploitation gain of +0.106 BB per hand, with peak gains of +0.821 against highly exploitable opponents while maintaining near-equilibrium safety.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2604.25796" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+      <article class="story-item"
+        data-story-id="2026-04-29-skillsynth-scalable-terminal-task-synthesis-skill-graphs"
+        data-category="Research Breakthroughs"
+        data-source="arXiv">
+        <div class="story-category category-research">Research Breakthroughs</div>
+        <h2 class="story-headline">SkillSynth: Scalable Terminal Task Synthesis via Skill Graphs</h2>
+        <p class="story-lede">An automated framework for terminal task synthesis built on a scenario-mediated skill graph, where scenarios serve as intermediate nodes connecting diverse command-line skills. Graph-sampled workflow paths are instantiated into executable tasks by a multi-agent harness. Task instances from SkillSynth were used to train Hy3 Preview, contributing to enhanced agentic capabilities in terminal-based settings.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via arXiv</span>
+          <a href="https://arxiv.org/abs/2604.25727" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Pull quote -->
+  <blockquote class="pull-quote">
+    <p>"Extends the scaling principle of recursive language models from single models to multi-agent systems — and the numbers hold across nine benchmarks."</p>
+    <cite>RecursiveMAS — arXiv 2604.25917</cite>
+  </blockquote>
+
+  <div class="ornament">◆ ◆ ◆</div>
+
+  <!-- Industry section: 1 item (OpenAI on AWS is in lead) -->
+  <section class="digest-section">
+    <header class="section-header orange">
+      <span class="section-label">Industry & Business</span>
+      <span class="section-count">1 story</span>
+    </header>
+    <div class="stories-1col">
+
+      <article class="story-item"
+        data-story-id="2026-04-29-openai-community-safety-violence-prevention-law-enforcement"
+        data-category="Industry & Business"
+        data-source="OpenAI">
+        <div class="story-category category-industry">Industry & Business</div>
+        <h2 class="story-headline">OpenAI Publishes Detailed Commitment to Community Safety: Violence Prevention, Detection, and Law Enforcement Escalation</h2>
+        <p class="story-lede">OpenAI outlined its formal framework for minimizing uses of its services in furtherance of violence or harm: models trained to refuse requests that could meaningfully enable violence, automated detection systems (classifiers, hash-matching, blocklists), human review for flagged conversations, and law enforcement escalation when conversations indicate imminent and credible risk to others. The company also introduced Parental Controls and announced a forthcoming trusted contact feature for adult users.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via OpenAI</span>
+          <a href="https://openai.com/index/our-commitment-to-community-safety/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <span class="footer-brand">Signal</span>
+  <span class="footer-note">Generated by ai-digest + page-creator agents · Pi 1</span>
+</footer>
+
+<script>
+(function () {
+  const digestDate = document.querySelector('meta[name="signal-date"]')?.content || '';
+
+  function slugify(text) {
+    return String(text).toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60);
+  }
+
+  function makeArticleId(storyId, date) {
+    if (storyId.includes(date)) return storyId;
+    return `${date}-${slugify(storyId)}`;
+  }
+
+  async function attachLikeButtons() {
+    const stories = document.querySelectorAll('[data-story-id]');
+    if (!stories.length) return;
+
+    const fetches = Array.from(stories).map(async (el) => {
+      const rawId    = el.getAttribute('data-story-id');
+      const id       = makeArticleId(rawId, digestDate);
+      const category = el.getAttribute('data-category') || '';
+      const source   = el.getAttribute('data-source') || '';
+      const liked    = localStorage.getItem(`liked:${id}`) === '1';
+
+      let count = 0;
+      try {
+        const r = await fetch(`/api/like?article_id=${encodeURIComponent(id)}`);
+        if (r.ok) ({ count } = await r.json());
+      } catch {}
+
+      const btn = document.createElement('button');
+      btn.className = 'story-like-btn' + (liked ? ' liked' : '');
+      btn.setAttribute('aria-label', 'Like this story');
+      btn.innerHTML = `<span class="like-icon">${liked ? '♥' : '♡'}</span>`
+                    + `<span class="like-count">${count > 0 ? count : ''}</span>`;
+
+      btn.addEventListener('click', async () => {
+        if (localStorage.getItem(`liked:${id}`) === '1') return;
+        localStorage.setItem(`liked:${id}`, '1');
+        btn.classList.add('liked');
+        btn.querySelector('.like-icon').textContent = '♥';
+        btn.classList.add('pop');
+        setTimeout(() => btn.classList.remove('pop'), 200);
+        try {
+          const r = await fetch('/api/like', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ article_id: id, category, source }),
+          });
+          if (r.ok) {
+            const data = await r.json();
+            btn.querySelector('.like-count').textContent = data.count > 0 ? data.count : '';
+          }
+        } catch {}
+      });
+
+      el.appendChild(btn);
+    });
+
+    await Promise.all(fetches);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachLikeButtons);
+  } else {
+    attachLikeButtons();
+  }
+})();
+</script>
+</body>
+</html>

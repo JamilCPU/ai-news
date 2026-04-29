@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-04-29",
+    "title": "Everywhere at Once",
+    "overview": "OpenAI landed on AWS Bedrock in limited preview, completing the multi-cloud arc after last week's Microsoft partnership amendment. Five research papers explored recursive multi-agent collaboration, city-scale EV optimization, short video recommendation at 400 million daily users, opponent modeling in imperfect-information games, and terminal task synthesis.",
+    "item_count": 7,
+    "filename": "2026-04-29.html"
+  },
+  {
     "date": "2026-04-28",
     "title": "Restructured by Design",
     "overview": "This period's defining story is OpenAI's amended partnership with Microsoft, which fundamentally restructures the relationship between the two companies. The new agreement makes Microsoft's license to OpenAI IP non-exclusive through 2032, eliminates Microsoft's revenue share payments, and allows OpenAI to serve products across any cloud provider while maintaining Azure as the primary partner.",
