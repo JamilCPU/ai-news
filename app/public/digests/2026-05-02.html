@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="signal-date" content="MAY 02, 2026">
+  <meta name="signal-title" content="The Cost of Knowing">
+  <meta name="signal-overview" content="IBM released Granite 4.1, a family of dense open-source LLMs (3B, 8B, 30B) trained on 15T tokens with 512K context window and Apache 2.0 licensing. The 8B model matches or exceeds the previous 32B MoE model across benchmarks. Meanwhile, Hugging Face published a major analysis showing AI evaluation has become a new compute bottleneck: the Holistic Agent Leaderboard spent $40,000 for 21,730 agent rollouts, a single GAIA run can cost $2,829, and PaperBench evaluations cost ~$9,500 per run. Research papers from April 30 focused on agent training infrastructure, model interpretability, and constrained exploration methods.">
+  <meta name="signal-items" content="7">
+  <title>The Cost of Knowing — SIGNAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&display=swap" rel="stylesheet">
+  <style>
+    /* ── Base vars (inherit from SIGNAL design system) ── */
+    :root {
+      --bg:       #060a10;
+      --bg2:      #090e18;
+      --surface:  #0d1525;
+      --surface2: #111e33;
+      --border:   #1a2a42;
+      --border2:  #243550;
+      --text:     #dce8f8;
+      --text2:    #7a90b4;
+      --text3:    #3d5270;
+      --lime:     #c4ff3c;
+      --blue:     #2d7fff;
+      --purple:   #9b6fff;
+      --orange:   #ff8c42;
+      --red:      #ff4560;
+      --teal:     #00d4aa;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Literata', Georgia, serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        radial-gradient(circle at 70% 30%, rgba(45,127,255,.05) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-5 5L5-5M35 45L45 35' stroke='%231a2a42' stroke-width='.5' opacity='.4'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    .scan-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      animation: scan 4s ease-in-out infinite; z-index: 100;
+    }
+    @keyframes scan {
+      0% { transform: translateX(-100%); opacity: 0; }
+      20% { opacity: 1; } 80% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+    /* ── Shared nav/header ── */
+    .site-header {
+      position: relative; z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,10,16,.92);
+      backdrop-filter: blur(12px);
+      padding: 0 clamp(16px,4vw,48px);
+    }
+    .header-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-wordmark {
+      font-family: var(--font-head); font-weight: 800; font-size: 18px;
+      letter-spacing: 0.12em; color: var(--text); text-transform: uppercase;
+    }
+    .logo-wordmark span { color: var(--lime); }
+    .back-link {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text3); text-decoration: none;
+      border: 1px solid var(--border2); padding: 6px 14px; border-radius: 2px;
+      transition: color .2s, border-color .2s;
+    }
+    .back-link:hover { color: var(--lime); border-color: var(--lime); }
+    /* ── Digest metadata bar ── */
+    .digest-bar {
+      position: relative; z-index: 1;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: baseline;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .digest-bar-date {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime);
+    }
+    .digest-bar-title {
+      font-family: var(--font-head); font-weight: 700; font-size: 20px;
+      color: var(--text); flex: 1;
+    }
+    .digest-bar-count {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); letter-spacing: 0.1em;
+    }
+    /* ── Content area — agent fills this in ── */
+    .digest-content {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: clamp(32px,5vw,64px) clamp(16px,4vw,48px);
+    }
+    /* ── Footer ── */
+    .site-footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand {
+      font-family: var(--font-head); font-weight: 800; font-size: 13px;
+      letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase;
+    }
+    .footer-note {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text3);
+    }
+
+    /* ── Like button (shell-level, always available) ── */
+    .story-like-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: none; border: 1px solid var(--border2);
+      color: var(--text3); cursor: pointer;
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 2px;
+      transition: color .15s, border-color .15s, transform .1s;
+      margin-top: 12px;
+      user-select: none;
+    }
+    .story-like-btn:hover {
+      color: var(--red); border-color: var(--red);
+    }
+    .story-like-btn.liked {
+      color: var(--red); border-color: rgba(255,69,96,.4);
+      background: rgba(255,69,96,.06);
+    }
+    .story-like-btn .like-icon { font-size: 12px; line-height: 1; }
+    .story-like-btn.pop { transform: scale(1.15); }
+    .story-like-btn .like-count { min-width: 10px; }
+
+    /*
+    ═══════════════════════════════════════════════════════════════════════
+    AGENT CONTENT STYLES
+    ═══════════════════════════════════════════════════════════════════════
+    */
+
+    /* Overview */
+    .digest-overview {
+      margin-bottom: 48px;
+    }
+    .overview-text {
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-style: italic;
+      line-height: 1.7;
+      color: var(--text);
+      max-width: 780px;
+      margin-bottom: 12px;
+    }
+    .overview-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+
+    /* Lead story */
+    .lead-story {
+      position: relative;
+      padding: 40px 0 40px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .lead-story-bg-text {
+      position: absolute;
+      top: 50%;
+      left: -10px;
+      transform: translateY(-50%);
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 200px;
+      letter-spacing: -0.04em;
+      color: var(--blue);
+      opacity: 0.03;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 0;
+      user-select: none;
+    }
+    .lead-story > * { position: relative; z-index: 1; }
+    .category-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+    .category-model-releases { color: var(--blue); border: 1px solid rgba(45,127,255,.35); background: rgba(45,127,255,.07); }
+    .category-industry { color: var(--orange); border: 1px solid rgba(255,140,66,.35); background: rgba(255,140,66,.07); }
+    .category-research { color: var(--purple); border: 1px solid rgba(155,111,255,.35); background: rgba(155,111,255,.07); }
+    .category-tools { color: var(--teal); border: 1px solid rgba(0,212,170,.35); background: rgba(0,212,170,.07); }
+
+    .lead-headline {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 1.1;
+      color: var(--text);
+      max-width: 860px;
+      margin-bottom: 20px;
+    }
+    .lead-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--text2);
+      max-width: 720px;
+      margin-bottom: 20px;
+    }
+    .story-source {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text3);
+      letter-spacing: 0.1em;
+    }
+    .story-source a {
+      color: var(--text3);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border2);
+      transition: color .2s, border-color .2s;
+    }
+    .story-source a:hover { color: var(--lime); border-color: var(--lime); }
+
+    /* Section divider */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border2);
+      margin: 48px 0;
+    }
+
+    /* Pull quote */
+    .pull-quote {
+      border-left: 4px solid var(--orange);
+      padding: 20px 0 20px 28px;
+      margin: 48px 0;
+      max-width: 700px;
+    }
+    .pull-quote p {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(20px, 2.5vw, 28px);
+      line-height: 1.4;
+      color: var(--text);
+    }
+
+    /* Section headers */
+    .digest-section {
+      margin-bottom: 56px;
+    }
+    .section-header {
+      border-top: 3px solid var(--border2);
+      padding-top: 16px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text3);
+      white-space: nowrap;
+    }
+    .digest-section.section-model .section-header { border-top-color: var(--blue); }
+    .digest-section.section-model .section-label { color: var(--blue); }
+    .digest-section.section-industry .section-header { border-top-color: var(--orange); }
+    .digest-section.section-industry .section-label { color: var(--orange); }
+    .digest-section.section-research .section-header { border-top-color: var(--purple); }
+    .digest-section.section-research .section-label { color: var(--purple); }
+    .digest-section.section-tools .section-header { border-top-color: var(--teal); }
+    .digest-section.section-tools .section-label { color: var(--teal); }
+
+    /* Story grids */
+    .stories-grid {
+      display: grid;
+      gap: 0;
+    }
+    .stories-2col {
+      grid-template-columns: 1fr 1fr;
+      gap: 0 48px;
+    }
+    .stories-1col {
+      grid-template-columns: 1fr;
+    }
+    @media (max-width: 700px) {
+      .stories-2col { grid-template-columns: 1fr; gap: 0; }
+    }
+
+    /* Story cards */
+    .story-item {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .story-item:last-child { border-bottom: none; }
+    .story-category {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .category-model-releases-inline { color: var(--blue); }
+    .category-industry-inline { color: var(--orange); }
+    .category-research-inline { color: var(--purple); }
+    .category-tools-inline { color: var(--teal); }
+
+    .story-headline {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .story-lede {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text2);
+      margin-bottom: 14px;
+    }
+    .story-footer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .story-source-name {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text3);
+      letter-spacing: 0.1em;
+    }
+    .story-link {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--text3);
+      text-decoration: none;
+      border: 1px solid var(--border2);
+      padding: 3px 8px;
+      border-radius: 2px;
+      transition: color .2s, border-color .2s;
+    }
+    .story-link:hover { color: var(--lime); border-color: var(--lime); }
+
+    /* Research section graph-paper texture */
+    .digest-section.section-research {
+      position: relative;
+    }
+    .digest-section.section-research::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(155,111,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(155,111,255,.04) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 2px;
+    }
+    .digest-section.section-research > * { position: relative; z-index: 1; }
+
+    /* Ticker ornament between sections */
+    .ticker-ornament {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      margin: 40px 0;
+      position: relative;
+    }
+    .ticker-track {
+      display: flex;
+      gap: 48px;
+      animation: ticker 24s linear infinite;
+      white-space: nowrap;
+      width: max-content;
+    }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-item {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+    .ticker-item .ticker-sep { color: var(--border2); margin: 0 8px; }
+  </style>
+</head>
+<body>
+<div class="scan-bar"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+        <path d="M4 16 L10 8 L14 20 L18 6 L22 18 L26 12 L28 16" stroke="#c4ff3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-wordmark">SIGN<span>A</span>L</span>
+    </a>
+    <a href="/" class="back-link">← All Digests</a>
+  </div>
+</header>
+
+<div class="digest-bar">
+  <span class="digest-bar-date">MAY 02, 2026</span>
+  <span class="digest-bar-title">The Cost of Knowing</span>
+  <span class="digest-bar-count">7 items</span>
+</div>
+
+<div class="digest-content">
+
+  <!-- Overview lede section -->
+  <div class="digest-overview">
+    <p class="overview-text">IBM released Granite 4.1, a family of dense open-source LLMs (3B, 8B, 30B) trained on 15T tokens with 512K context window and Apache 2.0 licensing. The 8B model matches or exceeds the previous 32B MoE model across benchmarks. Meanwhile, Hugging Face published a major analysis showing AI evaluation has become a new compute bottleneck: the Holistic Agent Leaderboard spent $40,000 for 21,730 agent rollouts, a single GAIA run can cost $2,829, and PaperBench evaluations cost ~$9,500 per run. Research papers from April 30 focused on agent training infrastructure, model interpretability, and constrained exploration methods.</p>
+    <div class="overview-meta">May 02, 2026 · 7 stories across 4 categories</div>
+  </div>
+
+  <!-- Lead story -->
+  <section class="lead-story"
+    data-story-id="2026-05-02-ibm-releases-granite-4-1-dense-open-source-llms-with-512k-context"
+    data-category="Model Releases & Updates"
+    data-source="Hugging Face Blog">
+    <div class="lead-story-bg-text">NEW MODEL</div>
+    <div class="category-tag category-model-releases">Model Releases &amp; Updates</div>
+    <h1 class="lead-headline">IBM Releases Granite 4.1: Dense Open-Source LLMs with 512K Context</h1>
+    <p class="lead-lede">IBM released Granite 4.1, a family of dense decoder-only LLMs (3B, 8B, and 30B) trained from scratch on approximately 15 trillion tokens using a five-phase pre-training pipeline. The models support up to 512K token context windows and are released under the Apache 2.0 license — notably, the 8B instruct model matches or surpasses the previous Granite 4.0-H-Small (32B MoE with 9B active parameters) across benchmarks including IFEval, AlpacaEval, MMLU-Pro, BBH, GSM8K, and code tasks.</p>
+    <div class="story-source">Via <a href="https://huggingface.co/blog/ibm-granite/granite-4-1" target="_blank" rel="noopener">Hugging Face Blog ↗</a></div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- Pull quote -->
+  <blockquote class="pull-quote">
+    <p>"A statistically credible HAL evaluation with k=8 reruns would cost roughly $320,000."</p>
+  </blockquote>
+
+  <!-- Ticker ornament -->
+  <div class="ticker-ornament" aria-hidden="true">
+    <div class="ticker-track">
+      <span class="ticker-item">Hugging Face Blog<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">ArXiv<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">IBM Research<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">Hugging Face Blog<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">ArXiv<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">Agent Leaderboards<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">PaperBench<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">GAIA Benchmark<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">The Well<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">Intern-Atlas<span class="ticker-sep">·</span></span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item">Hugging Face Blog<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">ArXiv<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">IBM Research<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">Hugging Face Blog<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">ArXiv<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">Agent Leaderboards<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">PaperBench<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">GAIA Benchmark<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">The Well<span class="ticker-sep">·</span></span>
+      <span class="ticker-item">Intern-Atlas<span class="ticker-sep">·</span></span>
+    </div>
+  </div>
+
+  <!-- Industry & Business section -->
+  <section class="digest-section section-industry">
+    <header class="section-header">
+      <span class="section-label">━━━ Industry &amp; Business ━━━━━━━━━━━━</span>
+    </header>
+    <div class="stories-grid stories-1col">
+      <article class="story-item"
+        data-story-id="2026-05-02-ai-evaluation-becomes-new-compute-bottleneck-as-costs-skyrocket"
+        data-category="Industry & Business"
+        data-source="Hugging Face Blog">
+        <div class="story-category category-industry-inline">Industry &amp; Business</div>
+        <h2 class="story-headline">AI Evaluation Becomes New Compute Bottleneck as Costs Skyrocket</h2>
+        <p class="story-lede">AI evaluation has crossed a cost threshold that fundamentally changes who can participate in benchmarking frontier models. The Holistic Agent Leaderboard (HAL) spent approximately $40,000 to run 21,730 agent rollouts across 9 models and 9 benchmarks — a single GAIA run on a frontier model can cost $2,829 before caching, while PaperBench evaluations cost ~$9,500 per run including grading. Static benchmarks can compress 100–200× without losing rankings, but agent benchmarks compress only 2–3.5× at best, and training-in-the-loop benchmarks resist subsampling almost entirely.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via Hugging Face Blog</span>
+          <a href="https://huggingface.co/blog/evaleval/eval-costs-bottleneck" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+  <!-- Research Breakthroughs section -->
+  <section class="digest-section section-research">
+    <header class="section-header">
+      <span class="section-label">━━━ Research Breakthroughs ━━━━━━━━━━━━</span>
+    </header>
+    <div class="stories-grid stories-2col">
+      <article class="story-item"
+        data-story-id="2026-05-02-synthetic-computers-at-scale-enable-long-horizon-agent-training"
+        data-category="Research Breakthroughs"
+        data-source="ArXiv">
+        <div class="story-category category-research-inline">Research Breakthroughs</div>
+        <h2 class="story-headline">Synthetic Computers at Scale Enable Long-Horizon Agent Training</h2>
+        <p class="story-lede">Researchers introduced Synthetic Computers at Scale, a methodology for creating realistic synthetic computer environments with folder hierarchies and content-rich artifacts — documents, spreadsheets, presentations — to scale synthetic data creation for long-horizon productivity scenarios. Each simulation run requires over 8 hours of agent runtime and spans more than 2,000 turns on average, producing rich experiential learning signals validated by significant improvements on both in-domain and out-of-domain productivity evaluations.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via ArXiv</span>
+          <a href="https://arxiv.org/abs/2604.28181" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+      <article class="story-item"
+        data-story-id="2026-05-02-methodological-evolution-graph-maps-ai-research-development"
+        data-category="Research Breakthroughs"
+        data-source="ArXiv">
+        <div class="story-category category-research-inline">Research Breakthroughs</div>
+        <h2 class="story-headline">Methodological Evolution Graph Maps AI Research Development</h2>
+        <p class="story-lede">Researchers introduced Intern-Atlas, a methodological evolution graph built from 1,030,314 papers spanning AI conferences, journals, and ArXiv preprints — comprising 9,410,201 semantically typed edges, each grounded in verbatim source evidence, forming a queryable causal network of methodological development. The graph enables downstream applications in idea evaluation and automated idea generation, positioning methodological evolution graphs as a foundational data layer for automated scientific discovery.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via ArXiv</span>
+          <a href="https://arxiv.org/abs/2604.28158" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+      <article class="story-item"
+        data-story-id="2026-05-02-study-finds-sparse-autoencoders-suboptimally-recover-concept-manifolds"
+        data-category="Research Breakthroughs"
+        data-source="ArXiv">
+        <div class="story-category category-research-inline">Research Breakthroughs</div>
+        <h2 class="story-headline">Study Finds Sparse Autoencoders Suboptimally Recover Concept Manifolds</h2>
+        <p class="story-lede">Researchers developed a theoretical framework analyzing how sparse autoencoders (SAEs) capture concept manifolds, finding that SAEs mix global subspace and local tiling solutions in a fragmented regime they call dilution — explaining why manifold structure is rarely visible at the level of individual concepts. The results suggest future representation learning methods should treat geometric objects, not just individual directions, as the basic units of interpretability.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via ArXiv</span>
+          <a href="https://arxiv.org/abs/2604.28119" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+      <article class="story-item"
+        data-story-id="2026-05-02-policy-gradient-penalty-achieves-global-optimality-for-constrained-exploration"
+        data-category="Research Breakthroughs"
+        data-source="ArXiv">
+        <div class="story-category category-research-inline">Research Breakthroughs</div>
+        <h2 class="story-headline">Policy Gradient Penalty Achieves Global Optimality for Constrained Exploration</h2>
+        <p class="story-lede">Researchers proposed Policy Gradient Penalty (PGP), a single-loop policy-space method that enforces general convex occupancy-measure constraints via quadratic-penalty regularization for constrained exploration in reinforcement learning. Leveraging hidden convexity and strong duality, they established global last-iterate convergence guarantees, attaining an ε-optimal constrained entropy value with ε-bounded constraint violation despite policy-induced non-convexity.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via ArXiv</span>
+          <a href="https://arxiv.org/abs/2604.28144" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+  <!-- Tools & Open Source section -->
+  <section class="digest-section section-tools">
+    <header class="section-header">
+      <span class="section-label">━━━ Tools &amp; Open Source ━━━━━━━━━━━━</span>
+    </header>
+    <div class="stories-grid stories-1col">
+      <article class="story-item"
+        data-story-id="2026-05-02-efficient-dynamic-model-merging-via-learnable-task-vector-compression"
+        data-category="Tools & Open Source"
+        data-source="ArXiv">
+        <div class="story-category category-tools-inline">Tools &amp; Open Source</div>
+        <h2 class="story-headline">Efficient Dynamic Model Merging via Learnable Task Vector Compression</h2>
+        <p class="story-lede">Researchers proposed T-Switch, which decomposes task vectors into three compact components — a binary sparse mask, a sign vector, and a scalar scaling factor — achieving high-fidelity approximation at high compression ratios. Building on this, they introduced Auto-FlexSwitch, a dynamic model merging approach incorporating a K-Nearest Neighbor inference scheme with a learnable low-rank metric that supports highly efficient task vector compression and automatically composes task vectors through feature similarity retrieval.</p>
+        <footer class="story-footer">
+          <span class="story-source-name">Via ArXiv</span>
+          <a href="https://arxiv.org/abs/2604.28109" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </footer>
+      </article>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <span class="footer-brand">Signal</span>
+  <span class="footer-note">Generated by ai-digest + page-creator agents · Pi 1</span>
+</footer>
+
+<script>
+(function () {
+  const digestDate = document.querySelector('meta[name="signal-date"]')?.content || '';
+
+  function slugify(text) {
+    return String(text).toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60);
+  }
+
+  function makeArticleId(storyId, date) {
+    if (storyId.includes(date)) return storyId;
+    return `${date}-${slugify(storyId)}`;
+  }
+
+  async function attachLikeButtons() {
+    const stories = document.querySelectorAll('[data-story-id]');
+    if (!stories.length) return;
+
+    const fetches = Array.from(stories).map(async (el) => {
+      const rawId   = el.getAttribute('data-story-id');
+      const id      = makeArticleId(rawId, digestDate);
+      const category = el.getAttribute('data-category') || '';
+      const source   = el.getAttribute('data-source') || '';
+      const liked    = localStorage.getItem(`liked:${id}`) === '1';
+
+      let count = 0;
+      try {
+        const r = await fetch(`/api/like?article_id=${encodeURIComponent(id)}`);
+        if (r.ok) ({ count } = await r.json());
+      } catch {}
+
+      const btn = document.createElement('button');
+      btn.className = 'story-like-btn' + (liked ? ' liked' : '');
+      btn.setAttribute('aria-label', 'Like this story');
+      btn.innerHTML = `<span class="like-icon">${liked ? '♥' : '♡'}</span>`
+                    + `<span class="like-count">${count > 0 ? count : ''}</span>`;
+
+      btn.addEventListener('click', async () => {
+        if (localStorage.getItem(`liked:${id}`) === '1') return;
+        localStorage.setItem(`liked:${id}`, '1');
+        btn.classList.add('liked');
+        btn.querySelector('.like-icon').textContent = '♥';
+        btn.classList.add('pop');
+        setTimeout(() => btn.classList.remove('pop'), 200);
+        try {
+          const r = await fetch('/api/like', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ article_id: id, category, source }),
+          });
+          if (r.ok) {
+            const data = await r.json();
+            btn.querySelector('.like-count').textContent = data.count > 0 ? data.count : '';
+          }
+        } catch {}
+      });
+
+      el.appendChild(btn);
+    });
+
+    await Promise.all(fetches);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachLikeButtons);
+  } else {
+    attachLikeButtons();
+  }
+})();
+</script>
+</body>
+</html>
