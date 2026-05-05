@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-05-04",
+    "title": "Zero Knowledge",
+    "overview": "OpenAI transformed its sold-out GPT-5.5 party into a monthlong Codex giveaway for 8,000 developers. The standout research finding: reasoning models (DeepSeek-R1, GPT-5, DeepSeek-Prover-V2) maintain accuracy in obfuscated mathematical environments while general models (Claude-Sonnet-4.5, GPT-4o) suffer performance degradation — a concrete divergence in robustness between model types.",
+    "item_count": 3,
+    "filename": "2026-05-04.html"
+  },
+  {
     "date": "2026-05-03",
     "title": "Before the Ticket",
     "overview": "Netomi raised $110 million in a strategic round led by Accenture Ventures with Adobe Ventures participation, signaling a shift in enterprise AI from chatbot layers to ambient intelligence that prevents service tickets before they exist. The round includes global distribution partnerships with Accenture's Fortune 100 client base and integration into Adobe's Brand Concierge ecosystem. Research papers from May 1 focused on agent execution infrastructure, multi-agent coordination, topological deep learning, and safe reinforcement learning, with standout work on validation-driven chart generation workflows and interaction-guided exploration for multi-agent MCTS.",
