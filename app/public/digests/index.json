@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-05-06",
+    "title": "Extraordinary Claims",
+    "overview": "Miami startup Subquadratic emerged from stealth claiming to have built the first LLM with fully subquadratic architecture, asserting 1,000x efficiency gains at 12 million tokens and raising $29 million at a $500 million valuation.",
+    "item_count": 9,
+    "filename": "2026-05-06.html"
+  },
+  {
     "date": "2026-05-04",
     "title": "Zero Knowledge",
     "overview": "OpenAI transformed its sold-out GPT-5.5 party into a monthlong Codex giveaway for 8,000 developers. The standout research finding: reasoning models (DeepSeek-R1, GPT-5, DeepSeek-Prover-V2) maintain accuracy in obfuscated mathematical environments while general models (Claude-Sonnet-4.5, GPT-4o) suffer performance degradation — a concrete divergence in robustness between model types.",
