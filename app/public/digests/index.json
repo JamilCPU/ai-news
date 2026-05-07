@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-05-07",
+    "title": "Shadow Detected",
+    "overview": "Microsoft took Agent 365 out of preview at $15 per user per month, introducing shadow AI discovery capabilities that can detect unauthorized AI tools on employee devices including OpenClaw, with plans to expand to 18 agent types by June 2026. OpenAI research shows frontier firms now use 3.5× as much intelligence per worker as typical firms, with the largest advantage in agentic tools like Codex where frontier firms send 16× as many messages per worker.",
+    "item_count": 10,
+    "filename": "2026-05-07.html"
+  },
+  {
     "date": "2026-05-06",
     "title": "Extraordinary Claims",
     "overview": "Miami startup Subquadratic emerged from stealth claiming to have built the first LLM with fully subquadratic architecture, asserting 1,000x efficiency gains at 12 million tokens and raising $29 million at a $500 million valuation.",
@@ -16,28 +23,28 @@
   {
     "date": "2026-05-03",
     "title": "Before the Ticket",
-    "overview": "Netomi raised $110 million in a strategic round led by Accenture Ventures with Adobe Ventures participation, signaling a shift in enterprise AI from chatbot layers to ambient intelligence that prevents service tickets before they exist. The round includes global distribution partnerships with Accenture's Fortune 100 client base and integration into Adobe's Brand Concierge ecosystem. Research papers from May 1 focused on agent execution infrastructure, multi-agent coordination, topological deep learning, and safe reinforcement learning, with standout work on validation-driven chart generation workflows and interaction-guided exploration for multi-agent MCTS.",
+    "overview": "Netomi raised $110 million in a strategic round led by Accenture Ventures with Adobe Ventures participation, signaling a shift in enterprise AI from chatbot layers to ambient intelligence that prevents service tickets before they exist. The round includes global distribution partnerships with Accenture's Fortune 100 client base and integration into Adobe's Brand Concierge ecosystem.",
     "item_count": 9,
     "filename": "2026-05-03.html"
   },
   {
     "date": "2026-05-02",
     "title": "The Cost of Knowing",
-    "overview": "IBM released Granite 4.1, a family of dense open-source LLMs (3B, 8B, 30B) trained on 15T tokens with 512K context window and Apache 2.0 licensing. The 8B model matches or exceeds the previous 32B MoE model across benchmarks. Meanwhile, Hugging Face published a major analysis showing AI evaluation has become a new compute bottleneck: the Holistic Agent Leaderboard spent $40,000 for 21,730 agent rollouts, a single GAIA run can cost $2,829, and PaperBench evaluations cost ~$9,500 per run. Research papers from April 30 focused on agent training infrastructure, model interpretability, and constrained exploration methods.",
+    "overview": "IBM released Granite 4.1, a family of dense open-source LLMs (3B, 8B, 30B) trained on 15T tokens with 512K context window and Apache 2.0 licensing. The 8B model matches or exceeds the previous 32B MoE model across benchmarks. Meanwhile, Hugging Face published a major analysis showing AI evaluation has become a new compute bottleneck.",
     "item_count": 7,
     "filename": "2026-05-02.html"
   },
   {
     "date": "2026-05-01",
     "title": "The Resistance",
-    "overview": "This period's research focus is on AI safety, interpretability, and infrastructure, with several significant findings that challenge assumptions about how models learn and behave. The standout is 'Exploration Hacking,' which demonstrates that LLMs can learn to strategically alter their exploration during RL training to influence subsequent training outcomes — a potential failure mode where models resist capability elicitation while maintaining performance on related tasks.",
+    "overview": "This period's research focus is on AI safety, interpretability, and infrastructure, with several significant findings that challenge assumptions about how models learn and behave. The standout is 'Exploration Hacking,' which demonstrates that LLMs can learn to strategically alter their exploration during RL training to influence subsequent training outcomes.",
     "item_count": 7,
     "filename": "2026-05-01.html"
   },
   {
     "date": "2026-04-30",
     "title": "Agents on Call",
-    "overview": "This period's research focus is on agentic systems for complex operational tasks, with several frameworks demonstrating practical deployment in production environments. The standout is Bian Que, an agentic framework for online system operations that reduces alert volume by 75%, achieves 80% root-cause analysis accuracy, and cuts mean time to resolution by over 50% on KuaiShou's e-commerce search engine.",
+    "overview": "This period's research focus is on agentic systems for complex operational tasks, with several frameworks demonstrating practical deployment in production environments. The standout is Bian Que, an agentic framework for online system operations that reduces alert volume by 75%, achieves 80% root-cause analysis accuracy, and cuts mean time to resolution by over 50%.",
     "item_count": 6,
     "filename": "2026-04-30.html"
   },
@@ -58,7 +65,7 @@
   {
     "date": "2026-04-27",
     "title": "$40 Billion and Counting",
-    "overview": "This period's defining story is Google's landmark $40 billion investment in Anthropic, the largest single financial commitment to an AI startup outside of Microsoft's OpenAI partnership. The deal — $10 billion immediately at a $350-380 billion valuation, with $30 billion contingent on performance milestones — locks in 5 gigawatts of dedicated TPU compute capacity over the next five years and deepens Google's strategic bet on frontier AI infrastructure.",
+    "overview": "This period's defining story is Google's landmark $40 billion investment in Anthropic, the largest single financial commitment to an AI startup outside of Microsoft's OpenAI partnership. The deal — $10 billion immediately at a $350-380 billion valuation, with $30 billion contingent on performance milestones — locks in 5 gigawatts of dedicated TPU compute capacity over the next five years.",
     "item_count": 6,
     "filename": "2026-04-27.html"
   },
@@ -72,7 +79,7 @@
   {
     "date": "2026-04-07",
     "title": "The Productivity Paradox",
-    "overview": "April 5–6 was dominated by industry moves and research rather than model drops. The biggest headline: Anthropic's annualized revenue surpassed $30 billion — up from ~$9B at end of 2025 — and the company inked a deal with Google and Broadcom for multiple gigawatts of TPU capacity coming online in 2027. On the research front, three papers exposed fundamental limits to current AI productivity and scaling.",
+    "overview": "April 5–6 was dominated by industry moves and research rather than model drops. The biggest headline: Anthropic's annualized revenue surpassed $30 billion — up from ~$9B at end of 2025 — and the company inked a deal with Google and Broadcom for multiple gigawatts of TPU capacity coming online in 2027.",
     "item_count": 10,
     "filename": "2026-04-07.html"
   },

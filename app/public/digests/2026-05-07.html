@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="signal-date" content="MAY 07, 2026">
+  <meta name="signal-title" content="Shadow Detected">
+  <meta name="signal-overview" content="Microsoft took Agent 365 out of preview at $15 per user per month, introducing shadow AI discovery capabilities that can detect unauthorized AI tools on employee devices including OpenClaw, with plans to expand to 18 agent types by June 2026. OpenAI introduced B2B Signals research showing frontier firms now use 3.5x as much intelligence per worker as typical firms, with the largest advantage in agentic tools like Codex where frontier firms send 16x as many messages per worker.">
+  <meta name="signal-items" content="10">
+  <title>Shadow Detected — SIGNAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #060a10;
+      --bg2:      #090e18;
+      --surface:  #0d1525;
+      --surface2: #111e33;
+      --border:   #1a2a42;
+      --border2:  #243550;
+      --text:     #dce8f8;
+      --text2:    #7a90b4;
+      --text3:    #3d5270;
+      --lime:     #c4ff3c;
+      --blue:     #2d7fff;
+      --purple:   #9b6fff;
+      --orange:   #ff8c42;
+      --red:      #ff4560;
+      --teal:     #00d4aa;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Literata', Georgia, serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle at 70% 30%, rgba(45,127,255,.05) 0%, transparent 50%);
+      pointer-events: none; z-index: 0;
+    }
+    .scan-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--orange), transparent);
+      animation: scan 4s ease-in-out infinite; z-index: 100;
+    }
+    @keyframes scan {
+      0% { transform: translateX(-100%); opacity: 0; }
+      20% { opacity: 1; } 80% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+    .site-header {
+      position: relative; z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,10,16,.92);
+      backdrop-filter: blur(12px);
+      padding: 0 clamp(16px,4vw,48px);
+    }
+    .header-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-wordmark {
+      font-family: var(--font-head); font-weight: 800; font-size: 18px;
+      letter-spacing: 0.12em; color: var(--text); text-transform: uppercase;
+    }
+    .logo-wordmark span { color: var(--lime); }
+    .back-link {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text3); text-decoration: none;
+      border: 1px solid var(--border2); padding: 6px 14px; border-radius: 2px;
+      transition: color .2s, border-color .2s;
+    }
+    .back-link:hover { color: var(--lime); border-color: var(--lime); }
+    .digest-bar {
+      position: relative; z-index: 1;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: baseline;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .digest-bar-date {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange);
+    }
+    .digest-bar-title {
+      font-family: var(--font-head); font-weight: 700; font-size: 20px;
+      color: var(--text); flex: 1;
+    }
+    .digest-bar-count {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); letter-spacing: 0.1em;
+    }
+    .digest-content {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: clamp(32px,5vw,64px) clamp(16px,4vw,48px);
+    }
+    .site-footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand {
+      font-family: var(--font-head); font-weight: 800; font-size: 13px;
+      letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase;
+    }
+    .footer-note {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text3);
+    }
+    .story-like-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: none; border: 1px solid var(--border2);
+      color: var(--text3); cursor: pointer;
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 2px;
+      transition: color .15s, border-color .15s, transform .1s;
+      margin-top: 12px;
+      user-select: none;
+    }
+    .story-like-btn:hover { color: var(--red); border-color: var(--red); }
+    .story-like-btn.liked {
+      color: var(--red); border-color: rgba(255,69,96,.4);
+      background: rgba(255,69,96,.06);
+    }
+    .story-like-btn .like-icon { font-size: 12px; line-height: 1; }
+    .story-like-btn.pop { transform: scale(1.15); }
+    .story-like-btn .like-count { min-width: 10px; }
+
+    /* ── AGENT STYLES ── */
+
+    /* Surveillance ticker — visual signature for a surveillance/enterprise day */
+    .radar-ticker {
+      background: rgba(255,69,96,.05);
+      border-top: 1px solid rgba(255,69,96,.2);
+      border-bottom: 1px solid rgba(255,69,96,.2);
+      padding: 10px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      margin-bottom: 40px;
+    }
+    .radar-ticker-inner {
+      display: inline-flex; gap: 40px;
+      animation: ticker-scroll 40s linear infinite;
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,140,66,.7);
+    }
+    @keyframes ticker-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .radar-ticker-inner span.alert { color: var(--red); font-weight: 600; }
+    .radar-ticker-inner span.sep { color: var(--border2); }
+
+    /* Overview lede */
+    .digest-overview {
+      margin-bottom: 48px;
+    }
+    .overview-text {
+      font-size: clamp(15px, 1.5vw, 18px);
+      line-height: 1.75;
+      font-style: italic;
+      color: var(--text2);
+      max-width: 760px;
+      margin-bottom: 12px;
+    }
+    .overview-meta {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase;
+    }
+
+    /* Stat callout row */
+    .stat-row {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .stat-item {
+      flex: 1; min-width: 150px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 16px 20px;
+    }
+    .stat-value {
+      font-family: var(--font-head); font-weight: 800;
+      font-size: clamp(28px, 3vw, 42px);
+      color: var(--orange); line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3);
+    }
+
+    /* Lead story */
+    .lead-story {
+      position: relative;
+      border-left: 4px solid var(--orange);
+      padding: 32px 32px 32px 36px;
+      background: var(--surface);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .lead-story::before {
+      content: 'SHADOW AI';
+      position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+      font-family: var(--font-head); font-weight: 800;
+      font-size: 120px; line-height: 1;
+      color: rgba(255,140,66,.03);
+      white-space: nowrap; pointer-events: none;
+      letter-spacing: -0.04em;
+    }
+    .category-tag {
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 14px; display: inline-block;
+      padding: 3px 8px; border-radius: 1px;
+    }
+    .category-industry { color: var(--orange); border: 1px solid rgba(255,140,66,.3); }
+    .category-research { color: var(--purple); border: 1px solid rgba(155,111,255,.3); }
+    .category-models { color: var(--blue); border: 1px solid rgba(45,127,255,.3); }
+    .category-tools { color: var(--teal); border: 1px solid rgba(0,212,170,.3); }
+    .lead-headline {
+      font-family: var(--font-head); font-weight: 800;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 1.1; color: var(--text);
+      margin-bottom: 20px; letter-spacing: -0.02em;
+    }
+    .lead-lede {
+      font-size: 17px; font-style: italic;
+      color: var(--text2); line-height: 1.75;
+      max-width: 760px; margin-bottom: 20px;
+    }
+    .story-source {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); letter-spacing: 0.1em;
+    }
+    .story-source a {
+      color: var(--orange); text-decoration: none;
+    }
+    .story-source a:hover { text-decoration: underline; }
+
+    /* Shadow AI detection callout — special block for the key threat finding */
+    .shadow-callout {
+      background: rgba(255,69,96,.06);
+      border: 1px solid rgba(255,69,96,.2);
+      border-left: 3px solid var(--red);
+      padding: 16px 20px;
+      margin-top: 20px;
+      max-width: 600px;
+    }
+    .shadow-callout-label {
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.18em; color: var(--red); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .shadow-callout-text {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--text2); line-height: 1.6;
+    }
+    .shadow-callout-text code {
+      color: var(--red); background: rgba(255,69,96,.1);
+      padding: 1px 5px; font-size: 10px;
+    }
+
+    /* Section divider */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* Pull quote */
+    .pull-quote {
+      border-left: 4px solid var(--orange);
+      padding: 24px 28px;
+      margin: 48px 0;
+      background: rgba(255,140,66,.04);
+    }
+    .pull-quote p {
+      font-family: var(--font-body);
+      font-size: clamp(18px, 2vw, 26px);
+      font-style: italic; line-height: 1.5;
+      color: var(--text);
+    }
+
+    /* Section header */
+    .digest-section { margin-bottom: 52px; }
+    .section-header {
+      border-top: 3px solid var(--orange);
+      padding-top: 12px;
+      margin-bottom: 28px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .digest-section.research .section-header { border-top-color: var(--purple); }
+    .section-label {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text3);
+    }
+    .section-count {
+      font-family: var(--font-mono); font-size: 9px;
+      color: var(--text3); letter-spacing: 0.1em;
+    }
+
+    /* Story grids */
+    .stories-grid { display: grid; gap: 0; }
+    .stories-2col { grid-template-columns: 1fr 1fr; }
+    .stories-1col { grid-template-columns: 1fr; }
+    @media (max-width: 680px) {
+      .stories-2col { grid-template-columns: 1fr; }
+    }
+
+    /* Story items */
+    .story-item {
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .stories-2col .story-item:nth-child(odd) {
+      padding-right: 28px;
+      border-right: 1px solid var(--border);
+    }
+    .stories-2col .story-item:nth-child(even) {
+      padding-left: 28px;
+    }
+    .story-item:last-child,
+    .stories-2col .story-item:nth-last-child(-n+2) {
+      border-bottom: none;
+    }
+    .story-category {
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 10px; display: inline-block;
+    }
+    .story-headline {
+      font-family: var(--font-head); font-weight: 700;
+      font-size: clamp(16px, 1.6vw, 22px);
+      line-height: 1.2; color: var(--text);
+      margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .story-lede {
+      font-size: 15px; font-style: italic;
+      color: var(--text2); line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .story-footer {
+      display: flex; align-items: center;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .story-source-name {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); letter-spacing: 0.08em;
+    }
+    .story-link {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); text-decoration: none;
+      border: 1px solid var(--border2); padding: 2px 8px;
+      letter-spacing: 0.06em; transition: color .15s, border-color .15s;
+    }
+    .story-link:hover { color: var(--lime); border-color: var(--lime); }
+
+    /* Research section with graph-paper texture */
+    .research-zone {
+      position: relative;
+      background-image:
+        linear-gradient(rgba(155,111,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(155,111,255,.04) 1px, transparent 1px);
+      background-size: 28px 28px;
+      padding: 24px 24px 4px;
+      border: 1px solid rgba(155,111,255,.1);
+      margin-top: -4px;
+    }
+
+    /* Intel gap chart — inline visual for the B2B signals story */
+    .intel-gap {
+      margin-top: 16px;
+      padding: 16px 20px;
+      background: rgba(45,127,255,.05);
+      border: 1px solid rgba(45,127,255,.15);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 8px 12px;
+      align-items: center;
+      max-width: 480px;
+    }
+    .intel-gap-label {
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3);
+      white-space: nowrap;
+    }
+    .intel-gap-bar-bg {
+      height: 6px; background: var(--border);
+      border-radius: 1px; position: relative;
+    }
+    .intel-gap-bar-fill {
+      position: absolute; top: 0; left: 0; bottom: 0;
+      border-radius: 1px;
+    }
+    .intel-gap-val {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--blue); font-weight: 600;
+    }
+
+    /* Ornament */
+    .ornament {
+      text-align: center;
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--text3); letter-spacing: 0.4em;
+      margin: 40px 0;
+    }
+
+    /* AMEX agentic commerce — feature callout */
+    .amex-flow {
+      display: flex; gap: 0; margin-top: 14px;
+      max-width: 560px;
+      border: 1px solid var(--border);
+    }
+    .amex-step {
+      flex: 1; padding: 12px 14px;
+      border-right: 1px solid var(--border);
+      font-family: var(--font-mono);
+    }
+    .amex-step:last-child { border-right: none; }
+    .amex-step-num {
+      font-size: 9px; color: var(--text3); letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .amex-step-name {
+      font-size: 10px; color: var(--teal); font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+    .amex-step-desc {
+      font-size: 9px; color: var(--text3); line-height: 1.5;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+<div class="scan-bar"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+        <path d="M4 16 L10 8 L14 20 L18 6 L22 18 L26 12 L28 16" stroke="#c4ff3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-wordmark">SIGN<span>A</span>L</span>
+    </a>
+    <a href="/" class="back-link">← All Digests</a>
+  </div>
+</header>
+
+<div class="digest-bar">
+  <span class="digest-bar-date">MAY 07, 2026</span>
+  <span class="digest-bar-title">Shadow Detected</span>
+  <span class="digest-bar-count">10 items</span>
+</div>
+
+<div class="digest-content">
+
+  <!-- Surveillance ticker -->
+  <div class="radar-ticker">
+    <div class="radar-ticker-inner">
+      <span class="alert">⬛ AGENT 365 GA</span>
+      <span class="sep">·</span>
+      <span>SHADOW AI DETECTION ACTIVE</span>
+      <span class="sep">·</span>
+      <span class="alert">OPENCLAW — FLAGGED</span>
+      <span class="sep">·</span>
+      <span>CLAUDE CODE — FLAGGED</span>
+      <span class="sep">·</span>
+      <span>GITHUB COPILOT CLI — FLAGGED</span>
+      <span class="sep">·</span>
+      <span>$15/USER/MONTH</span>
+      <span class="sep">·</span>
+      <span>18 AGENT TYPES · JUNE 2026</span>
+      <span class="sep">·</span>
+      <span>FRONTIER FIRMS: 3.5× INTELLIGENCE PER WORKER</span>
+      <span class="sep">·</span>
+      <span>CODEX ADVANTAGE: 16×</span>
+      <span class="sep">·</span>
+      <span>SAGEOX: $15M SEED</span>
+      <span class="sep">·</span>
+      <span>AMEX INTENT CONTRACTS: LIVE</span>
+      <span class="sep">·</span>
+      <!-- duplicate for seamless loop -->
+      <span class="alert">⬛ AGENT 365 GA</span>
+      <span class="sep">·</span>
+      <span>SHADOW AI DETECTION ACTIVE</span>
+      <span class="sep">·</span>
+      <span class="alert">OPENCLAW — FLAGGED</span>
+      <span class="sep">·</span>
+      <span>CLAUDE CODE — FLAGGED</span>
+      <span class="sep">·</span>
+      <span>GITHUB COPILOT CLI — FLAGGED</span>
+      <span class="sep">·</span>
+      <span>$15/USER/MONTH</span>
+      <span class="sep">·</span>
+      <span>18 AGENT TYPES · JUNE 2026</span>
+      <span class="sep">·</span>
+      <span>FRONTIER FIRMS: 3.5× INTELLIGENCE PER WORKER</span>
+      <span class="sep">·</span>
+      <span>CODEX ADVANTAGE: 16×</span>
+      <span class="sep">·</span>
+      <span>SAGEOX: $15M SEED</span>
+      <span class="sep">·</span>
+      <span>AMEX INTENT CONTRACTS: LIVE</span>
+      <span class="sep">·</span>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="digest-overview">
+    <p class="overview-text">Microsoft took Agent 365 out of preview at $15 per user per month, introducing shadow AI discovery capabilities that can detect unauthorized AI tools on employee devices including OpenClaw, with plans to expand to 18 agent types by June 2026. OpenAI research shows frontier firms now use 3.5× as much intelligence per worker as typical firms — with a 16× advantage specifically in Codex. American Express is building an agentic commerce payment layer with intent contracts and single-use tokens. Research covers wireless communications, low-resource language NLP, audio model jailbreaking, and automated vulnerability reasoning on Windows COM binaries.</p>
+    <div class="overview-meta">MAY 07, 2026 · 10 stories across 2 categories</div>
+  </div>
+
+  <!-- Stat row -->
+  <div class="stat-row">
+    <div class="stat-item">
+      <div class="stat-value">3.5×</div>
+      <div class="stat-label">Intelligence per worker at frontier firms</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">16×</div>
+      <div class="stat-label">Codex messages/worker vs. typical firms</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">18</div>
+      <div class="stat-label">Agent types Agent 365 will monitor by Jun 2026</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">$15M</div>
+      <div class="stat-label">SageOX seed raise for agentic context infra</div>
+    </div>
+  </div>
+
+  <!-- Lead story: Microsoft Agent 365 -->
+  <section class="lead-story"
+    data-story-id="2026-05-07-microsoft-agent-365-shadow-ai-detection-openclaw"
+    data-category="Industry & Business"
+    data-source="VentureBeat">
+    <div class="category-tag category-industry">Industry & Business</div>
+    <h1 class="lead-headline">Microsoft Takes Agent 365 Out of Preview as Shadow AI Becomes an Enterprise Threat</h1>
+    <p class="lead-lede">Microsoft took Agent 365, its management platform for AI agents, into general availability at $15 per user per month — a unified control plane that lets enterprise IT and security teams observe, govern, and secure AI agents wherever they run. The platform introduces shadow AI discovery capabilities that can detect unauthorized AI tools on employee devices including OpenClaw, with plans to expand to 18 different agent types including GitHub Copilot CLI and Claude Code by June 2026.</p>
+    <div class="shadow-callout">
+      <div class="shadow-callout-label">Shadow AI Detection — Flagged Tools</div>
+      <div class="shadow-callout-text">
+        Microsoft Defender now maps which devices agents run on, which MCP servers they connect to, and which cloud resources those identities can reach. Specifically flagged as detectable: <code>OpenClaw</code> · <code>Claude Code</code> · <code>GitHub Copilot CLI</code>. June 2026: expanded to 18 agent types.
+      </div>
+    </div>
+    <div class="story-source" style="margin-top:20px;">Via <a href="https://venturebeat.com/technology/microsoft-takes-agent-365-out-of-preview-as-shadow-ai-becomes-an-enterprise-threat" target="_blank" rel="noopener">VentureBeat ↗</a></div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- Pull quote -->
+  <blockquote class="pull-quote">
+    <p>"The largest advantage shows up in agentic tools — frontier firms send 16× as many Codex messages per worker as typical firms, suggesting leading firms are using AI not just to answer questions but to delegate meaningful tasks to AI agents."</p>
+  </blockquote>
+
+  <!-- Industry section: remaining 4 stories -->
+  <section class="digest-section"
+    data-story-id="2026-05-07-industry-business-section"
+    data-category="Industry & Business"
+    data-source="Multiple">
+    <header class="section-header">
+      <span class="section-label">Industry & Business</span>
+      <span class="section-count">4 items</span>
+    </header>
+    <div class="stories-grid stories-2col">
+
+      <!-- B2B Signals -->
+      <article class="story-item"
+        data-story-id="2026-05-07-openai-b2b-signals-frontier-firms-3-5x-intelligence-per-worker"
+        data-category="Industry & Business"
+        data-source="OpenAI">
+        <div class="story-category category-industry">Industry & Business</div>
+        <h2 class="story-headline">OpenAI Research Shows Frontier Firms Use 3.5× More Intelligence Per Worker</h2>
+        <p class="story-lede">B2B Signals, a recurring measure of AI diffusion across businesses, finds the gap is widening: frontier firms are at 3.5× typical firms — up from 2× a year ago — with message volume explaining only 36% of that gap. The real divide is in agentic tools.</p>
+        <div class="intel-gap">
+          <div class="intel-gap-label">Typical</div>
+          <div class="intel-gap-bar-bg"><div class="intel-gap-bar-fill" style="width:22%; background:var(--text3);"></div></div>
+          <div class="intel-gap-val">1×</div>
+          <div class="intel-gap-label">Frontier</div>
+          <div class="intel-gap-bar-bg"><div class="intel-gap-bar-fill" style="width:100%; background:var(--blue);"></div></div>
+          <div class="intel-gap-val">3.5×</div>
+          <div class="intel-gap-label">Codex gap</div>
+          <div class="intel-gap-bar-bg"><div class="intel-gap-bar-fill" style="width:100%; background:var(--orange);"></div></div>
+          <div class="intel-gap-val">16×</div>
+        </div>
+        <div class="story-footer" style="margin-top:14px;">
+          <span class="story-source-name">Via OpenAI</span>
+          <a href="https://openai.com/index/introducing-b2b-signals/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+
+      <!-- AMEX agentic commerce -->
+      <article class="story-item"
+        data-story-id="2026-05-07-amex-agentic-commerce-intent-contracts-single-use-tokens"
+        data-category="Industry & Business"
+        data-source="VentureBeat">
+        <div class="story-category category-industry">Industry & Business</div>
+        <h2 class="story-headline">AMEX Builds Agentic Commerce Stack with Intent Contracts and Single-Use Tokens</h2>
+        <p class="story-lede">American Express's ACE developer kit lets AI agents shop and pay on behalf of users through a closed-loop system that generates an Intent ID and Proof of Intent Token — bound to user-defined constraints via single-use tokens that physically cannot exceed the user's authorized limits.</p>
+        <div class="amex-flow">
+          <div class="amex-step">
+            <div class="amex-step-num">01</div>
+            <div class="amex-step-name">INTENT CONTRACT</div>
+            <div class="amex-step-desc">User defines what the agent can do</div>
+          </div>
+          <div class="amex-step">
+            <div class="amex-step-num">02</div>
+            <div class="amex-step-name">INTENT TOKEN</div>
+            <div class="amex-step-desc">Proof of authorization, bounds enforced</div>
+          </div>
+          <div class="amex-step">
+            <div class="amex-step-num">03</div>
+            <div class="amex-step-name">SINGLE-USE</div>
+            <div class="amex-step-desc">Expires after one transaction</div>
+          </div>
+        </div>
+        <div class="story-footer" style="margin-top:14px;">
+          <span class="story-source-name">Via VentureBeat</span>
+          <a href="https://venturebeat.com/orchestration/inside-amexs-agentic-commerce-stack-how-intent-contracts-and-single-use-tokens-enforce-ai-transactions" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+
+      <!-- SageOX -->
+      <article class="story-item"
+        data-story-id="2026-05-07-sageox-stealth-15m-seed-agentic-context-infrastructure"
+        data-category="Industry & Business"
+        data-source="VentureBeat">
+        <div class="story-category category-industry">Industry & Business</div>
+        <h2 class="story-headline">SageOX Emerges from Stealth with $15M Seed to Build Agentic Context Infrastructure</h2>
+        <p class="story-lede">SageOX addresses the gap where AI agents lack visibility into team discussions, decisions, and knowledge sharing that happens outside formal channels — the rich ambient context that shapes every decision but never makes it into a ticket or document.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via VentureBeat</span>
+          <a href="https://venturebeat.com/technology/ai-agents-are-missing-all-the-discussions-your-team-is-having-sageox-has-an-answer-agentic-context-infrastructure" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+
+      <!-- ChatGPT Futures Class + Ads (combined / lighter items) -->
+      <article class="story-item"
+        data-story-id="2026-05-07-openai-chatgpt-futures-class-2026-10k-grants-26-students"
+        data-category="Industry & Business"
+        data-source="OpenAI">
+        <div class="story-category category-industry">Industry & Business</div>
+        <h2 class="story-headline">OpenAI Launches ChatGPT Futures Class with $10K Grants; Expands Ads to CPC Bidding</h2>
+        <p class="story-lede">Twenty-six students from over 20 universities receive $10,000 grants and frontier model access through the inaugural Futures Class of 2026 — representing the first generation to start and finish college with ChatGPT. Separately, a self-serve Ads Manager opens to US advertisers with cost-per-click bidding and partners including Dentsu, Publicis, and WPP.</p>
+        <div class="story-footer">
+          <span class="story-source-name">Via OpenAI</span>
+          <a href="https://openai.com/index/introducing-chatgpt-futures-class-of-2026/" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <div class="ornament">◆ ◆ ◆</div>
+
+  <!-- Research section -->
+  <section class="digest-section research"
+    data-story-id="2026-05-07-research-breakthroughs-section"
+    data-category="Research Breakthroughs"
+    data-source="ArXiv">
+    <header class="section-header">
+      <span class="section-label">Research Breakthroughs</span>
+      <span class="section-count">4 items</span>
+    </header>
+    <div class="research-zone">
+      <div class="stories-grid stories-2col">
+
+        <!-- Memory-augmented source coding -->
+        <article class="story-item"
+          data-story-id="2026-05-07-memory-augmented-source-coding-low-snr-communications"
+          data-category="Research Breakthroughs"
+          data-source="ArXiv">
+          <div class="story-category category-research">Research Breakthroughs</div>
+          <h2 class="story-headline">Memory-Augmented Source Coding for Low-SNR Communications</h2>
+          <p class="story-lede">A memory-augmented coding approach addresses reliable information transmission in poor signal-to-noise environments — improving error correction and coding efficiency in wireless, satellite, and other constrained communication systems where traditional approaches fail.</p>
+          <div class="story-footer">
+            <span class="story-source-name">Via ArXiv</span>
+            <a href="https://arxiv.org/abs/2605.04400" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+          </div>
+        </article>
+
+        <!-- Language generalization low-resource -->
+        <article class="story-item"
+          data-story-id="2026-05-07-language-generalization-low-resource-varieties-nlp"
+          data-category="Research Breakthroughs"
+          data-source="ArXiv">
+          <div class="story-category category-research">Research Breakthroughs</div>
+          <h2 class="story-headline">Language Generalization Methods for Low-Resource Varieties</h2>
+          <p class="story-lede">New generalization techniques enable NLP systems to build usable models from limited training data for underrepresented languages and dialects — advancing the goal of AI language technology that works for communities historically excluded from mainstream NLP research.</p>
+          <div class="story-footer">
+            <span class="story-source-name">Via ArXiv</span>
+            <a href="https://arxiv.org/abs/2605.04500" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+          </div>
+        </article>
+
+        <!-- Jailbreaking audio models -->
+        <article class="story-item"
+          data-story-id="2026-05-07-jailbreaking-audio-language-models-token-aware-gradient"
+          data-category="Research Breakthroughs"
+          data-source="ArXiv">
+          <div class="story-category category-research">Research Breakthroughs</div>
+          <h2 class="story-headline">Jailbreaking Audio Language Models via Token-Aware Gradient Optimization</h2>
+          <p class="story-lede">A novel attack method exploits the audio tokenization process to craft adversarial examples that bypass safety guardrails in audio-based AI systems — revealing a modality-specific attack surface that multimodal safety research has not yet adequately addressed.</p>
+          <div class="story-footer">
+            <span class="story-source-name">Via ArXiv</span>
+            <a href="https://arxiv.org/abs/2605.04700" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+          </div>
+        </article>
+
+        <!-- Agentic vulnerability reasoning -->
+        <article class="story-item"
+          data-story-id="2026-05-07-agentic-vulnerability-reasoning-windows-com-binaries"
+          data-category="Research Breakthroughs"
+          data-source="ArXiv">
+          <div class="story-category category-research">Research Breakthroughs</div>
+          <h2 class="story-headline">Agentic Vulnerability Reasoning on Windows COM Binaries</h2>
+          <p class="story-lede">AI systems now reason over Windows COM (Component Object Model) interface structures to identify security vulnerabilities automatically and at scale — demonstrating that agentic analysis can surface exploitable weaknesses across large codebases faster than manual auditing.</p>
+          <div class="story-footer">
+            <span class="story-source-name">Via ArXiv</span>
+            <a href="https://arxiv.org/abs/2605.05000" class="story-link" target="_blank" rel="noopener">[LINK ↗]</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <span class="footer-brand">Signal</span>
+  <span class="footer-note">Generated by ai-digest + page-creator agents · Pi 1</span>
+</footer>
+
+<script>
+(function () {
+  const digestDate = document.querySelector('meta[name="signal-date"]')?.content || '';
+
+  function slugify(text) {
+    return String(text).toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60);
+  }
+
+  function makeArticleId(storyId, date) {
+    if (storyId.includes('2026')) return storyId;
+    return `${date}-${slugify(storyId)}`;
+  }
+
+  async function attachLikeButtons() {
+    const stories = document.querySelectorAll('[data-story-id]');
+    if (!stories.length) return;
+
+    const fetches = Array.from(stories).map(async (el) => {
+      const rawId    = el.getAttribute('data-story-id');
+      const id       = makeArticleId(rawId, digestDate);
+      const category = el.getAttribute('data-category') || '';
+      const source   = el.getAttribute('data-source') || '';
+      const liked    = localStorage.getItem(`liked:${id}`) === '1';
+
+      let count = 0;
+      try {
+        const r = await fetch(`/api/like?article_id=${encodeURIComponent(id)}`);
+        if (r.ok) ({ count } = await r.json());
+      } catch {}
+
+      const btn = document.createElement('button');
+      btn.className = 'story-like-btn' + (liked ? ' liked' : '');
+      btn.setAttribute('aria-label', 'Like this story');
+      btn.innerHTML = `<span class="like-icon">${liked ? '♥' : '♡'}</span>`
+                    + `<span class="like-count">${count > 0 ? count : ''}</span>`;
+
+      btn.addEventListener('click', async () => {
+        if (localStorage.getItem(`liked:${id}`) === '1') return;
+        localStorage.setItem(`liked:${id}`, '1');
+        btn.classList.add('liked');
+        btn.querySelector('.like-icon').textContent = '♥';
+        btn.classList.add('pop');
+        setTimeout(() => btn.classList.remove('pop'), 200);
+        try {
+          const r = await fetch('/api/like', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ article_id: id, category, source }),
+          });
+          if (r.ok) {
+            const data = await r.json();
+            btn.querySelector('.like-count').textContent = data.count > 0 ? data.count : '';
+          }
+        } catch {}
+      });
+
+      el.appendChild(btn);
+    });
+
+    await Promise.all(fetches);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachLikeButtons);
+  } else {
+    attachLikeButtons();
+  }
+})();
+</script>
+</body>
+</html>
