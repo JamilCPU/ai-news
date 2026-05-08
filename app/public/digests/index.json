@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-05-08",
+    "title": "Trusted & Armed",
+    "overview": "OpenAI introduced GPT-5.5-Cyber in limited preview for critical infrastructure defenders, expanding Trusted Access for Cyber with more permissive behavior for specialized workflows like authorized red teaming and penetration testing. OpenAI also launched three new voice models in the API: GPT-Realtime-2 with GPT-5-class reasoning, GPT-Realtime-Translate for live multilingual",
+    "item_count": 8,
+    "filename": "2026-05-08.html"
+  },
+  {
     "date": "2026-05-07",
     "title": "Shadow Detected",
     "overview": "Microsoft took Agent 365 out of preview at $15 per user per month, introducing shadow AI discovery capabilities that can detect unauthorized AI tools on employee devices including OpenClaw, with plans to expand to 18 agent types by June 2026. OpenAI research shows frontier firms now use 3.5× as much intelligence per worker as typical firms, with the largest advantage in agentic tools like Codex where frontier firms send 16× as many messages per worker.",
