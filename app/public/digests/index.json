@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-05-10",
+    "title": "Confident and Wrong",
+    "overview": "Intent-based chaos testing emerged as a new methodology for validating AI systems that behave confidently but incorrectly, addressing the challenge of testing agentic AI where traditional unit tests fail to capture emergent behaviors. OncoAgent demonstrated that production-grade clinical AI can run entirely on-premises on a single AMD Instinct MI300X, achieving 56× throughput acceleration without any cloud dependency.",
+    "item_count": 2,
+    "filename": "2026-05-10.html"
+  },
+  {
     "date": "2026-05-09",
     "title": "Dream State",
     "overview": "Anthropic introduced 'dreaming,' a system that lets AI agents learn from their own mistakes by simulating alternative actions and outcomes, and moved outcomes and multi-agent orchestration from research preview to public beta. OpenAI published 'Running Codex safely at OpenAI,' detailing how the company deploys coding agents with managed configuration, constrained execution, network policies, and agent-native logs. Google DeepMind released an AI co-mathematician that scores 48% on FrontierMath Tier 4, a new high score. Allen Institute for AI released EMO, a mixture-of-experts model pretrained for emergent modularity that allows using just 12.5% of experts while retaining near full-model performance.",
