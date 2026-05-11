@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="signal-date" content="MAY 11, 2026">
+  <meta name="signal-title" content="Metal Secrets">
+  <meta name="signal-overview" content="MachinaCheck emerged as a multi-agent AI system for CNC manufacturability analysis that runs entirely on-premise using AMD Instinct MI300X, addressing the critical confidentiality requirements of manufacturing customers who cannot send proprietary STEP geometry to commercial API endpoints.">
+  <meta name="signal-items" content="1">
+  <title>Metal Secrets — SIGNAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&display=swap" rel="stylesheet">
+  <style>
+    /* ── Base vars (inherit from SIGNAL design system) ── */
+    :root {
+      --bg:       #060a10;
+      --bg2:      #090e18;
+      --surface:  #0d1525;
+      --surface2: #111e33;
+      --border:   #1a2a42;
+      --border2:  #243550;
+      --text:     #dce8f8;
+      --text2:    #7a90b4;
+      --text3:    #3d5270;
+      --lime:     #c4ff3c;
+      --blue:     #2d7fff;
+      --purple:   #9b6fff;
+      --orange:   #ff8c42;
+      --red:      #ff4560;
+      --teal:     #00d4aa;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Literata', Georgia, serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        radial-gradient(circle at 70% 30%, rgba(45,127,255,.05) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-5 5L5-5M35 45L45 35' stroke='%231a2a42' stroke-width='.5' opacity='.4'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    .scan-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      animation: scan 4s ease-in-out infinite; z-index: 100;
+    }
+    @keyframes scan {
+      0% { transform: translateX(-100%); opacity: 0; }
+      20% { opacity: 1; } 80% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+    /* ── Shared nav/header ── */
+    .site-header {
+      position: relative; z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,10,16,.92);
+      backdrop-filter: blur(12px);
+      padding: 0 clamp(16px,4vw,48px);
+    }
+    .header-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-wordmark {
+      font-family: var(--font-head); font-weight: 800; font-size: 18px;
+      letter-spacing: 0.12em; color: var(--text); text-transform: uppercase;
+    }
+    .logo-wordmark span { color: var(--lime); }
+    .back-link {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text3); text-decoration: none;
+      border: 1px solid var(--border2); padding: 6px 14px; border-radius: 2px;
+      transition: color .2s, border-color .2s;
+    }
+    .back-link:hover { color: var(--lime); border-color: var(--lime); }
+    /* ── Digest metadata bar ── */
+    .digest-bar {
+      position: relative; z-index: 1;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: baseline;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .digest-bar-date {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime);
+    }
+    .digest-bar-title {
+      font-family: var(--font-head); font-weight: 700; font-size: 20px;
+      color: var(--text); flex: 1;
+    }
+    .digest-bar-count {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text3); letter-spacing: 0.1em;
+    }
+    /* ── Content area — agent fills this in ── */
+    .digest-content {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: clamp(32px,5vw,64px) clamp(16px,4vw,48px);
+    }
+    /* ── Footer ── */
+    .site-footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 20px clamp(16px,4vw,48px);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand {
+      font-family: var(--font-head); font-weight: 800; font-size: 13px;
+      letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase;
+    }
+    .footer-note {
+      font-family: var(--font-mono); font-size: 10px; color: var(--text3);
+    }
+
+    /* ── Like button (shell-level, always available) ── */
+    .story-like-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: none; border: 1px solid var(--border2);
+      color: var(--text3); cursor: pointer;
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 2px;
+      transition: color .15s, border-color .15s, transform .1s;
+      margin-top: 12px;
+      user-select: none;
+    }
+    .story-like-btn:hover {
+      color: var(--red); border-color: var(--red);
+    }
+    .story-like-btn.liked {
+      color: var(--red); border-color: rgba(255,69,96,.4);
+      background: rgba(255,69,96,.06);
+    }
+    .story-like-btn .like-icon { font-size: 12px; line-height: 1; }
+    .story-like-btn.pop { transform: scale(1.15); }
+    .story-like-btn .like-count { min-width: 10px; }
+
+    /*
+    ═══════════════════════════════════════════════════════════════════════
+    AGENT CONTENT STYLES
+    ═══════════════════════════════════════════════════════════════════════
+    */
+
+    /* Section header */
+    .section-header {
+      border-top: 3px solid var(--orange);
+      padding-top: 10px;
+      margin-bottom: 32px;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+    }
+
+    /* Lead story — full width */
+    .lead-story {
+      margin-bottom: 48px;
+    }
+    .lead-headline {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+    .lead-lede {
+      font-family: var(--font-body);
+      font-size: clamp(16px, 1.6vw, 20px);
+      line-height: 1.7;
+      color: var(--text2);
+      max-width: 72ch;
+      margin-bottom: 24px;
+    }
+    .lead-summary {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text);
+      max-width: 80ch;
+      margin-bottom: 28px;
+    }
+
+    /* Story metadata */
+    .story-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .meta-source {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+    .meta-category {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--orange);
+      border: 1px solid rgba(255,140,66,.3);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+    .story-link {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--orange);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,140,66,.4);
+      padding-bottom: 1px;
+      transition: color .2s, border-color .2s;
+    }
+    .story-link:hover {
+      color: var(--lime);
+      border-color: var(--lime);
+    }
+
+    /* Pull quote */
+    .pull-quote {
+      border-left: 4px solid var(--orange);
+      padding: 20px 28px;
+      margin: 36px 0;
+      background: rgba(255,140,66,.04);
+    }
+    .pull-quote p {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(18px, 2.2vw, 26px);
+      line-height: 1.5;
+      color: var(--text);
+      font-weight: 300;
+    }
+
+    /* Pipeline diagram — unexpected visual touch */
+    .pipeline-diagram {
+      margin: 36px 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--orange);
+      padding: 24px;
+    }
+    .pipeline-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 20px;
+    }
+    .pipeline-stages {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .pipeline-stage {
+      flex: 1;
+      min-width: 100px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      padding: 14px 12px;
+      text-align: center;
+      position: relative;
+    }
+    .pipeline-stage::after {
+      content: '›';
+      position: absolute;
+      right: -13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--orange);
+      font-size: 18px;
+      z-index: 2;
+    }
+    .pipeline-stage:last-child::after {
+      display: none;
+    }
+    .stage-name {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 6px;
+    }
+    .stage-detail {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--text3);
+      line-height: 1.5;
+    }
+
+    /* Spec table */
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 28px 0;
+    }
+    .spec-cell {
+      background: var(--surface);
+      padding: 16px 18px;
+    }
+    .spec-key {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 6px;
+    }
+    .spec-value {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--orange);
+    }
+
+    /* Ticker / single-issue note */
+    .single-issue-note {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--text3);
+      text-align: center;
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+    }
+    .single-issue-note span {
+      color: var(--orange);
+    }
+  </style>
+</head>
+<body>
+<div class="scan-bar"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+        <path d="M4 16 L10 8 L14 20 L18 6 L22 18 L26 12 L28 16" stroke="#c4ff3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-wordmark">SIGN<span>A</span>L</span>
+    </a>
+    <a href="/" class="back-link">&#8592; All Digests</a>
+  </div>
+</header>
+
+<div class="digest-bar">
+  <span class="digest-bar-date">MAY 11, 2026</span>
+  <span class="digest-bar-title">Metal Secrets</span>
+  <span class="digest-bar-count">1 item</span>
+</div>
+
+<div class="digest-content">
+
+  <div class="section-header">
+    <span class="section-label">Industry &amp; Business</span>
+  </div>
+
+  <article
+    data-story-id="2026-05-11-machinacheck-multi-agent-cnc-manufacturability-amd-mi300x"
+    data-category="Industry &amp; Business"
+    data-source="Hugging Face"
+    class="lead-story"
+  >
+    <div class="story-meta">
+      <span class="meta-category">Industry &amp; Business</span>
+      <span class="meta-source">Hugging Face</span>
+    </div>
+
+    <h1 class="lead-headline">MachinaCheck: Multi-Agent CNC Manufacturability System Runs on AMD MI300X for Privacy</h1>
+
+    <p class="lead-lede">MachinaCheck emerged as a multi-agent AI system for CNC manufacturability analysis that runs entirely on-premise using AMD Instinct MI300X, addressing the critical confidentiality requirements of manufacturing customers who cannot send proprietary STEP geometry to commercial API endpoints. The system parses STEP files using cadquery for mathematically exact feature extraction, uses Qwen 2.5 7B running on AMD MI300X via vLLM for operations classification and feasibility decision-making, and produces complete manufacturability reports in 25 to 40 seconds end-to-end.</p>
+
+    <div class="pull-quote">
+      <p>"Complete manufacturability reports in 25 to 40 seconds end-to-end — without a single byte of proprietary geometry leaving the factory floor."</p>
+    </div>
+
+    <p class="lead-summary">The five-component pipeline uses LangChain and FastAPI, with pure Python components for STEP file parsing and tool matching where LLMs are not needed, and Qwen 2.5 7B for operations classification, feasibility decision-making, and report generation. The system runs entirely on-premise with 192GB of HBM3 VRAM and 5.3 TB/s of memory bandwidth — eliminating the commercial API dependency that has long blocked AI adoption in precision manufacturing.</p>
+
+    <div class="pipeline-diagram">
+      <div class="pipeline-label">Five-Stage Agent Pipeline</div>
+      <div class="pipeline-stages">
+        <div class="pipeline-stage">
+          <div class="stage-name">STEP Parser</div>
+          <div class="stage-detail">cadquery<br>exact geometry<br>extraction</div>
+        </div>
+        <div class="pipeline-stage">
+          <div class="stage-name">Feature ID</div>
+          <div class="stage-detail">pure Python<br>tool matching<br>no LLM</div>
+        </div>
+        <div class="pipeline-stage">
+          <div class="stage-name">Ops Classify</div>
+          <div class="stage-detail">Qwen 2.5 7B<br>via vLLM<br>MI300X</div>
+        </div>
+        <div class="pipeline-stage">
+          <div class="stage-name">Feasibility</div>
+          <div class="stage-detail">Qwen 2.5 7B<br>decision<br>engine</div>
+        </div>
+        <div class="pipeline-stage">
+          <div class="stage-name">Report Gen</div>
+          <div class="stage-detail">Qwen 2.5 7B<br>full report<br>25–40 sec</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec-grid">
+      <div class="spec-cell">
+        <div class="spec-key">Accelerator</div>
+        <div class="spec-value">AMD MI300X</div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-key">HBM3 VRAM</div>
+        <div class="spec-value">192 GB</div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-key">Memory BW</div>
+        <div class="spec-value">5.3 TB/s</div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-key">Base Model</div>
+        <div class="spec-value">Qwen 2.5 7B</div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-key">Inference</div>
+        <div class="spec-value">vLLM</div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-key">E2E Latency</div>
+        <div class="spec-value">25 – 40 s</div>
+      </div>
+    </div>
+
+    <a href="https://huggingface.co/blog/lablab-ai-amd-developer-hackathon/machinacheck" class="story-link" target="_blank" rel="noopener">Read full writeup &#8599;</a>
+
+  </article>
+
+  <div class="single-issue-note">
+    Single-story edition &mdash; <span>1 item</span> &mdash; MAY 11, 2026
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <span class="footer-brand">Signal</span>
+  <span class="footer-note">Generated by ai-digest + page-creator agents &middot; Pi 1</span>
+</footer>
+
+<script>
+(function () {
+  const digestDate = document.querySelector('meta[name="signal-date"]')?.content || '';
+
+  function slugify(text) {
+    return String(text).toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60);
+  }
+
+  function makeArticleId(storyId, date) {
+    if (storyId.includes(date)) return storyId;
+    return `${date}-${slugify(storyId)}`;
+  }
+
+  async function attachLikeButtons() {
+    const stories = document.querySelectorAll('[data-story-id]');
+    if (!stories.length) return;
+
+    const fetches = Array.from(stories).map(async (el) => {
+      const rawId   = el.getAttribute('data-story-id');
+      const id      = makeArticleId(rawId, digestDate);
+      const category = el.getAttribute('data-category') || '';
+      const source   = el.getAttribute('data-source') || '';
+      const liked    = localStorage.getItem(`liked:${id}`) === '1';
+
+      let count = 0;
+      try {
+        const r = await fetch(`/api/like?article_id=${encodeURIComponent(id)}`);
+        if (r.ok) ({ count } = await r.json());
+      } catch {}
+
+      const btn = document.createElement('button');
+      btn.className = 'story-like-btn' + (liked ? ' liked' : '');
+      btn.setAttribute('aria-label', 'Like this story');
+      btn.innerHTML = `<span class="like-icon">${liked ? '♥' : '♡'}</span>`
+                    + `<span class="like-count">${count > 0 ? count : ''}</span>`;
+
+      btn.addEventListener('click', async () => {
+        if (localStorage.getItem(`liked:${id}`) === '1') return;
+        localStorage.setItem(`liked:${id}`, '1');
+        btn.classList.add('liked');
+        btn.querySelector('.like-icon').textContent = '♥';
+        btn.classList.add('pop');
+        setTimeout(() => btn.classList.remove('pop'), 200);
+        try {
+          const r = await fetch('/api/like', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ article_id: id, category, source }),
+          });
+          if (r.ok) {
+            const data = await r.json();
+            btn.querySelector('.like-count').textContent = data.count > 0 ? data.count : '';
+          }
+        } catch {}
+      });
+
+      el.appendChild(btn);
+    });
+
+    await Promise.all(fetches);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachLikeButtons);
+  } else {
+    attachLikeButtons();
+  }
+})();
+</script>
+</body>
+</html>

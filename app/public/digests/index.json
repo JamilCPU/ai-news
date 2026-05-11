@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-05-11",
+    "title": "Metal Secrets",
+    "overview": "MachinaCheck emerged as a multi-agent AI system for CNC manufacturability analysis that runs entirely on-premise using AMD Instinct MI300X, addressing the critical confidentiality requirements of manufacturing customers who cannot send proprietary STEP geometry to co",
+    "item_count": 1,
+    "filename": "2026-05-11.html"
+  },
+  {
     "date": "2026-05-10",
     "title": "Confident and Wrong",
     "overview": "Intent-based chaos testing emerged as a new methodology for validating AI systems that behave confidently but incorrectly, addressing the challenge of testing agentic AI where traditional unit tests fail to capture emergent behaviors. OncoAgent demonstrated that production-grade clinical AI can run entirely on-premises on a single AMD Instinct MI300X, achieving 56× throughput acceleration without any cloud dependency.",
