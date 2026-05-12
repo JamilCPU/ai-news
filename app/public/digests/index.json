@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-05-12",
+    "title": "Running Rate",
+    "overview": "Anthropic announced it hit a $30 billion revenue run rate after experiencing 80x growth, with CEO Dario Amodei revealing the milestone at the Code with Claude conference. OpenAI launched the OpenAI Deployment Company, a new entity designed to help businesses build and deploy AI systems, acquiring Tomoro and partnering with 19 leading global investment firms, consultancies, and system integrators with more than $4 billion of initial investment.",
+    "item_count": 2,
+    "filename": "2026-05-12.html"
+  },
+  {
     "date": "2026-05-11",
     "title": "Metal Secrets",
     "overview": "MachinaCheck emerged as a multi-agent AI system for CNC manufacturability analysis that runs entirely on-premise using AMD Instinct MI300X, addressing the critical confidentiality requirements of manufacturing customers who cannot send proprietary STEP geometry to co",
