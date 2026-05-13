@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-05-13",
+    "title": "Off Par",
+    "overview": "OpenAI published 'What Parameter Golf taught us,' sharing insights from a systematic exploration of how model parameters affect performance across different architectures and training regimes. The research revealed that parameter count alone is an incomplete predictor of capability, with factors like data quality, training duration, and architectural choices playing significant roles in determining model performance.",
+    "item_count": 1,
+    "filename": "2026-05-13.html"
+  },
+  {
     "date": "2026-05-12",
     "title": "Running Rate",
     "overview": "Anthropic announced it hit a $30 billion revenue run rate after experiencing 80x growth, with CEO Dario Amodei revealing the milestone at the Code with Claude conference. OpenAI launched the OpenAI Deployment Company, a new entity designed to help businesses build and deploy AI systems, acquiring Tomoro and partnering with 19 leading global investment firms, consultancies, and system integrators with more than $4 billion of initial investment.",
