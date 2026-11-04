@@ -6,3 +6,21 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 # digest files are intentionally tracked — Pi commits them on each run
+.env.*
+!.env.example
+*.keys
+*.db
+*.sqlite
+*.sqlite3
+venv/
+.venv/
+__pycache__/
+*.pyc
+bin/
+obj/
+dist/
+build/
+.vs/
+.idea/
+*.class
+target/
